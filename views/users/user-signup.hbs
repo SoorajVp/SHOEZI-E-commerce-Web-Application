@@ -1,0 +1,164 @@
+
+
+<section class="vh-100" style="background-color: #eaedf2;">
+  <div class="container py-4 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <div class="card shadow border" style="border-radius: 1rem;">
+          <div class="row g-0">
+            
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img src="https://png.pngtree.com/png-vector/20190121/ourlarge/pngtree-log-in-login-interface-computer-computer-login-png-image_508196.jpg"
+                alt="login form" class="img-fluid pt-4 " style="border-radius: 1rem 0 0 1rem;" />
+            </div>
+
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-1 p-lg-4 text-black">
+                
+
+                <form action="/signup" method="post" id="signupForm">
+
+                  <div class="d-flex align-items-center mb-2 pb-1">
+                    <h1 class=" mb-0 mx-auto font-weight-bold">Signup</h1>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="username" class="form-control" name="Username" placeholder="Username" onkeyup="validateName()"/>
+                    <span class="text-danger" id="name-error"></span>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="email" id="email" class="form-control" name="email" placeholder="Email" onkeyup="validateEmail()"/>
+                    <span class="text-danger" id="email-error"></span>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="tel" id="mobile" class="form-control" name="mobile" placeholder="Mobile" onkeyup="validateMobile()"/>
+                    <span class="text-danger" id="mobile-error"></span>
+                  </div>
+                  
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password1" class="form-control " name="password1" placeholder="Enter password" onkeyup="validatePassword1()"/>
+                    <span class="text-danger" id="password1-error"></span>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password2" class="form-control "  placeholder="Confirm password" onkeyup="validatePassword2()"/>
+                    <span class="text-danger" id="password2-error"></span>
+                  </div>
+                  
+                  <input type="text" style=" display: none;" value="true" name="status">
+
+                  <div class="pt-1 mb-4">
+                    <button class="btn btn-primary  btn-block" style="width: 100%;" onclick="return validateForm()">Create Account</button>
+                    <span class="text-danger" id="submit-error" ></span>
+                  </div>
+                  
+                  <div class="divider " >
+                     {{!-- <p class=" fw-bold mx-3 mb-0 text-muted " style="text-align: center;">OR</p>                                        --}}
+                        <p class="mx-auto " style="text-align: center;">Already have an account? <a href="/login" class="text-decoration-none text-primary">Login</a></p>
+                    </div>                
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<script>
+var nameError = document.getElementById('name-error');
+var emailError = document.getElementById('email-error');
+var mobileError = document.getElementById('mobile-error');
+var password1Error = document.getElementById('password1-error');
+var password2Error = document.getElementById('password2-error');
+var submitError = document.getElementById('submit-error');
+
+
+
+function validateName(){                                 
+  var name = document.getElementById("username").value;
+  if(name.length == 0){
+    nameError.innerHTML = 'Name is required';
+    return false;
+  }
+  if(!name.match(/^[A-Za-z]+ [A-Za-z]+$/)) {
+      nameError.innerHTML = 'Enter your full name';
+      return false;
+  }
+  nameError.innerHTML = '';
+      return true;
+}
+
+function validateEmail(){
+  var email = document.getElementById('email').value;
+  if(email.length==0){
+      emailError.innerHTML = 'Email is required';
+      return false;
+  }
+  if(!email.match(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/)){
+    emailError.innerHTML = 'Email invalid';
+    return false;
+  }
+  emailError.innerHTML = '';
+  return true;
+}
+
+function validateMobile(){
+  var mobile = document.getElementById('mobile').value;
+  if(mobile.length == 0){
+    mobileError.innerHTML = 'Mobile number is required';
+    return false;
+  }
+  if(!mobile.match(/^[6-9]\d{9}$/)){
+    mobileError.innerHTML = 'Mobile number invalid';
+    return false;
+  }
+  mobileError.innerHTML = '';
+  return true;
+}
+
+function validatePassword1(){
+  var password1 = document.getElementById('password1').value;
+  var passChecker = /^[A-Za-z]\w{7,14}$/;
+  if(password1.length==0){
+      password1Error.innerHTML = 'Password is required';
+      return false;
+  }
+  if(password1.match(passChecker)){
+    password1Error.innerHTML = '';
+    return true;
+  }else{
+    password1Error.innerHTML = 'Enter atleast 8 characters';
+    return false;
+  }
+}
+
+function validatePassword2(){
+  var password1 = document.getElementById('password1').value;
+  var password2 = document.getElementById('password2').value;
+  if(password1 != password2) {
+    password2Error.innerHTML = 'Password not matched';
+    return false;
+  }else{
+    password2Error.innerHTML = '';
+    return true;
+  }
+}
+
+function validateForm(){
+  if(!validateName() || !validateEmail() || !validateMobile || !validatePassword1() || !validatePassword2()){
+    submitError.style.display='flex';
+    submitError.style.justifyContent='center';
+    submitError.innerHTML = 'Please fix all errors to submit';
+    setTimeout(()=>{
+      submitError.style.display='none';
+    },3000);
+    return false;
+  }
+}
+</script>

@@ -1,0 +1,261 @@
+<!--Header-->
+    <div class="header-wrap animated d-flex ">
+    	<div class="container-fluid shadow ">        
+            <div class="row align-items-center ">
+            	<!--Desktop Logo-->
+                <div class="logo col-md-2 col-lg-2 d-none d-lg-block mt-2">
+                    <a href="/">
+                      <h1 style="font-weight: 300; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"> SHOE<span class="text-primary">ZI</span></h1>
+                    	{{!-- <img src="assets/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" /> --}}
+                    </a>
+                </div>
+                <!--End Desktop Logo-->
+                {{#if loginForm}}
+                {{else}}
+                <div class="col-2 col-sm-3 col-md-3 col-lg-8">
+                	<div class="d-block d-lg-none">
+                        <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
+                        	<i class="icon anm anm-times-l"></i>
+                            <i class="anm anm-bars-r"></i>
+                        </button>
+                    </div>
+                	<!--Desktop Menu-->
+                	<nav class="grid__item" id="AccessibleNav"><!-- for mobile -->
+                        <ul id="siteNav" class="site-nav medium center hidearrow">
+                            <li class="lvl1 parent megamenu"><a href="/">Home <i class="anm anm-angle-down-l"></i></a>
+                               
+                            </li>
+                            <li class="lvl1 parent dropdown"><a href="/shop">Shop Now <i class="anm anm-angle-down-l"></i></a>
+                            	<ul class="dropdown">
+                            <li><a href="/" class="site-nav">Formals</a></li>
+                            <li><a href="/" class="site-nav">Casual</a></li>
+                            <li><a href="/" class="site-nav">Sports</a></li>
+                            <li><a href="/" class="site-nav">Ladies</a></li>
+                            <li><a href="/" class="site-nav">Kids</a></li>
+                          </ul>
+                            </li>
+                        {{!-- <li class="lvl1 parent megamenu"><a href="#">Wishlist <i class="anm anm-angle-down-l"></i></a> </li> --}}
+                        	
+                       
+                        
+                        <li class="lvl1 parent dropdown"><a href="#">Contact Us<i class="anm anm-angle-down-l"></i></a></li>
+                          
+                        
+                        {{!-- <li class="lvl1"><a href="#"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a></li> --}}
+                        
+
+                        {{#if user}}
+                        <li class="lvl1 dropdown border font-weight-bold"><a href="#"><b>{{this.user.Username}}</b><i class="anm anm-angle-down-l"></i></a> 
+                          <ul class="dropdown">
+                            <li><a href="/profile" class="site-nav">Profile</a></li>
+                            <li><a href="/logout" class="site-nav">Logout</a></li>
+                          </ul>
+                        </li>
+                        {{else}}
+                         <li class="lvl1 dropdown border font-weight-bold"><a href="#"><b>Account</b><i class="anm anm-angle-down-l"></i></a>
+                         <ul class="dropdown">
+                            <li><a href="/login" class="site-nav">Login</a></li>
+                            <li><a href="/signup" class="site-nav">Signup</a></li>
+                          </ul>
+                        </li>
+                        {{/if}}
+                        
+
+                        {{!-- <li class="lvl1 dropdown border font-weight-bold"><a href="#"><b>{{this.user.Username}}</b><i class="anm anm-angle-down-l"></i></a> 
+                          <ul class="dropdown">
+                            <li><a href="#" class="site-nav">Profile</a></li>
+                            <li><a href="#" class="site-nav">Logout</a></li>
+                          </ul>
+                        </li> --}}
+
+                      </ul>
+                    </nav>
+                    <!--End Desktop Menu-->
+                </div>
+                {{/if}}
+                
+                <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
+                	<div class="logo">
+                        <a href="/">
+                          <h1 style="font-weight: 300; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"> SHOE<span class="text-primary">ZI</span></h1>
+                            {{!-- <img src="assets/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" /> --}}
+                        </a>
+                    </div>
+                </div>
+                {{#if loginForm}}
+                {{else}}
+                <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                	<div class="site-cart">
+
+
+                      <a href="" class="site-header__cart ml-3" title="Cart">
+                          <i class="icon anm anm-heart-l"></i>
+                      </a>
+
+                    	<a href="#;" class="site-header__cart ml-3" title="Cart">
+                        	{{!-- <i class="icon anm anm-user-r"></i> --}}
+                        	<i class="icon anm anm-bag-l"></i>
+                        	
+                            {{!-- <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">2</span> --}}
+                        </a>
+                        {{!-- <a href="" class="site-header__cart ml-3" title="Cart">
+                           <i class="icon anm anm-user"></i>
+                        </a> --}}
+
+                        <!--Minicart Popup-->
+                        <div id="header-cart" class="block block-cart">
+                            <ul class="mini-products-list">
+                                <li class="item">
+                                    <a class="product-image" href="#">
+                                        <img src="assets/images/product-images/cape-dress-1.jpg" alt="3/4 Sleeve Kimono Dress" title="" />
+                                    </a>
+                                    <div class="product-details">
+                                        <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
+                                        <a class="pName" href="cart.html">Sleeve Kimono Dress</a>
+                                        <div class="variant-cart">Black / XL</div>
+                                        <div class="wrapQtyBtn">
+                                            <div class="qtyField">
+                                                <span class="label">Qty:</span>
+                                                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                                                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
+                                                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="priceRow">
+                                            <div class="product-price">
+                                                <span class="money">$59.00</span>
+                                            </div>
+                                         </div>
+                                    </div>
+                                </li>
+                                <li class="item">
+                                    <a class="product-image" href="#">
+                                        <img src="assets/images/product-images/cape-dress-2.jpg" alt="Elastic Waist Dress - Black / Small" title="" />
+                                    </a>
+                                    <div class="product-details">
+                                        <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
+                                        <a class="pName" href="cart.html">Elastic Waist Dress</a>
+                                        <div class="variant-cart">Gray / XXL</div>
+                                        <div class="wrapQtyBtn">
+                                            <div class="qtyField">
+                                                <span class="label">Qty:</span>
+                                                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                                                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty">
+                                                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="priceRow">
+                                            <div class="product-price">
+                                                <span class="money">$99.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="total">
+                                <div class="total-in">
+                                    <span class="label">Cart Subtotal:</span><span class="product-price"><span class="money">$748.00</span></span>
+                                </div>
+                                 <div class="buttonSet text-center">
+                                    <a href="cart.html" class="btn btn-secondary btn--small">View Cart</a>
+                                    <a href="checkout.html" class="btn btn-secondary btn--small">Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Minicart Popup-->
+                    </div>
+                    {{!-- <div class="site-header__search">
+                    	<button type="button" class="search-trigger"><i class="icon anm anm-search-l"></i></button>
+                    </div> --}}
+                </div>
+                {{/if}}
+        	</div>
+        </div>
+    </div>
+    <!--End Header-->
+    <!--Mobile Menu-->
+    <div class="mobile-nav-wrapper" role="navigation">
+		<div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
+
+        <ul id="MobileNav" class="mobile-nav">
+
+        <li class="lvl1 parent megamenu"><a href="index.html">Home <i class="anm anm-plus-l"></i></a>
+          <ul>
+            <li><a href="#" class="site-nav">Home Group 1<i class="anm anm-plus-l"></i></a></li>
+            <li><a href="#" class="site-nav">Home Group 2<i class="anm anm-plus-l"></i></a></li> 
+          </ul>
+        </li>
+
+        <li class="lvl1 parent megamenu"><a href="#">Shop now<i class="anm anm-plus-l"></i></a>
+          <ul>
+            <li><a href="#" class="site-nav">Shop Pages<i class="anm anm-plus-l"></i></a>
+              <ul>
+                <li><a href="shop-left-sidebar.html" class="site-nav">Left Sidebar</a></li>
+                <li><a href="shop-right-sidebar.html" class="site-nav">Right Sidebar</a></li>
+                <li><a href="shop-fullwidth.html" class="site-nav">Fullwidth</a></li>
+                <li><a href="shop-grid-3.html" class="site-nav">3 items per row</a></li>
+                <li><a href="shop-grid-4.html" class="site-nav">4 items per row</a></li>
+                <li><a href="shop-grid-5.html" class="site-nav">5 items per row</a></li>
+                <li><a href="shop-grid-6.html" class="site-nav">6 items per row</a></li>
+                <li><a href="shop-grid-7.html" class="site-nav">7 items per row</a></li>
+                <li><a href="shop-listview.html" class="site-nav last">Product Listview</a></li>
+              </ul>
+            </li>
+            <li><a href="#" class="site-nav">Shop Features<i class="anm anm-plus-l"></i></a>
+              <ul>
+                <li><a href="shop-left-sidebar.html" class="site-nav">Product Countdown </a></li>
+                <li><a href="shop-right-sidebar.html" class="site-nav">Infinite Scrolling</a></li>
+
+                <li><a href="shop-grid-3.html" class="site-nav">Pagination - Classic</a></li>
+                <li><a href="shop-grid-6.html" class="site-nav">Pagination - Load More</a></li>
+                <li><a href="product-labels.html" class="site-nav">Dynamic Product Labels</a></li>
+                <li><a href="product-swatches-style.html" class="site-nav">Product Swatches </a></li>
+                <li><a href="product-hover-info.html" class="site-nav">Product Hover Info</a></li>
+                <li><a href="shop-grid-3.html" class="site-nav">Product Reviews</a></li>
+                <li><a href="shop-left-sidebar.html" class="site-nav last">Discount Label </a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li class="lvl1 parent megamenu"><a href="">Contact us <i class="anm anm-plus-l"></i></a></li>
+
+        <li class="lvl1 parent megamenu"><a href="">Wishlist <i class="anm anm-plus-l"></i></a></li>
+
+        <li class="lvl1 parent megamenu"><a href="">Cart <i class="anm anm-plus-l"></i></a></li>
+          
+        
+        {{!-- <li class="lvl1 parent megamenu"><a href="blog-left-sidebar.html">Blog <i class="anm anm-plus-l"></i></a>
+          <ul>
+            <li><a href="blog-left-sidebar.html" class="site-nav">Left Sidebar</a></li>
+            <li><a href="blog-right-sidebar.html" class="site-nav">Right Sidebar</a></li>
+            <li><a href="blog-fullwidth.html" class="site-nav">Fullwidth</a></li>
+            <li><a href="blog-grid-view.html" class="site-nav">Gridview</a></li>
+            <li><a href="blog-article.html" class="site-nav">Article</a></li>
+          </ul>
+        </li> --}}
+        
+        {{!-- <li class="lvl1"><a href="#"><b>Buy Now!</b></a></li> --}}
+        {{#if user}}
+        <li class="lvl1 parent megamenu"><a ><b>{{user.Username}}</b> <i class="anm anm-plus-l"></i></a>
+          <ul>
+            <li><a href="/profile" class="site-nav">Profile<i class="anm anm-plus-l"></i></a></li>
+            <li><a href="/logout" class="site-nav">Logout<i class="anm anm-plus-l"></i></a></li> 
+             
+          </ul>
+        </li>
+        {{else}}
+        <li class="lvl1 parent megamenu"><a ><b>Account</b> <i class="anm anm-plus-l"></i></a>
+          <ul>
+            <li><a href="/login" class="site-nav">Login<i class="anm anm-plus-l"></i></a></li>
+            <li><a href="/signup" class="site-nav">Create an Account<i class="anm anm-plus-l"></i></a></li>
+          </ul>
+        </li>
+        {{/if}}
+
+        
+      </ul>
+	</div>
+	<!--End Mobile Menu-->

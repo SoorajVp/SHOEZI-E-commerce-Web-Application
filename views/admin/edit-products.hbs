@@ -1,0 +1,119 @@
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+
+            <!-- [ breadcrumb ] start -->
+
+            <div class="card">
+              <div class="card-body">
+                <h5>Edit Products</h5>
+
+                <div class="row">
+
+                  <div class="col-md-6">
+                    <form
+                      action="/admin/edit-products/{{product._id}}"
+                      method="post"
+                      enctype="multipart/form-data"
+                    >
+                      <div class="form-group">
+                        <label>Product Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="name"
+                          value="{{product.name}}"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Category</label>
+                        <select
+                          class="form-control"
+                          name="category"
+                          id="exampleFormControlSelect1"
+                        >
+                          <option>{{product.category}}</option>
+
+                          {{#each category}}
+                          <option value="{{this._id}}">{{this.name}}</option>
+                          {{/each}}
+                          
+                        </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="exampleFormControlSelect1">Brand</label>
+                          <select class="form-control" name="brand" id="exampleFormControlSelect1">
+                            {{!-- <option>Normal</option> --}}
+                            <option>ADIDAS</option>
+                            <option>NIKE</option>
+                            <option>COVERSE</option>
+                            <option>VANS</option>
+                            <option>PUMA</option>
+                          </select>
+                        </div> 
+                      <div class="form-group">
+                        <label
+                          for="exampleFormControlTextarea1"
+                        >Description</label>
+                        <textarea
+                          class="form-control"
+                          name="description"
+                          id="exampleFormControlTextarea1"
+                          rows="3"
+                        >{{product.description}}</textarea>
+                      </div>
+                      <div class="form-group">
+                        <label>Price</label>
+                        <input
+                          type="tel"
+                          class="form-control"
+                          name="price"
+                          value="{{product.price}}"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label>Image Upload</label>
+                        <input
+                          type="file"
+                          class="form-control"
+                          name="image"
+                          multiple="required"
+                          onchange="viewImage(event)"
+                        />
+                        <div class="d-flex">
+                          {{#each product.image}}
+                            <img  src="{{this}}" alt=""  style="width: 60px;" class="p-2" id="imgView"/>
+                          {{/each}}
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary" >Submit</button>
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- [ Main Content ] end -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ Main Content ] end -->
+
+
+<script>
+
+let viewImage = (event) =>{
+  for(let i=0; i < files.length; i++){
+    document.getElementById('imgView').src = URL.createObjectURL(event.target.files[i]); 
+  }
+}
+
+</script>

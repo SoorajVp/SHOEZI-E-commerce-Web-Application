@@ -1,0 +1,39 @@
+
+
+
+
+<section class="vh-100" style="background-color: #f0f1f4;">
+  <div class="container py-4 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-4 col-md-4 col-lg-4">
+        <div class="card shadow border" style="border-radius: 1rem; margin-top: 100px; margin-bottom: 90px;" >
+          <div class="card-body">
+            
+            <form action="/otp-login" method="post" >
+
+                  <div class="d-flex align-items-center  pb-1">
+                    <h3 class=" mx-auto font-weight-bold">LOGIN WITH OTP</h3>   
+                  </div>
+
+                  <div class="form-outline mb-2 text-center">
+                    <label for="" class="py-2" >Enter your Mobile Number</label>
+                    <input type="tel" id="form2Example17" class="form-control form-control-lg " name="mobile" />
+                  </div>
+
+                   {{#if logErr}}
+                    <span  class="text-center pb-2"><p class="text-danger">{{logErr}}</p></span>
+                  {{/if}}
+
+                  <div class="pt-3 ">
+                    {{!-- <button type="button" class="btn btn-outline-primary  btn-block">Login</button> --}}
+                    <button type="submit" class="btn btn-block" style="width: 100%;">SEND OTP</button>
+                    
+
+                  </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

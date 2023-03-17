@@ -1,0 +1,68 @@
+<!-- [ Pre-loader ] End -->
+<!-- [ navigation menu ] start -->
+
+<!-- [ Header ] end -->
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+
+            <!-- [ breadcrumb ] start -->
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="mb-4 ">Users List</h4>
+
+                <div class="text-center">
+                  <div class="table-responsive">
+                    <table class="table table-striped" style="width: 100%;">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Mobile</th>
+                          <th scope="col">Handle</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        {{#each users}}
+                          <tr>
+                            <th scope="row">{{@index}}</th>
+                            <td>{{this.Username}}</td>
+                            <td>{{this.email}}</td>
+                            <td>{{this.mobile}}</td>
+                            {{#if this.status}}
+                              <td><a
+                                  href="/admin/users/{{this._id}}"
+                                  class="btn btn-danger btn-sm"
+                                >BLOCK</a></td>
+                            {{else}}
+                              <td><a
+                                  href="/admin/usersblocked/{{this._id}}"
+                                  class="btn btn-warning btn-sm"
+                                >UNBLOCK</a></td>
+                            {{/if}}
+                          </tr>
+                        {{/each}}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- [ Main Content ] end -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ Main Content ] end -->

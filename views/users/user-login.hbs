@@ -1,0 +1,75 @@
+
+
+
+<section class="vh-100" style="background-color: #f0f1f4;">
+  <div class="container py-4 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <div class="card shadow border" style="border-radius: 1rem; margin-top: 45px;">
+          <div class="row g-0">
+            
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img src="https://media.istockphoto.com/id/1246021208/vector/login-password-verification-code-push-message-or-sms-for-2fa-authentication-with-shield-icon.jpg?s=612x612&w=0&k=20&c=hHbhCq7Uhtz2rEU2vBh-KsRZV0kFeVqz8EuQoDszv5s="
+                alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+            </div>
+
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+                
+
+                <form action="/login" method="post" >
+
+                  <div class="d-flex align-items-center mb-2 pb-1">
+                    <h1 class=" mb-0 mx-auto font-weight-bold">Login</h1>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="email" id="form2Example17" class="form-control  " name="email" placeholder="Email"/>
+                  </div>
+                  
+                  <div class="form-outline mb-2">
+                    <input type="password" id="form2Example27" class="form-control " name="password1" placeholder="Password" />
+                  </div>
+
+                  <div class="divider " >                              
+                        <p class="mx-auto" ><a href="#" class="text-primary">Forgotten password ? </a></p><br>
+                        
+                    </div>
+                  {{#if logErr}}
+                    <span style="text-align: center;"><p class="text-danger">{{logErr}}</p></span>
+                  {{/if}}
+
+                  <div class="pt-1 ">
+                    {{!-- <button type="button" class="btn btn-outline-primary  btn-block">Login</button> --}}
+                    <button class="btn   btn-block" style="width: 100%;">Login</button>
+                  </div>
+              
+                   <div class="pt-1 mb-3">
+                    <p class=" fw-bold mx-3 mb-0 text-muted " style="text-align: center;">OR</p> 
+                    <a href="/otp-login" class="btn " style="width: 100%;" id="specialButton" > Login with OTP</a>
+                  
+                  <!-- Button trigger modal -->
+                  
+                  
+                  <div>                                                           
+                      <p  style="text-align: center;">Don't have an account? <br>
+                      <a href="/signup" class="text-primary">Create New Account</a></p><br>                       
+                  </div>
+
+
+                </form>
+
+                 {{!-- <div class="pt-1 mb-3">
+                    <a href="/signup">
+                    <button class="btn btn-primary btn-lg btn-block" style="width: 100%;">Signup</button>
+                    </a>
+                  </div> --}}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,103 @@
+
+{{!-- <link rel="stylesheet" href="/public/assets/profile_styles/#style.css"> --}}
+
+
+<div class="container mt-4 border py-3 " style="background-color: #e7e8eb;">
+<div class="row gutters">
+<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body" >
+		<div class="account-settings" style="text-align: center;">
+			<div class="user-profile pb-3">
+				<div class="user-avatar">
+					<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin" width="70px" style="border-radius: 50px; float: left;">
+					<h6 class="user-name pt-3">{{user.Username}}</h6>
+				    <h7 class="user-email">{{user.email}}</h7>
+				</div>
+				
+			</div>
+
+			<hr>
+
+			<div class="about">
+				<h6 class="text-secondary">ACCOUNT SETTINGS</h6>				
+			</div>
+			
+
+			<a href="/profile" style="text-decoration: none;">
+            <div class="border mt-2 ">
+                <h4 class="pt-2">Personal Informations</h4>
+            </div>
+            </a>
+
+            <a href="/address" style="text-decoration: none;">
+            <div class="border mt-2 bg-light">
+                <h4 class="pt-2 ">Manage Address</h4>
+            </div>
+            </a>
+
+			<hr>
+
+			<div class="about">
+				<h6 class="text-secondary">MY STUFFS</h6>				
+			</div>
+
+			 <a href="" style="text-decoration: none;">
+            <div class="border mt-2">
+                <h4 class="pt-2">My Orders</h4>
+            </div>
+            </a>
+            
+            <a href="" style="text-decoration: none;">
+            <div class="border mt-2">
+                <h4 class="pt-2">Wishlist</h4>
+            </div>
+            </a>
+
+            <a href="" style="text-decoration: none;">
+            <div class="border mt-1 text-info">
+                <h4 class=" pt-2 ">Cart items</h4>
+            </div>
+            </a>     
+
+		</div>
+	</div>
+    <a href="/change-password" style="text-decoration: none; margin-top: 30px;">
+        <p class="text-primary text-center mb-2"> Change Password</p>
+    </a>
+
+    <a href="/logout" style="text-decoration: none;">
+        <div class="border bottom-align-text text-center ">
+            <h3 class="pt-2 text-secondary ">Logout</h3>
+        </div>
+     </a>
+
+
+</div>
+</div>
+<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body container">
+        <a href="/add-address" style="text-decoration: none;">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border bg-primary">
+				<h3 class="m-3 text-white text-center">+  ADD NEW ADDRESS</h3>
+		</div>
+        </a>		
+
+        {{#each user.address}}
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border ">
+			<div class="p-3">
+                <p> <b> {{this.name}}  {{this.mobile}} </b></p>
+                <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}}</p>
+
+            </div>
+		</div>
+        {{/each}}
+        		
+	</div>
+	
+</div>
+</div>
+</div>
+</div>
+
