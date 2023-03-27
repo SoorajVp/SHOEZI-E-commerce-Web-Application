@@ -1,0 +1,154 @@
+<!-- [ Pre-loader ] End -->
+<!-- [ navigation menu ] start -->
+
+<!-- [ Header ] end -->
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+
+            <!-- [ breadcrumb ] start -->
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="mb-4 text-center">ORDERS  LiST</h4>
+
+                <div class="text-center">
+                  <div class="table-responsive">
+                    <table class="table table-striped" style="width: 100%;">
+                      <thead>
+                        <tr>
+                          <th scope="col">ORDER ID</th>
+                          <th scope="col">USER NAME</th>
+                          <th scope="col">PLACE</th>
+                          <th scope="col">DATE</th>
+                          <th scope="col">PAYMENT TYPE</th>
+                          <th scope="col">STATUS</th>
+                          <th scope="col">ABOUT</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        {{#each orders}}
+                          <tr id="tableRow">
+                            <th scope="row">{{this._id}}</th>
+                            <td>{{this.deliveryDetails.name}}</td>
+                            <td>{{this.deliveryDetails.district}}</td>
+                            <td>{{this.createdOn}}</td>
+                            <td>{{this.paymentMethod}}</td>
+                            {{!-- <td><b class="text-success font-weight-bold">{{this.status}}</b></td> --}}
+                            <td>
+
+                              {{#if (isEqual this.status 'DELIVERED')}}
+                              <b class="text-success font-weight-bold">DELIVERED</b>
+                              {{else if (isEqual this.status 'RETURNED')}}
+                              <b class="text-danger font-weight-bold">RETURNED</b>
+                              {{else if (isEqual this.status 'CANCELLED')}}
+                              <b class="text-seconday font-weight-bold">CANCELLED</b>
+                              {{else if (isEqual this.status 'SHIPPED')}}
+
+                              {{!-- <div class="dropdown">
+                                   <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{this.status}}
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <form action="/admin/order-status/{{this._id}}" method="post"><input type="text" value="DELIVERED" name="status" hidden><button class="dropdown-item " type="submit">DELIVERED</button></a></form>
+                                    <form action="/admin/order-status/{{this._id}}" method="post"><input type="text" value="CANCELLED" name="status" hidden><button class="dropdown-item" type="submit">CANCEL</button></a></form>         
+                                  </div>
+                                </div> --}}
+
+                                <div class="dropdown">
+                                  <button class="btn btn-outline-primary dropdown-toggle " type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{this.status}}
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','DELIVERED')" >DELIVERED</a>
+                                    <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','CANCELLED')" >CANCEL</a>
+                                  </div>
+                                </div>
+
+
+                              {{else}}
+                                {{!-- <div class="dropdown">
+                                   <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{this.status}}
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <form action="/admin/order-status/{{this._id}}" method="post"><input type="text" value="SHIPPED" name="status" hidden><button class="dropdown-item " type="submit">SHIPPED</button></a></form>
+                                    <form action="/admin/order-status/{{this._id}}" method="post"><input type="text" value="CANCELLED" name="status" hidden><button class="dropdown-item" type="submit">CANCEL</button></a></form>
+                                  </div>
+                                </div> --}}
+
+                                <div class="dropdown">
+                                  <button class="btn btn-outline-primary dropdown-toggle" type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{this.status}}
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','SHIPPED')" >SHIPPED</a>
+                                    <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','CANCELLED')" >CANCEL</a>
+                                  </div>
+                                </div>
+
+                              {{/if}}
+
+                            </td>
+                            <td><a href="/admin/order-details/{{this._id}}" class="btn btn-info">DETAILS</a></td>
+                          </tr>
+                        {{/each}}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- [ Main Content ] end -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ Main Content ] end -->
+   
+   
+
+
+<script>
+  
+  
+
+ function changeOrderStatus(userId, status){
+
+  console.log("oooooooooo777777777777777777777oooooooo");
+  console.log(userId, status);
+    axios({
+     method: 'post',
+     url: `/admin/order-status`,
+     data: {
+       userId: userId,
+       status: status
+     }
+   })
+  .then((response) => {
+    console.log("LLLLLLLLLLl",response)
+    if(response.data.status == true) {
+      alert("Are you sure");
+      location.reload();
+      //$( "#tableRow" ).load(window.location.href + " #tableRow" );
+      //document.getElementById(`${userId}dropdownMenuButton`).innerHTML = status;
+    }else{
+      console.log("error On Axios change status");
+    }
+    
+  })
+  
+  }
+</script>
+
+ {{!-- <script src="/javascripts/helper-functions.js"></script> --}}

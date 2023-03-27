@@ -1,0 +1,125 @@
+<div class="template-collection belle">
+<div id="pre-loader">
+    <img src="/assets/images/loader.gif" alt="Loading..." />
+</div>
+
+<div class="pageWrapper">
+	<!--Search Form Drawer-->
+	<div class="search">
+        <div class="search__form">
+            <form class="search-bar__form" action="#">
+                <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
+                <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
+            </form>
+            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
+        </div>
+    </div>
+
+    <div id="page-content">
+
+    	<!--Page Title-->
+    	<div class="page section-header text-center">
+			<div class="page-title">
+        		<div class="wrapper"><h1 class="page-width">Your cart</h1></div>
+      		</div>
+		</div>
+        <!--End Page Title-->
+        
+        <div class="container">
+        	<div class="row">
+                <div class="col-12 col-sm-12 col-md-8 col-lg-8 main-col">
+                    <div  class="cart style2">
+                		<table>
+                            <thead class="cart__row cart__header">
+                                <tr>
+                                    <th colspan="2" class="text-center">PRODUCTS</th>
+                                    <th class="text-center">PRICE</th>
+                                    <th class="text-center">QUANTITY</th>
+                                    <th class="text-right">TOTAL</th>
+                                    <th class="action">&nbsp;</th>
+                                </tr>
+                            </thead>
+                    		<tbody>
+                                {{#each products}}
+
+                                <tr class="cart__row border-bottom line1 cart-flex border-top">
+                                    
+                                    <td class="cart__image-wrapper cart-flex-item">
+                                        <a href="#"><img class="cart__image" src="{{this.productDetails.image.[0]}}" alt="Elastic Waist Dress - Navy / Small"></a>
+                                    </td>
+                                    <td class="cart__meta small--text-left cart-flex-item">
+                                        <div class="list-view-item__title">
+                                            <a href="#">{{this.productDetails.name}}</a>
+                                        </div>
+                                        
+                                        <div class="cart__meta-text">
+                                            Color: Navy<br>Size: Small<br>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price-wrapper cart-flex-item">
+                                        <span class="money">${{this.productDetails.price}}</span>
+                                    </td>
+                                   
+                                    <td class="cart__update-wrapper cart-flex-item text-right">
+                                        <div class="cart__qty text-center">
+                                            <div class="qtyField">
+                                                <button class="qtyBtn minus" style="background-color: rgb(221, 221, 221);" onclick="changeQuantity('{{this._id}}','{{this.productDetails._id}}','{{../user._id}}',-1)"><i class="icon icon-minus"></i></button>
+                                                <span id="{{this.productDetails._id}}" class=" qty" >{{this.quantity}}</span>
+                                                <button class="qtyBtn plus" style="background-color: rgb(221, 221, 221);" onclick="changeQuantity('{{this._id}}','{{this.productDetails._id}}','{{../user._id}}',1)"><i class="icon icon-plus" ></i></button>
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-right small--hide cart-price">
+                                        <div><span class="money" >${{this.productDetails.price}}.</span></div>
+                                    </td>
+                                    {{!-- <td class="text-center small--hide"><a href="#" class="btn btn--secondary cart__remove" title="Remove tem"><i class="icon icon anm anm-times-l"></i></a></td> --}}
+                                    <td><button class="qtyBtn plus" style="background-color: rgb(221, 221, 221);" onclick="removeCartproduct('{{this._id}}','{{this.productDetails._id}}')"><i class="icon anm anm-times-l" ></i></button></td>
+                                </tr>
+                                {{/each}}
+
+                                
+                                
+                            </tbody>
+                    		<tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-left"><a href="/shop" class="btn--link cart-continue"><i class="icon icon-arrow-circle-left"></i> Continue shopping</a></td>
+                                    <td colspan="3" class="text-right"><button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button></td>
+                                </tr>
+                            </tfoot>
+                    </table>
+                    </div>
+                    
+                    {{!-- <div class="currencymsg">We processes all orders in USD. While the content of your cart is currently displayed in USD, the checkout will use USD at the most current exchange rate.</div> --}}
+                    <hr>
+					
+                    
+               	</div>
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4 cart__footer">
+                	
+                    <div class="solid-border">
+                      <div class="row">
+                      	<span class="col-12 col-sm-6 cart__subtotal-title"><strong>Subtotal</strong></span>
+                        <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right"><span class="money" id='total'>${{totalValue}}</span></span>
+                      </div>
+                      <div class="cart__shipping">Shipping &amp; taxes calculated at checkout</div>
+                      <p class="cart_tearm">
+                        <label>
+                          <input type="checkbox" name="tearm" id="cartTearm" class="checkbox" value="tearm" required="">
+                           I agree with the terms and conditions</label>
+                      </p>
+                      <a href="/check-out">
+                      <input  name="checkout" id="cartCheckout" class="btn btn--small-wide checkout" value="Checkout" disabled="disabled"></a>
+                      <div class="paymnet-img"><img src="/assets/images/payment-img.jpg" alt="Payment"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+ </div> 
+ </div> 
+ </div> 

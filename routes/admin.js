@@ -1,65 +1,70 @@
 var express = require('express');
 var router = express.Router();
+var adminAuth = require('../middlewares/adminAuth');
 var controller = require('../controllers/adminController');
 const upload = require('../utils/multer');
 
 
 /* GET home page. */
+
 router.get('/login', controller.adminlogin);
 
 router.post('/login', controller.postAdminlogin);
 
 router.get('/logout', controller.adminlogout);
 
-router.get('/', controller.dashboard);
+router.get('/', adminAuth.varifyLogin, controller.dashboard);
 
-router.get('/users', controller.viewUsers);
+router.get('/users',adminAuth.varifyLogin, controller.viewUsers);
 
-router.get('/users/:id', controller.blockUser);
+router.get('/users/:id',adminAuth.varifyLogin, controller.blockUser);
 
-router.get('/usersblocked/:id', controller.unblockUser);
+router.get('/usersblocked/:id',adminAuth.varifyLogin, controller.unblockUser);
 
-router.get('/products', controller.getAllProducts);
+router.get('/products',adminAuth.varifyLogin, controller.getAllProducts);
 
-router.get('/add-products', controller.addProducts);
+router.get('/add-products',adminAuth.varifyLogin, controller.addProducts);
 
-router.post('/add-products', upload.array('image',4), controller.addProductsPost);
+router.post('/add-products', upload.array('image',4),adminAuth.varifyLogin, controller.addProductsPost);
 
-router.get('/edit-products/:id', controller.editProduct);
+router.get('/edit-products/:id',adminAuth.varifyLogin, controller.editProduct);
 
-router.post('/edit-products/:id', upload.array('image',4), controller.editProductPost);
+router.post('/edit-products/:id', upload.array('image',4),adminAuth.varifyLogin, controller.editProductPost);
 
-router.get('/listed/:id', controller.productList);
+router.get('/listed/:id',adminAuth.varifyLogin, controller.productList);
 
-router.get('/unlist/:id', controller.productUnlist);
+router.get('/unlist/:id',adminAuth.varifyLogin, controller.productUnlist);
 
-router.get('/coupons', controller.getCoupons);
+router.get('/coupons',adminAuth.varifyLogin, controller.getCoupons);
 
-router.get('/banners', controller.findBanners);
+router.get('/banners',adminAuth.varifyLogin, controller.findBanners);
 
-router.get('/add-banner', controller.addBanners);
+router.get('/add-banner',adminAuth.varifyLogin, controller.addBanners);
 
-router.post('/add-banner',upload.single("image"), controller.bannerPost);
+router.post('/add-banner',upload.single("image"),adminAuth.varifyLogin, controller.bannerPost);
 
-router.get('/unlist-banner/:id', controller.unlistBannner);
+router.get('/unlist-banner/:id',adminAuth.varifyLogin, controller.unlistBannner);
 
-router.get('/list-banner/:id', controller.listBannner);
+router.get('/list-banner/:id',adminAuth.varifyLogin, controller.listBannner);
 
-router.get('/edit-banner/:id', controller.editBannner);
+router.get('/edit-banner/:id',adminAuth.varifyLogin, controller.editBannner);
 
-router.post('/edit-banner/:id',upload.single("image"), controller.editBannerPost);
+router.post('/edit-banner/:id',upload.single("image"),adminAuth.varifyLogin, controller.editBannerPost);
 
-router.get('/category', controller.categoryView);
+router.get('/category', adminAuth.varifyLogin, controller.categoryView);
 
-router.post('/category', controller.categoryPost);
+router.post('/category',adminAuth.varifyLogin, controller.categoryPost);
 
-router.post('/edit-category/:id', controller.editCategory);
+router.post('/edit-category/:id',adminAuth.varifyLogin, controller.editCategory);
 
-router.get('/list-category/:id', controller.categoryList);
+router.get('/list-category/:id',adminAuth.varifyLogin, controller.categoryList);
 
-router.get('/unlist-category/:id', controller.categoryUnlist);
+router.get('/unlist-category/:id',adminAuth.varifyLogin, controller.categoryUnlist);
 
+router.get('/order-list', adminAuth.varifyLogin, controller.getOrders);
 
+router.get('/order-details/:id', adminAuth.varifyLogin, controller.getOrderDetails);
 
+router.post('/order-status', adminAuth.varifyLogin, controller.OrderStatus);
 
 module.exports = router;

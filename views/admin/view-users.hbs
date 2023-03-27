@@ -18,7 +18,7 @@
 
                 <div class="text-center">
                   <div class="table-responsive">
-                    <table class="table table-striped" style="width: 100%;">
+                    <table class="table table-striped" style="width: 100%; ">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
@@ -37,15 +37,9 @@
                             <td>{{this.email}}</td>
                             <td>{{this.mobile}}</td>
                             {{#if this.status}}
-                              <td><a
-                                  href="/admin/users/{{this._id}}"
-                                  class="btn btn-danger btn-sm"
-                                >BLOCK</a></td>
+                              <td><a href=""class="btn btn-danger btn-sm" data-toggle="modal" data-target="#blockUser{{this._id}}">BLOCK</a></td>
                             {{else}}
-                              <td><a
-                                  href="/admin/usersblocked/{{this._id}}"
-                                  class="btn btn-warning btn-sm"
-                                >UNBLOCK</a></td>
+                              <td><a href="" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#blockUser{{this._id}}">UNBLOCK</a></td>
                             {{/if}}
                           </tr>
                         {{/each}}
@@ -66,3 +60,39 @@
   </div>
 </div>
 <!-- [ Main Content ] end -->
+
+
+
+{{#each users}}
+<!-- Modal -->
+<div class="modal fade" id="blockUser{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-radius: 10px; ">
+      <div class="modal-header">
+        {{!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> --}}
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {{#if this.status}}
+      <div class="modal-body text-center">
+        <h6><b> Do you want to Block {{this.Username}} ? </b></h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="/admin/users/{{this._id}}"><button type="button" class="btn btn-primary">DONE</button></a>
+      </div>
+      {{else}}
+      <div class="modal-body text-center">
+        <h6><b> Do you want to Unblock {{this.Username}} ? </b></h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a href="/admin/usersblocked/{{this._id}}"><button type="button" class="btn btn-primary">DONE</button></a>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+{{/each}}

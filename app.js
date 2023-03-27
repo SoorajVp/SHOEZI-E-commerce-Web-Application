@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('express-handlebars');
+var handlebars = require('handlebars');
+var mathHelpers = require('./public/javascripts/math-helpers');
 var session = require('express-session');
 const nocache = require('nocache');
 require('dotenv').config();
@@ -21,6 +23,8 @@ var app = express();
 app.use(nocache());
 
 // view engine setup
+
+handlebars.registerHelper(mathHelpers);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs', hbs.engine ({extname: 'hbs',defaultLayout: 'layout', layoutsDir:__dirname + '/views/layout/',partialsDir:__dirname+'/views/partials/'}));
@@ -63,4 +67,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = app; 

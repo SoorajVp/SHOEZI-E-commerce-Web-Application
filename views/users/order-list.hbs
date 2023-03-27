@@ -1,0 +1,118 @@
+
+
+<div class="container mt-3 pt-4">
+    <h2 class="text-center">Your Orders</h2>
+    <div class="row " style=" padding-left: 10%;padding-right: 10%; padding-top: 30px; padding-bottom: 60px;">
+        
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col ">
+                    <div  class="cart style2">
+                		<table class="border shadow">
+                            <thead class="cart__row cart__header " >
+                                <tr>
+                                    <th class="text-center">PRODUCTS</th>
+                                    <th class="text-center">DATE</th>
+                                    <th class="text-center">PAYMENT </th>
+                                    <th class="text-center">TOTAL PRICE </th>
+                                    <th class="text-center">STATUS </th>
+                                    <th class="text-center">CHANGE STATUS </th>
+                                    <th class="text-center">MORE </th>
+                                    {{!-- <th class="action">&nbsp;</th> --}}
+                                </tr>
+                            </thead>
+                    		<tbody>
+                                {{#each orders}}
+
+                                <tr class="cart__row border-bottom line1 cart-flex border-top text-center ">
+                                    
+                                    
+                                    <td class="cart__meta small--text-left cart-flex-item ">
+                                        <div class="list-view-item__title">
+                                            <a href="#"></a>
+                                            <div><p>{{this._id}}</p> </div>
+                                        </div>
+                                        
+                                    </td>
+
+                                    <td class="cart__image-wrapper cart-flex-item">
+                                        <span class="money">{{this.createdOn}}</span>
+                                    </td>
+
+                                    <td class="cart__price-wrapper cart-flex-item">
+                                        <span class="money"> {{paymentMethod}}</span>
+                                    </td>
+
+                                    <td class="cart__price-wrapper cart-flex-item justify-content-center">
+                                        <span class="money"> {{this.price}}</span>
+                                    </td>
+                                    
+                                    <td class="cart__price-wrapper cart-flex-item">
+                                        {{#if (isEqual this.status 'DELIVERED')}}
+                                        <span class="money text-success "><b> {{this.status}}</b></span>
+                                        {{else if (isEqual this.status 'RETURNED')}}
+                                        <span class="money text-secondary "><b> {{this.status}}</b></span>
+                                        {{else if (isEqual this.status 'CANCELLED')}}
+                                        <span class="money text-danger "><b> {{this.status}}</b></span>
+                                        {{else if (isEqual this.status 'SHIPPED')}}
+                                        <span class="money text-warning "><b> {{this.status}}</b></span>
+                                        {{else}}
+                                        <span class="money text-primary "><b> {{this.status}}</b></span>
+                                        {{/if}}
+                                    </td>
+                                    
+                                    <td class="cart__price-wrapper cart-flex-item text-center">
+
+                                        {{#if (isEqual this.status 'DELIVERED')}}
+
+                                        <form action="/change-order-status/{{this._id}}" method="post">
+                                        <button type="submit" class=" btn-danger pl-3 pr-3 py-1">RETURN</button>
+                                        <input type="text" value="RETURNED" name="status" hidden>
+                                        </form>
+
+                                        {{else if (isEqual this.status 'RETURNED')}}
+
+                                        <a href=""><button type="button" class="btn-secondary pl-3 pr-3 py-1" disabled>RETURNED</button></a>
+
+                                        {{else if (isEqual this.status 'CANCELLED')}}
+
+                                        <a href=""><button type="button" class="btn-secondary pl-3 pr-3 py-1" disabled>CANCELLED</button></a>
+
+                                        {{else}}
+                                        
+                                        <form action="/change-order-status/{{this._id}}" method="post">
+                                        <button type="submit" class=" btn-danger pl-3 pr-3 py-1">CANCEL</button>
+                                        <input type="text" value="CANCELLED" name="status" hidden>
+                                        </form>
+                                        
+                                        {{/if}}
+
+
+
+                                        
+                                    </td>
+
+                                    <td class="cart__price-wrapper cart-flex-item">
+                                        <a href="/order-details/{{this._id}}"><button type="button" class="btn-primary pl-3 pr-3 py-1">DETAILS</button></a>
+                                    </td>
+                                    {{!-- <td><button class="qtyBtn plus" style="background-color: rgb(221, 221, 221);" onclick="removeCartproduct('{{this._id}}','{{this.productDetails._id}}')"><i class="icon anm anm-times-l" ></i></button></td> --}}
+                                   
+                                  </tr>  
+                                  {{/each}}
+                                   
+                            </tbody>
+                    		<tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-left py-3"><a href="/shop" class="btn--link cart-continue"><i class="icon icon-arrow-circle-left"></i> Continue shopping</a></td>
+                                    {{!-- <td colspan="3" class="text-right"><button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button></td> --}}
+                                </tr>
+                            </tfoot>
+                    </table>
+                    </div>
+                    
+                    {{!-- <div class="currencymsg">We processes all orders in USD. While the content of your cart is currently displayed in USD, the checkout will use USD at the most current exchange rate.</div> --}}
+                    <hr>
+					
+                    
+               	</div>
+    </div>
+</div>
+

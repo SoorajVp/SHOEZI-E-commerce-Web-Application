@@ -1,35 +1,45 @@
 
 
 
-<section class="vh-100" style="background-color: #f0f1f4;">
+<section class="vh-100" style="background-color: #fffdfd;">
   <div class="container py-4 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="row d-flex justify-content-center align-items-center h-90">
       <div class="col col-xl-10">
-        <div class="card shadow border" style="border-radius: 1rem; margin-top: 45px;">
+        <div class="card shadow border" style="border-radius: 1rem; margin-top: 20px;  height: 500px;">
           <div class="row g-0">
             
-            <div class="col-md-6 col-lg-5 d-none d-md-block">
-              <img src="https://media.istockphoto.com/id/1246021208/vector/login-password-verification-code-push-message-or-sms-for-2fa-authentication-with-shield-icon.jpg?s=612x612&w=0&k=20&c=hHbhCq7Uhtz2rEU2vBh-KsRZV0kFeVqz8EuQoDszv5s="
-                alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+            <div class="col-md-6 col-lg-5 d-none d-md-block pt-3">
+              <img src="/assets/images/Secure login-amico.png"
+                alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;  margin-top: 32px; margin-left: 26px;" />
             </div>
 
             <div class="col-md-6 col-lg-7 d-flex align-items-center">
               <div class="card-body p-4 p-lg-5 text-black">
                 
 
-                <form action="/login" method="post" >
+                <form action="/login" method="post" class="style2" id="loginForm">
 
                   <div class="d-flex align-items-center mb-2 pb-1">
                     <h1 class=" mb-0 mx-auto font-weight-bold">Login</h1>
                   </div>
 
-                  <div class="form-outline mb-4">
-                    <input type="email" id="form2Example17" class="form-control  " name="email" placeholder="Email"/>
+                  <div class="form-group">
+                    	<label for="address_zip">Email ID</label>
+                  	<input type="email" id="emailId"  name="email" placeholder="Email">
                   </div>
+
+                  <div class="form-group">
+                    	<label for="address_zip">Password</label>
+                  	<input type="password" id="password"  name="password1" placeholder="Password">
+                  </div>
+
+                  {{!-- <div class="form-outline mb-4">
+                    <input type="email" id="form2Example17" class="form-control " name="email" placeholder="Email"/>
+                  </div> --}}
                   
-                  <div class="form-outline mb-2">
+                  {{!-- <div class="form-outline mb-2">
                     <input type="password" id="form2Example27" class="form-control " name="password1" placeholder="Password" />
-                  </div>
+                  </div> --}}
 
                   <div class="divider " >                              
                         <p class="mx-auto" ><a href="#" class="text-primary">Forgotten password ? </a></p><br>
@@ -52,7 +62,7 @@
                   
                   
                   <div>                                                           
-                      <p  style="text-align: center;">Don't have an account? <br>
+                      <p  style="text-align: center; padding-top: 6px;">Don't have an account? <br>
                       <a href="/signup" class="text-primary">Create New Account</a></p><br>                       
                   </div>
 
@@ -73,3 +83,20 @@
     </div>
   </div>
 </section>
+
+
+<script>
+	jQuery('#loginForm').validate({
+    rules:{
+        emailId:{
+            require: true,
+            email: true
+        }
+    },
+    messages:{
+        emailId:{
+            email:"Please Enter A Valid Email"
+        }
+    }
+})
+</script>

@@ -7,20 +7,17 @@ module.exports = {
 
     addProducts : (products, callback) =>{
         console.log(products.category);
-        console.log("#$%^&*IUTREERTI",new ObjectId(products.category));
         products.category = new ObjectId(products.category);
         products.price = Number(products.price);
         products.listed = true;
         console.log(products);
         
         db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne(products).then((data) =>{
-            console.log("inserted   idddddd................",data.insertedId);
            callback(data.insertedId);
         })
     },
 
     addProductImg : (prodId, imgUrls) =>{
-        console.log("product id .............................",prodId);
         db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id: prodId},
             {
                 $set: {image:imgUrls}
@@ -29,31 +26,33 @@ module.exports = {
   
     getAllProducts : () =>{
         return new Promise(async(resolve, reject) =>{
-            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).find().toArray();
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS)
+            .aggregate([{
+                $lookup:{
+                    from: "category",
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "proDetails"
+                  }
+            }]).toArray();
             resolve(products);
         })
     },
 
     getProductDetails : (prodId) =>{
-        console.log(prodId);
         return new Promise ((resolve, reject) => {
-            console.log(prodId);
             db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: new ObjectId(prodId)}).then((product) =>{
-                console.log(product)
                 resolve(product);
             })
         })
     },
 
     updateProduct : (product,prodId) =>{
-        console.log("update product visited .......", product);
         product.price = Number(product.price);
-        console.log("update product object id......,,,,,", new ObjectId(product.category));
         product.category = new ObjectId(product.category);
         product.listed = true;
 
         return new Promise( async(resolve, reject)=>{
-            console.log("update promise visited .......",prodId);
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id: new ObjectId(prodId)},{
                 $set:{
                     name: product.name,
@@ -68,11 +67,62 @@ module.exports = {
     },
 
     updateImage : (prodId, imgUrls) =>{
-        console.log("Update product id ..............",prodId);
         db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id: new ObjectId(prodId)},
             {
                 $set:{image: imgUrls}
             })
+    },
+
+    categoryService : (categoryId) =>{
+        console.log("ERTYUITUHJHHGGHJGHJGHGUY.....", categoryId);
+        return new Promise(async(resolve, reject) =>{
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
+                
+                $match :{
+                    category: new ObjectId(categoryId)
+                }
+                  
+            }]).toArray();
+            console.log(products);
+            resolve(products);
+        })
+    },
+
+    getOrderedProducts : (orderId) =>{
+        return new Promise(async(resolve, reject) => {
+            let orderItems = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+                {
+                    $match: {
+                        _id: new ObjectId(orderId)
+                    }
+                },{
+                    $unwind:"$products"
+                },{
+                    $project: {
+                        item: '$products.item',
+                        quantity: '$products.quantity'
+                    }
+                },{
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTIONS,
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                },{
+                    $project: {
+                        item: 1,
+                        quantity: 1,
+                        product: {
+                            $arrayElemAt: ['$product',0]
+                        }
+                    }
+                }
+            ]).toArray();
+            console.log("QQQQQQQQQQQQQQQQQQQQQQQQQ");
+            console.log(orderItems);
+            resolve(orderItems);
+        })
     }
     
 

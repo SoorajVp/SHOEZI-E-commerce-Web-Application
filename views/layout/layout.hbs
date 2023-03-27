@@ -25,6 +25,9 @@
     <!-- vendor css -->
     <link rel="stylesheet" href="/admin-assets/css/style.css">
 
+    {{!-- Axios cndn link  --}}
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
     {{else}}
     {{!-- UserSide Template --}}
 
@@ -41,6 +44,9 @@
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
+
+     <script src="/assets/js/vendor/jquery-3.3.1.min.js"></script>
+
     {{/if}}
   
     {{!-- <link rel='stylesheet' href='/stylesheets/style.css' /> --}}
@@ -54,7 +60,10 @@
     {{{body}}}
   
     {{else}}
+    {{#if success}}
+    {{else}}
     {{>user-header}}
+    {{/if}}
     {{{body}}}
     {{#if loginForm}}
     {{else}}
@@ -74,12 +83,12 @@
     <script src="/admin-assets/plugins/chart-morris/js/morris.min.js"></script>
     <script src="/admin-assets/js/pages/chart-morris-custom.js"></script>
 
+
     {{else}}
 
     {{!-- UserSide Template --}}
 
      <!-- Including Jquery -->
-     <script src="/assets/js/vendor/jquery-3.3.1.min.js"></script>
      <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
      <script src="/assets/js/vendor/jquery.cookie.js"></script>
      <script src="/assets/js/vendor/wow.min.js"></script>
@@ -89,8 +98,15 @@
      <script src="/assets/js/popper.min.js"></script>
      <script src="/assets/js/lazysizes.js"></script>
      <script src="/assets/js/main.js"></script>
-     <!--For Newsletter Popup-->
 
+     <!--For Cart ajax script -->
+     {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+      
+      
+      <script src="/javascripts/cart-script.js"></script>
+      <script src="/javascripts/math-hepers.js"></script>
+
+      
      <script>
 	    	jQuery(document).ready(function(){  
 	    	  jQuery('.closepopup').on('click', function () {

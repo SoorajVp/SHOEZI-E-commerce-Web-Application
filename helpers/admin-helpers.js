@@ -1,5 +1,4 @@
 const { ObjectId } = require("mongodb-legacy");
-// const { response } = require("../app");
 var collection = require("../config/collection");
 var db = require("../config/connection");
 // const { objectId } = require("mongodb-legacy").ObjectId;
@@ -64,14 +63,14 @@ module.exports = {
     })
   },
 
-  addBannerImg : (banId, bannerUrl) =>{
-    console.log("!@#$%^&*()_)(*&^%",banId, bannerUrl);
-    return new Promise((resolve, reject) => {
-      db.get().collection(collection.BANNER_COLLECTIONS).updateOne({_id: banId},{
-        $set: {image: bannerUrl}
-      })
-    })
-  },
+  // addBannerImg : (banId, bannerUrl) =>{
+  //   console.log("!@#$%^&*()_)(*&^%",banId, bannerUrl);
+  //   return new Promise((resolve, reject) => {
+  //     db.get().collection(collection.BANNER_COLLECTIONS).updateOne({_id: banId},{
+  //       $set: {image: bannerUrl}
+  //     })
+  //   })
+  // },
 
   getBanners : () =>{
     return new Promise(async(resolve, reject) =>{
@@ -169,7 +168,34 @@ module.exports = {
         resolve();
       })
     })
-  }
+  },
+
+  ordersList : () =>{
+    return new Promise(async(resolve, reject) => {
+      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).find().toArray();
+      resolve(orders);
+    })
+  },
+
+  changeOrderStatus : (orderId, status) =>{
+    return new Promise((resolve, reject) =>{
+      db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id: new ObjectId(orderId)},{$set: {status: status}})
+      .then((response) =>{
+        resolve(response);
+      })
+    })
+  },
+
+  getUserOrder : (orderId) =>{
+    return new Promise(async(resolve, reject) =>{
+      await db.get().collection(collection.ORDER_COLLECTIONS).findOne({_id: new ObjectId(orderId)}).then((response)=>{
+        resolve(response);
+      })
+      
+    })
+  },
+
+  
   
 
 };

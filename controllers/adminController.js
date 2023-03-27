@@ -6,6 +6,7 @@ const productHelpers = require('../helpers/product-helpers');
 const cloudinary = require('../utils/cloudinary');
 const path = require('path');
 const { ObjectId } = require('mongodb-legacy');
+// const { map } = require('../app');
 const objectId = require('mongodb-legacy').ObjectId;
 
 module.exports = {
@@ -21,12 +22,7 @@ module.exports = {
     },
 
     dashboard : (req, res) =>{
-        if(req.session.adminloggedin){
-            res.render('admin/dashboard', {admin:true});
-           
-        }else{
-            res.redirect('/admin/login');
-        }     
+        res.render('admin/dashboard', {admin:true});
     },
 
     postAdminlogin : async(req, res) => {
@@ -52,54 +48,38 @@ module.exports = {
     },
 
     viewUsers : (req, res) =>{
-        if(req.session.adminloggedin){
-            adminHelpers.getUserData().then((users) =>{
-                res.render('admin/view-users', {users, admin:true});
-            }) 
-        }else{
-            res.redirect('/admin/login');
-        }
+        adminHelpers.getUserData().then((users) =>{
+            res.render('admin/view-users', {users, admin:true});
+        }) 
+        
     },
 
     blockUser : (req, res) =>{
         let userId = req.params.id;
-        console.log((userId));
         adminHelpers.blockUser(userId).then((response) =>{
-
             res.redirect('/admin/users');
         })
     },
 
     unblockUser : (req, res) => {
         let userId = req.params.id;
-        console.log(userId);
         adminHelpers.unblockUser(userId).then((response) =>{
             res.redirect('/admin/users');
         })
     },
 
     getAllProducts : (req, res) =>{
-        if(req.session.adminloggedin){
-            productHelpers.getAllProducts().then((products) => {
-                console.log("@#$%^%^&^%YU", products.category);
-                res.render('admin/view-products', {admin:true, products});
-            })
-        }else{
-            res.redirect('/admin/login');
-        }
+        productHelpers.getAllProducts().then((products) => {              
+            res.render('admin/view-products', {admin:true, products});
+        })
+        
            
     },
 
     addProducts : async (req, res) =>{
-        if(req.session.adminloggedin){
-
-            await adminHelpers.getCategory().then((category)=>{
-                console.log("This is add products category list........",category);
-                res.render('admin/add-products', {admin:true, category})
-            })
-        }else{
-            res.redirect('/admin/login');
-        }
+        await adminHelpers.getCategory().then((category)=>{
+            res.render('admin/add-products', {admin:true, category})
+        })
         
     },
 
@@ -107,15 +87,13 @@ module.exports = {
         try{
             productHelpers.addProducts(req.body, async(id) =>{             
                 let imgUrls = [];
-                for(let i=0; i<req.files.length; i++){
-                    
-                    let result = await cloudinary.uploader.upload(req.files[i].path);
-                    console.log("Cloudinary image url.........", result.url);
-                    imgUrls.push(result.url);                   
 
+                for(let i=0; i<req.files.length; i++){
+                    let result = await cloudinary.uploader.upload(req.files[i].path);
+                    imgUrls.push(result.url);                   
                 } 
+
                 if(imgUrls.length !== 0){
-                    console.log("Images exits if condition reached.............id", id);
                     productHelpers.addProductImg(id, imgUrls);
                 }
             })
@@ -127,34 +105,25 @@ module.exports = {
     },
 
     editProduct :  async(req,res) => {
-        console.log(req.params.id);
         let category = await adminHelpers.getCategory();
-        console.log("edit product category ......", category);
          let product = await productHelpers.getProductDetails(req.params.id);
-         console.log(product);
         res.render('admin/edit-products',{admin: true, product, category });
     },
 
     editProductPost : async (req, res) =>{
-        console.log("Editeeeeddd prodd........",req.params.id);
         try{
-            
             let imgUrls = [];
-                for(let i=0; i<req.files.length; i++){
-                    
-                    let result = await cloudinary.uploader.upload(req.files[i].path);
-                    console.log("Cloudinary image uploaded.........", result.url);
-                    imgUrls.push(result.url);
-        
-                } 
-                if(imgUrls.length !== 0){
-                    console.log("Images updating condition reached.............id", req.params.id);
-                    productHelpers.updateImage(req.params.id, imgUrls);
-                }
-                console.log(" this is update products id .....", req.params.id);
-                productHelpers.updateProduct(req.body, req.params.id);
 
-        }catch(err){
+            for(let i=0; i<req.files.length; i++){
+                let result = await cloudinary.uploader.upload(req.files[i].path);
+                imgUrls.push(result.url);
+            } 
+            if(imgUrls.length !== 0){
+                productHelpers.updateImage(req.params.id, imgUrls);
+            }
+            productHelpers.updateProduct(req.body, req.params.id);
+
+        }catch(err){ 
             console.log(err);
         }finally{
             res.redirect('/admin/products');
@@ -182,31 +151,23 @@ module.exports = {
     },
 
     addBanners : (req, res) =>{
-        if(req.session.adminloggedin){
-            res.render('admin/add-banners', {admin: true});
-        }
+        res.render('admin/add-banners', {admin: true});
     },
 
     findBanners : (req, res) =>{
-        if(req.session.adminloggedin){
-            adminHelpers.getBanners().then((Banners) =>{
-                res.render('admin/view-banners', {admin: true, Banners});
-            }); 
-        }else{
-            res.redirect('/admin/login');
-        }
-              
+        adminHelpers.getBanners().then((Banners) =>{
+            res.render('admin/view-banners', {admin: true, Banners});
+        }); 
+                  
     },
 
     bannerPost : (req, res) =>{
         try{
             adminHelpers.addBanners(req.body, async(id) =>{
-                
                 let result = await cloudinary.uploader.upload(req.file.path);
-                console.log("Banner image url.........", result.url);
-
                 adminHelpers.updateBannerImg(id, result.url);
             })
+
         }catch(err){
             console.log(err);
         }finally{
@@ -231,23 +192,13 @@ module.exports = {
     },
 
     editBannerPost : async (req, res) =>{
-        console.log("banner id,,,,,,,,,,", req.params.id);
-        console.log("req.file ,,,,,,,,,,", req.file);
-
         try{
-
-            console.log("banner id,,,,,,,,,,", req.params.id);
             adminHelpers.updateBanner(req.params.id, req.body);
-            
             let result = await cloudinary.uploader.upload(req.file.path);
-            console.log("updating url......",result.url);
-            
 
             if(result.url){
-                console.log("banner image id,,,,,,,,,,", req.params.id);
                 adminHelpers.updateBannerImg(req.params.id, result.url);
             }
-            
             
         }catch(err){
             console.log("try fond error",err);
@@ -263,7 +214,6 @@ module.exports = {
     },
 
     categoryPost : (req, res) =>{
-        console.log("##########################",req.body);
         adminHelpers.addCatergory(req.body).then(() =>{
             res.redirect('/admin/category');
         })
@@ -287,6 +237,38 @@ module.exports = {
             res.redirect('/admin/category');
         })       
     },
+
+    getOrders : async(req, res) =>{
+        let orders = await adminHelpers.ordersList();
+        console.log(orders)
+        orders.map((order)=>{
+            order.createdOn = (order.createdOn).toLocaleDateString('es-ES')
+        })
+        res.render('admin/order-list', {admin: true, orders});
+    },
+
+    OrderStatus : (req, res) =>{
+        console.log("ooooooooooooooooooooooooo");
+        console.log( req.body.userId , req.body.status)
+        adminHelpers.changeOrderStatus(req.body.userId, req.body.status).then((response) =>{
+            // res.redirect('/admin/order-list');
+            console.log("ooooooooooooooooooooooooo");
+            console.log(response);
+            res.json(response)
+        })
+    },
+
+    getOrderDetails : async(req, res) =>{
+        let products = await productHelpers.getOrderedProducts(req.params.id);
+         adminHelpers.getUserOrder(req.params.id).then((orderDetails)=>{
+            console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKK",orderDetails)
+            // orderDetails.map((order)=>{
+            //     order.createdOn = (order.createdOn).toLocaleDateString('es-ES')
+            // })
+            res.render('admin/order-details', {admin: true, products, orderDetails})
+        })
+        
+    }
 
     
 
