@@ -9,7 +9,8 @@
         <div class="card shadow border" style="border-radius: 1rem; margin-top: 100px; margin-bottom: 90px;" >
           <div class="card-body">
             
-            <form action="/otp-login" method="post" >
+            {{!-- <form action="/otp-login" method="post" > --}}
+            <form >
 
                   <div class="d-flex align-items-center  pb-1">
                     <h3 class=" mx-auto font-weight-bold">LOGIN WITH OTP</h3>   
@@ -17,7 +18,7 @@
 
                   <div class="form-outline mb-2 text-center">
                     <label for="" class="py-2" >Enter your Mobile Number</label>
-                    <input type="tel" id="form2Example17" class="form-control form-control-lg " name="mobile" />
+                    <input type="tel" id="OTPmobile" class="form-control form-control-lg " name="mobile" />
                   </div>
 
                    {{#if logErr}}
@@ -26,10 +27,10 @@
 
                   <div class="pt-3 ">
                     {{!-- <button type="button" class="btn btn-outline-primary  btn-block">Login</button> --}}
-                    <button type="submit" class="btn btn-block" style="width: 100%;">SEND OTP</button>
+                    <button  type="submit"  class="btn btn-block" style="width: 100%;">SEND OTP</button>
                     
 
-                  </div>
+                </div>
             </form>
           </div>
         </div>
@@ -37,3 +38,24 @@
     </div>
   </div>
 </section>
+
+<script>
+
+//const form = document.querySelector('form');
+//
+//form.addEventListener('submit', (event) => {
+//  consy  value = document.getElementById('OTPmobile');
+//  console.log(value)
+//  event.preventDefault();
+//
+//  const data = new FormData(form);
+//
+//  axios.post('/submit-form', data)
+//    .then((response) => {
+//      console.log(response.data);
+//    })
+//    .catch((error) => {
+//      console.error(error);
+//    });
+//});
+</script>

@@ -1,4 +1,58 @@
 <!-- [ Main Content ] start -->
+
+
+<style>
+    
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+</style>
+
+
 <div class="pcoded-main-container">
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
@@ -29,20 +83,50 @@
                           value="{{product.name}}"
                         />
                       </div>
-                      <div class="form-group">
-                        <label for="exampleFormControlSelect1">Category</label>
-                        <select
-                          class="form-control"
-                          name="category"
-                          id="exampleFormControlSelect1">
-                          <option>{{product.category}}</option>
 
-                          {{#each category}}
-                          <option value="{{this._id}}">{{this.name}}</option>
+
+                <div class="dropdown">
+                  <button class="btn border btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    CATEGORY
+                  </button>
+                  {{#each category}}
+                  <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                      
+                      <li class="dropdown-submenu">
+                        <a  class="dropdown-item" tabindex="-1" >MENS</a>
+                        <ul class="dropdown-menu">
+                          {{#each ../mens}}
+                          <li class="dropdown-item"><label >{{this.sub}}</label><input type="radio" name="category" value="{{this._id}}"  ></li>
                           {{/each}}
-                          
-                        </select>
-                      </div>
+                          {{!-- <li class="dropdown-item"><a href="#">Second level</a></li>
+                          <li class="dropdown-item"><a href="#">Second level</a></li> --}}
+                        </ul>
+                      </li>
+                      <li class="dropdown-submenu">
+                        <a  class="dropdown-item" tabindex="-1" >WOMENS</a>
+                        <ul class="dropdown-menu">
+                          {{#each ../womens}}
+                          <li class="dropdown-item"><label >{{this.sub}}</label><input type="radio" name="category" value="{{this._id}}"  ></li>
+                          {{/each}}
+                          {{!-- <li class="dropdown-item"><a href="#">Second level</a></li>
+                          <li class="dropdown-item"><a href="#">Second level</a></li> --}}
+                        </ul>
+                      </li>
+                      <li class="dropdown-submenu">
+                        <a  class="dropdown-item" tabindex="-1" >KIDS</a>
+                        <ul class="dropdown-menu">
+                          {{#each ../kids}}
+                          <li class="dropdown-item"><label >{{this.sub}}</label><input type="radio" name="category" value="{{this._id}}"  ></li>
+                          {{/each}}
+                          {{!-- <li class="dropdown-item"><a href="#">Second level</a></li> --}}
+                        </ul>
+                      </li>
+                    </ul>
+                    {{/each}}
+              
+              </div>
+
+                      
                       
                       {{!-- <div class="form-group">
                           <label for="exampleFormControlSelect1">Brand</label>

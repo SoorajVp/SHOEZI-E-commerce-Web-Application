@@ -1,6 +1,7 @@
 const db = require('../config/connection');
 const collection = require('../config/collection');
 const { ObjectId } = require('mongodb-legacy');
+const async = require('hbs/lib/async');
 // const { response } = require('express');
 
 module.exports = {
@@ -8,6 +9,7 @@ module.exports = {
     addProducts : (products, callback) =>{
         console.log(products.category);
         products.category = new ObjectId(products.category);
+        products.subcategory = new ObjectId(products.subcategory);
         products.price = Number(products.price);
         products.listed = true;
         console.log(products);
@@ -26,15 +28,64 @@ module.exports = {
   
     getAllProducts : () =>{
         return new Promise(async(resolve, reject) =>{
-            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS)
-            .aggregate([{
+
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
                 $lookup:{
-                    from: "category",
+                    from: collection.CATEGORY_COLLECTIONS,
                     localField: "category",
                     foreignField: "_id",
                     as: "proDetails"
                   }
-            }]).toArray();
+                }
+                ,{
+                    $unwind: {
+                        path: '$proDetails'
+                    }
+                }
+                
+            ]).toArray();
+            console.log("%%%%---------------------");
+                console.log(products)
+                resolve(products);
+            })
+    },
+
+    getShopItems : (category) =>{
+        return new Promise(async(resolve, reject) =>{
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
+                $lookup:{
+                    from: collection.CATEGORY_COLLECTIONS,
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "proDetails"
+                  }
+                }
+                ,{
+                    $unwind: {
+                        path: '$proDetails'
+                    }
+                },{
+                    $match:{
+                      'proDetails.main': category
+                    }
+                }
+
+            ]).toArray();
+            resolve(products);
+        })
+    },
+
+    getShopItemsSub : (catId) => {
+        return new Promise(async(resolve, reject) =>{
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
+               {
+                $match: {
+                    category: new ObjectId(catId)
+                }
+               }
+
+            ]).toArray();
+            // console.log(products)
             resolve(products);
         })
     },
@@ -51,7 +102,7 @@ module.exports = {
         product.price = Number(product.price);
         product.category = new ObjectId(product.category);
         product.listed = true;
-
+        console.log(product)
         return new Promise( async(resolve, reject)=>{
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id: new ObjectId(prodId)},{
                 $set:{
@@ -60,7 +111,6 @@ module.exports = {
                     brand : product.brand,
                     description: product.description,
                     price: product.price,
-                    
                 }
             })
         })
@@ -74,14 +124,12 @@ module.exports = {
     },
 
     categoryService : (categoryId) =>{
-        console.log("ERTYUITUHJHHGGHJGHJGHGUY.....", categoryId);
         return new Promise(async(resolve, reject) =>{
-            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
-                
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
+            {
                 $match :{
                     category: new ObjectId(categoryId)
                 }
-                  
             }]).toArray();
             console.log(products);
             resolve(products);
@@ -119,8 +167,6 @@ module.exports = {
                     }
                 }
             ]).toArray();
-            console.log("QQQQQQQQQQQQQQQQQQQQQQQQQ");
-            console.log(orderItems);
             resolve(orderItems);
         })
     }

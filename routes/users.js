@@ -18,17 +18,19 @@ router.get('/signup', controller.signup);
 
 router.post('/signup', controller.postSignup);
 
-router.get('/shop', controller.shop);
+router.get('/shop/:id', controller.shop);
+
+// router.post('/shop/:id', controller.shop);
 
 router.get('/product-details/:id', controller.productDetails);
 
-router.get('/profile', controller.userProfile);
+router.get('/profile', userAuth.varifyLogin, controller.userProfile);
 
 router.post('/personal-datas/:id', controller.editUserData);
 
-router.get('/address', controller.getAddress);
+router.get('/address', userAuth.varifyLogin, controller.getAddress);
 
-router.get('/add-address', controller.addAddress);
+router.get('/add-address', userAuth.varifyLogin, controller.addAddress);
 
 router.post('/add-address/:id', controller.addAddressPost);
 
@@ -36,11 +38,11 @@ router.post('/add-delivery-address/:id', controller.addDeliveryAddress);
 
 router.get('/remove-address/:id', controller.removeAddress);
 
-router.get('/change-password', controller.changePassword);
+router.get('/change-password', userAuth.varifyLogin, controller.changePassword);
 
 router.post('/change-password/:id', controller.changePasswordPost);
 
-router.get('/new-password', controller.newPassword);
+router.get('/new-password', userAuth.varifyLogin, controller.newPassword);
 
 router.post('/new-password/:id', controller.newPasswordPost);
 
@@ -48,15 +50,17 @@ router.get('/otp-login', controller.otpLogin);
 
 router.post('/otp-login', controller.otpLoginPost);
 
-router.get('/varify-otp', controller.getOTP);
+router.get('/varify-otp', userAuth.varifyLogin, controller.getOTP);
 
 router.post('/varify-otp', controller.OTPvarify);
 
-router.get('/category-filter/:id', controller.filterCategory);
+// router.get('/category-filter/:id', controller.filterCategory);
 
-router.get('/cart-products',userAuth.varifyLogin, controller.cartDetails);
+router.get('/cart-products', userAuth.varifyLogin, controller.cartDetails);
 
 router.get('/add-to-cart/:id', userAuth.varifyLogin, controller.addToCart);
+
+router.get('/shop-add-to-cart', userAuth.varifyLogin, controller.homeAddToCart);
 
 router.post('/change-product-quantity', controller.cartQuantity);
 
@@ -72,7 +76,17 @@ router.get('/my-orders', userAuth.varifyLogin, controller.MyOrders);
 
 router.get('/order-details/:id', userAuth.varifyLogin, controller.orderDetails);
 
-router.post('/change-order-status/:id', userAuth.varifyLogin, controller.myOrderStatus);
+router.post('/change-order-status', userAuth.varifyLogin, controller.myOrderStatus);
+
+router.post('/verify-payment', userAuth.varifyLogin, controller.varifyPayment);
+
+router.get('/order-success', userAuth.varifyLogin, controller.successPage);
+
+router.get('/wishList', userAuth.varifyLogin, controller.wishList);
+
+router.post('/wishList', userAuth.varifyLogin, controller.wishListPost);
+
+router.post('/remove-wishlist', controller.removeWishlist);
 
 
 module.exports = router;

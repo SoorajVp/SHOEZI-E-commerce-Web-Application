@@ -40,7 +40,8 @@
                                 </tr>
                             </thead>
                     		<tbody>
-                                {{#each products}}
+
+                            {{#each products}}
 
                                 <tr class="cart__row border-bottom line1 cart-flex border-top">
                                     
@@ -57,7 +58,7 @@
                                         </div>
                                     </td>
                                     <td class="cart__price-wrapper cart-flex-item">
-                                        <span class="money">${{this.productDetails.price}}</span>
+                                        <span class="money" id="price">{{this.productDetails.price}}</span>
                                     </td>
                                    
                                     <td class="cart__update-wrapper cart-flex-item text-right">
@@ -72,12 +73,12 @@
                                     </td>
 
                                     <td class="text-right small--hide cart-price">
-                                        <div><span class="money" >${{this.productDetails.price}}.</span></div>
+                                        <div><span class="money" id="{{this.productDetails._id}}subtotal" >{{this.productDetails.subTotal}}</span></div>
                                     </td>
                                     {{!-- <td class="text-center small--hide"><a href="#" class="btn btn--secondary cart__remove" title="Remove tem"><i class="icon icon anm anm-times-l"></i></a></td> --}}
                                     <td><button class="qtyBtn plus" style="background-color: rgb(221, 221, 221);" onclick="removeCartproduct('{{this._id}}','{{this.productDetails._id}}')"><i class="icon anm anm-times-l" ></i></button></td>
                                 </tr>
-                                {{/each}}
+                            {{/each}}
 
                                 
                                 
@@ -85,7 +86,7 @@
                     		<tfoot>
                                 <tr>
                                     <td colspan="3" class="text-left"><a href="/shop" class="btn--link cart-continue"><i class="icon icon-arrow-circle-left"></i> Continue shopping</a></td>
-                                    <td colspan="3" class="text-right"><button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button></td>
+                                    {{!-- <td colspan="3" class="text-right"><button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button></td> --}}
                                 </tr>
                             </tfoot>
                     </table>
@@ -101,7 +102,7 @@
                     <div class="solid-border">
                       <div class="row">
                       	<span class="col-12 col-sm-6 cart__subtotal-title"><strong>Subtotal</strong></span>
-                        <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right"><span class="money" id='total'>${{totalValue}}</span></span>
+                        <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right"><span class="money" id='total'>{{totalValue}}</span></span>
                       </div>
                       <div class="cart__shipping">Shipping &amp; taxes calculated at checkout</div>
                       <p class="cart_tearm">
@@ -120,6 +121,5 @@
         
     </div>
 
- </div> 
  </div> 
  </div> 

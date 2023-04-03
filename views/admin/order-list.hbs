@@ -45,9 +45,9 @@
                               {{#if (isEqual this.status 'DELIVERED')}}
                               <b class="text-success font-weight-bold">DELIVERED</b>
                               {{else if (isEqual this.status 'RETURNED')}}
-                              <b class="text-danger font-weight-bold">RETURNED</b>
+                              <b class="text-secondary font-weight-bold">RETURNED</b>
                               {{else if (isEqual this.status 'CANCELLED')}}
-                              <b class="text-seconday font-weight-bold">CANCELLED</b>
+                              <b class="text-danger font-weight-bold">CANCELLED</b>
                               {{else if (isEqual this.status 'SHIPPED')}}
 
                               {{!-- <div class="dropdown">
@@ -116,7 +116,6 @@
 </div>
 <!-- [ Main Content ] end -->
    
-   
 
 
 <script>
@@ -137,11 +136,19 @@
    })
   .then((response) => {
     console.log("LLLLLLLLLLl",response)
-    if(response.data.status == true) {
-      alert("Are you sure");
-      location.reload();
-      //$( "#tableRow" ).load(window.location.href + " #tableRow" );
-      //document.getElementById(`${userId}dropdownMenuButton`).innerHTML = status;
+    if(response.data.status) {
+      //alert("Are you sure");
+      setTimeout(function() {
+        location.reload();
+      }, 1500);
+         Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: `This Order has been ${status} Succesfully`,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          
     }else{
       console.log("error On Axios change status");
     }

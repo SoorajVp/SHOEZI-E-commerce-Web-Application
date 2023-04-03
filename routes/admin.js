@@ -67,4 +67,5 @@ router.get('/order-details/:id', adminAuth.varifyLogin, controller.getOrderDetai
 
 router.post('/order-status', adminAuth.varifyLogin, controller.OrderStatus);
 
+
 module.exports = router;

@@ -1,29 +1,25 @@
 // const { response } = require("../app");
-const { response } = require("express");
+// const { response } = require("express");
 const { Db } = require("mongodb");
 const adminHelpers = require("../helpers/admin-helpers");
 const productHelpers = require("../helpers/product-helpers");
 const userHelpers = require("../helpers/user-helpers");
 const otpVarify = require('../api/twilio');
 const { getOrderProductList } = require("../helpers/user-helpers");
+const Swal = require('sweetalert2')
 
 module.exports = {
   homepage: async(req, res) => {
-    
-     let banners = await adminHelpers.getAllBanners()
+     let banners = await adminHelpers.getAllBanners();
       if (req.session.loggedin) {
         let cartCount = await userHelpers.getCartCount(req.session.user._id);
         let user = req.session.user;
-        
-        console.log("cartCount is  found.......................",cartCount);
         res.render("users/home-page", { logged: true, user ,banners, cartCount});
       } else {
         res.render("users/home-page", {banners});
       }
-    
-
-    
   },
+
   logout: (req, res) => {
     req.session.loggedin = false;
     res.redirect("/");
@@ -39,11 +35,8 @@ module.exports = {
   },
   postLogin: (req, res) => {
     userHelpers.doLogin(req.body).then((response) => {
-      console.log("Response dattaaaaaaaa.............",response);
-
       if (response.status) {
         if (response.unblocked) {
-            console.log("session user name.....",(response.user));
           req.session.loggedin = true;
           req.session.user = response.user;
           res.redirect("/");
@@ -66,10 +59,7 @@ module.exports = {
     }
   },
   postSignup: (req, res) => {
-    console.log(req.body);
-
     userHelpers.doSignup(req.body).then((response) => {
-      console.log("Created account  dattaaaaaaaa.............",response);
       req.session.loggedin = true;
       req.session.user = response;
       console.log(req.session);
@@ -78,27 +68,56 @@ module.exports = {
   },
 
   shop: async(req, res) => {
-    let category = await adminHelpers.getCategory();
-    console.log("PPPPPPPPPPPPPPPPPPPPPPP");
-    console.log("PPPPPPPPPPPPPPPPPPPPPPP", category);
-    let products = await productHelpers.getAllProducts()
-    console.log('------------------------------------------------------------------------------------');
-    console.log(products);
+
+    let value = req.params.id
+    console.log(req.params.id)
+
+    if(value === value.toUpperCase()){
+      req.session.category = value;
+      console.log("this is string uppercase");
+      let category = await adminHelpers.getItemCategory(req.params.id);
+      let products = await productHelpers.getShopItems(req.params.id);
+
+      for(let i=0; i< products.length; i++){
+        products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      }
+      
       if (req.session.loggedin) {
         let user = req.session.user; 
         let cartCount = await userHelpers.getCartCount(req.session.user._id);
         res.render("users/shop-page", { products, category, logged: true, user, cartCount});
-            
       } else {
         res.render('users/shop-page',{ products, category });
       }
+
+    }else{
+
+      console.log("this is not string uppercase", req.body);
+      let category = await adminHelpers.getItemCategory(req.session.category);
+      let products = await productHelpers.getShopItemsSub(req.params.id);
+      console.log(products)
+
+      for(let i=0; i< products.length; i++){
+        products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+      }
+      
+        if (req.session.loggedin) {
+          let user = req.session.user; 
+          let cartCount = await userHelpers.getCartCount(req.session.user._id);
+          res.render("users/shop-page", { products, category, logged: true, user, cartCount});
+        } else {
+          res.render('users/shop-page',{ products, category });
+        }
+    }
+    
+    
    
     
   },
 
   productDetails : async(req, res) =>{
-    console.log(req.params.id)
     let product = await productHelpers.getProductDetails(req.params.id);
+    product.price = product.price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
     if(req.session.loggedin){
       let user = req.session.user; 
       let cartCount = await userHelpers.getCartCount(req.session.user._id);
@@ -109,23 +128,11 @@ module.exports = {
   },
 
   userProfile : async(req, res) =>{
-    // let user = await userHelpers.getUserDetails(req.params.id);
-    // console.log("user found .........", user)
-    // console.log("session data .........", req.session.user);
-
-    console.log("User profile on session ...... ", req.session.user);
-
     if(req.session.loggedin){
-
       let userData = req.session.user;
-      console.log("User Id  from session");
       let user = await userHelpers.findUser(userData._id);
       let cartCount = await userHelpers.getCartCount(req.session.user._id);
-
-      console.log("User Profile finded data....", user);
       res.render('users/user-profile', {user, cartCount});
-      
-      
     }else{
       res.redirect('/');
     }
@@ -148,13 +155,7 @@ module.exports = {
   },
 
   addAddressPost : async(req, res) =>{
-
-    console.log(req.params.id);
-    console.log(req.body);
-
     userHelpers.updateAddress(req.body, req.params.id);
-    let user = await userHelpers.findUser(req.params.id);
-    req.session.user = user;
     res.redirect('/address');
     
   },
@@ -181,6 +182,7 @@ module.exports = {
   },
 
   changePasswordPost : (req, res) =>{
+    console.log(req.body.password)
     userHelpers.varifyPassword(req.params.id, req.body).then((response) =>{
       console.log("varified response....", response.status);
       if(response.status){
@@ -197,7 +199,6 @@ module.exports = {
       let user = req.session.user;
       let cartCount = await userHelpers.getCartCount(req.session.user._id);
       res.render('users/new-password', {user, cartCount});
-     
     }else{
       res.redirect('/');
     }
@@ -271,10 +272,20 @@ module.exports = {
 
   filterCategory : async(req, res) =>{
     console.log("ttttttttttttttttttttttttttttt", req.params.id);
-    let category = await adminHelpers.getCategory();
-    await productHelpers.categoryService(req.params.id).then((products) =>{
-      res.render('users/category-products', {products, category });
-    })
+    if(req.session.user){
+        let user = req.session.user;
+        let category = await adminHelpers.getCategory();
+        let cartCount = await userHelpers.getCartCount(req.session.user._id);
+        await productHelpers.categoryService(req.params.id).then((products) =>{
+          res.render('users/category-products', {products, category, user, cartCount});
+        })
+    }else{
+      let category = await adminHelpers.getCategory();
+      await productHelpers.categoryService(req.params.id).then((products) =>{
+        res.render('users/category-products', {products, category});
+      })
+    }
+    
   },
 
   cartDetails : async(req, res) =>{
@@ -283,9 +294,7 @@ module.exports = {
     if(cartCount > 0){
       let products = await userHelpers.getCartproducts(user._id);
       let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
-      console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm', cartCount);
-      console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm', products);
-      console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm', totalValue);
+      totalValue = totalValue.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
       res.render('users/cart-details', {user, products, cartCount, totalValue});
     }else{
       res.render('users/empty-cart', {user, cartCount})
@@ -304,6 +313,15 @@ module.exports = {
       });
     }).catch((err)=>{
       console.log("this is catched error...........",err);
+    })
+  },
+
+  homeAddToCart : async(req, res) => {
+    console.log("home page add to card-----------",req.body.proId);
+    await userHelpers.updateCart(req.body.proId, req.session.user._id).then((response) =>{
+      res.json({status : true,
+        message: "item added to cart"
+      });
     })
   },
 
@@ -328,6 +346,9 @@ module.exports = {
     let products = await userHelpers.getCartproducts(user._id);
     let cartCount = await userHelpers.getCartCount(req.session.user._id);
     let total = await userHelpers.getTotalAmount(req.session.user._id);
+    total = total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+
+    // total = total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
     console.log("BBBBBBBBB", products)
     res.render('users/checkout',{total, user, cartCount, products});
   },
@@ -358,20 +379,26 @@ module.exports = {
   },
 
   placeOrderPost : async(req, res) =>{
-    console.log("+++++++++++++++++++++++++++")
-
     console.log(req.body);
     let products = await userHelpers.getOrderProductList(req.body.userId);
     // let totalPrice = await userHelpers.getTotalAmount(req.body.userId);
     // console.log("total------------", totalPrice)
     // let address = await userHelpers.getAddress(req.body.userId, req.body.addressId);
-    userHelpers.placeOrder(req.body, products).then((status) => {
+    userHelpers.placeOrder(req.body, products).then((response) => {
       console.log("+++++++++++++++++++++++++++")
-      console.log(status);
-      if(status == 'PLACED'){
-        res.render('users/order-success', {success: true});
+      response.insertedId = ""+response.insertedId
+      console.log(response);
+      if(response.status == 'COD'){
+        response.method = 'COD'
+        res.json(response);
+      }else if(response.status == 'RAZORPAY'){
+        userHelpers.generateRazorpay(response.insertedId, req.body.price).then((response) =>{
+          response.method = 'RAZORPAY' 
+          console.log(response);
+          res.json(response);
+        })
       }else{
-        res.json({status: true});
+        res.json(response);
       }
     })
   },
@@ -400,11 +427,58 @@ module.exports = {
 
   myOrderStatus : async(req, res) =>{
     console.log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
-    console.log(req.params.id , req.body);
-    await adminHelpers.changeOrderStatus(req.params.id, req.body.status).then((response) =>{
-      res.redirect('/my-orders');
+    console.log(req.body.userId , req.body.status);
+
+
+    
+    await adminHelpers.changeOrderStatus(req.body.userId, req.body.status).then((response) =>{
+      console.log("@@", response);
+      response.status = true;
+      res.json(response)
+      // res.redirect('/my-orders');
+    })
+  },
+
+  varifyPayment : (req, res) =>{
+    console.log("this is the last log", req.body);
+    userHelpers.verifyOrderPayment(req.body).then(() =>{
+      let orderStatus = 'PLACED'
+      console.log('this is the last console and the order id is',req.body['order[receipt]'])
+      adminHelpers.changeOrderStatus(req.body['order[receipt]'], orderStatus).then(() =>{
+        console.log("payment successfull");
+        res.json({status: true});
+      })
+    }).catch((err) =>{
+      res.json({status: false})
+    })
+  },
+
+
+  successPage : (req, res) =>{
+    res.render('users/order-success');
+  },
+
+  wishList : async(req, res) =>{
+    let user = req.session.user;
+    let cartCount = await userHelpers.getCartCount(user._id);
+    let items = await userHelpers.getWishListItems(user._id);
+    res.render('users/wishlist', {user, cartCount, items});
+  },
+
+  wishListPost : (req, res) =>{
+    console.log(req.body);
+    userHelpers.addWishList(req.body.proId, req.body.userId).then((response) =>{
+      res.json(response);
+    })
+  },
+
+  removeWishlist : (req, res) =>{
+    userHelpers.addWishList(req.body.proId, req.body.userId).then((response) =>{
+      res.json(response);
     })
   }
+
+  
   
 
   

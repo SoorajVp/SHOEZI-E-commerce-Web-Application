@@ -25,24 +25,13 @@
                             <li class="lvl1 parent megamenu"><a href="/">Home <i class="anm anm-angle-down-l"></i></a>
                                
                             </li>
-                            <li class="lvl1 parent dropdown"><a href="/shop">Shop Now <i class="anm anm-angle-down-l"></i></a>
-                            {{!-- <ul class="dropdown">
-                              <li><a href="/" class="site-nav">Formals</a></li>
-                              <li><a href="/" class="site-nav">Casual</a></li>
-                              <li><a href="/" class="site-nav">Sports</a></li>
-                              <li><a href="/" class="site-nav">Ladies</a></li>
-                              <li><a href="/" class="site-nav">Kids</a></li>
-                            </ul> --}}
-                            </li>
-                        {{!-- <li class="lvl1 parent megamenu"><a href="#">Wishlist <i class="anm anm-angle-down-l"></i></a> </li> --}}
-                        	
-                       
-                        
-                        <li class="lvl1 parent dropdown"><a href="#">Contact Us<i class="anm anm-angle-down-l"></i></a></li>
+                            <li class="lvl1 parent dropdown"><a href="/shop/MENS">MENS <i class="anm anm-angle-down-l"></i></a></li>
 
+                            <li class="lvl1 parent dropdown"><a href="/shop/WOMENS">WOMENS <i class="anm anm-angle-down-l"></i></a></li>
 
-                        <li class="lvl1 parent dropdown"><a href="/my-orders">My Orders<i class="anm anm-angle-down-l"></i></a></li>
-                          
+                            <li class="lvl1 parent dropdown"><a href="/shop/KIDS">KIDS <i class="anm anm-angle-down-l"></i></a></li>
+
+                            {{!-- <li class="lvl1 parent dropdown"><a href="/my-orders">My Orders<i class="anm anm-angle-down-l"></i></a></li> --}}
                         
                         {{!-- <li class="lvl1"><a href="#"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a></li> --}}
                         
@@ -50,8 +39,9 @@
                         {{#if user}}
                         <li class="lvl1 dropdown border font-weight-bold"><a href="#"><b>{{this.user.Username}}</b><i class="anm anm-angle-down-l"></i></a> 
                           <ul class="dropdown">
+                            <li><a href="/my-orders" class="site-nav">My Orders</a></li>
                             <li><a href="/profile" class="site-nav">Profile</a></li>
-                            <li><a href="/logout" class="site-nav">Logout</a></li>
+                            <li><a href="/logout" class="site-nav ">Logout</a></li>
                           </ul>
                         </li>
                         {{else}}
@@ -90,11 +80,9 @@
                 <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                 	<div class="site-cart">
 
-                      <a href="" class=" ml-3"  style="font-size: 23px; text-decoration: none;">
+                      <a href="/wishList" class=" ml-3"  style="font-size: 23px; text-decoration: none;">
                         <i class="icon anm anm-heart-l"></i>
                       </a>
-
-                      
 
                     	<a href="/cart-products" class=" ml-3" style="font-size: 23px; text-decoration: none;">
                       

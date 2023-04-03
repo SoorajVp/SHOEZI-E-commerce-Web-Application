@@ -1,0 +1,94 @@
+
+
+<div class="template-collection belle">
+<div id="pre-loader">
+    <img src="/assets/images/loader.gif" alt="Loading..." />
+</div>
+    <div id="MainContent" class="main-content " role="main">
+                <!--Breadcrumb-->
+                <div class="bredcrumbWrap">
+                    <div class="container breadcrumbs " style="padding-left: 10%;">
+                        <a href="/shop" title="Back to the home page">Home</a><span aria-hidden="true">›</span><span>Wishlist</span>
+                    </div>
+                </div>
+    <div class="pageWrapper container " style="padding-left: 10%; padding-right: 10%;">
+        
+    
+        <h2 class="text-center text-secondary pb-4">WishList</h2>
+
+        <!--Body Content-->
+        <div id="page-content">
+             
+                        <div class="grid-products grid--view-items">
+                            <div class="row">
+                                {{#each items}}
+                                {{!-- {{#if this.result.[0].listed}} --}}
+                                 
+                                <div class="col-6 col-sm-6 col-md-4 col-lg-3 item">
+                                    <!-- start product image -->
+                                    <div class="border">
+                                    <div class="product-image border">
+                                        <!-- start product image -->
+                                            <a href="/product-details/{{this.result.[0]._id}}">
+                                            <!-- image --> 
+                                            <img class="lazyload" src="{{this.result.[0].image.[0]}}"  alt="image" title="product" />
+                                            <!-- End image -->
+                                            </a>
+                                            <!-- product label -->
+                                            <div class="product-labels"><span class="lbl pr-label3">Popular</span></div>
+                                            <!-- End product label -->
+                                        
+                                        <!-- end product image -->
+
+                                        <!-- Start product button -->
+                                        <span class="variants add" >
+                                            <button class="btn" onclick="addToCart('{{this.result.[0]._id}}')" >Add to cart</button>
+                                        </span>
+                                        <div class="button-set" >
+                                            <div class="wishlist-btn" >
+                                                <a class="wishlist add-to-wishlist"  onclick="WishListRemove('{{this.result.[0]._id}}','{{../user._id}}')" title="Add to Wishlist">
+                                                    <i class="icon anm anm-heart-l"></i>
+                                                </a>
+                                            </div>
+                                           
+                                        </div>
+                                        <!-- end product button -->
+                                    </div>
+                                    <!-- end product image -->
+                                    
+                                    <!--start product details -->
+                                    <div class="product-details text-center ">
+                                        <!-- product name -->
+                                        <div class="product-name">
+                                            <a >{{this.result.[0].name}}</a>
+                                        </div>
+                                        <!-- End product name -->
+                                        <!-- product price -->
+                                        <div class="product-price">
+                                            <span class="price"> ₹{{this.result.[0].price}}</span>
+                                        </div>
+                                        <!-- End product price -->
+                                        
+                                        
+                                    </div>
+                                  
+
+                                    </div>
+                                    <!-- End product details -->
+                                </div>
+                                
+                                {{!-- {{/if}} --}}
+                                {{/each}}
+
+                               
+                                
+                            </div>
+                        </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

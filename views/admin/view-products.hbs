@@ -27,8 +27,8 @@
                         <tr>
                           
                           <th scope="col">name</th>
-                          <th scope="col">Brand</th>
                           <th scope="col">Category</th>
+                          <th scope="col">Sub Category</th>
                           <th scope="col">price</th>
                           <th scope="col">images</th>
                           <th scope="col">Update</th>
@@ -41,20 +41,20 @@
                           <tr>
                             {{!-- <th scope="row">{{this._id}}</th> --}}
                             <td>{{this.name}}</td>
-                            <td>{{this.brand}}</td>
-                            <td>{{this.proDetails.[0].name}}</td>
+                            <td>{{this.proDetails.main}}</td>
+                            <td>{{this.proDetails.sub}}</td>
                             <td>{{this.price}}</td>
                             <td>
                               <img src="{{this.image.[0]}}" alt="" style="width: 55px;"/>
                             </td>
-                            <td><a href="/admin/edit-products/{{this._id}}" class="btn btn-primary btn-sm">EDIT</a></td>
+                            <td><a href="/admin/edit-products/{{this._id}}" class="btn btn-primary ">EDIT</a></td>
                             {{#if this.listed}}
                               <td><a
                                   href="/admin/unlist/{{this._id}}"
-                                  class="btn btn-danger btn-sm"
+                                  class="btn btn-danger "
                                 >DELETE</a></td>
                             {{else}}
-                              <td><a href="/admin/listed/{{this._id}}" class="btn btn-secondary btn-sm" >DELETED</a></td>
+                              <td><a href="/admin/listed/{{this._id}}" class="btn btn-secondary " >DELETED</a></td>
                               {{!-- <td><a href="" class="btn btn-secondary btn-sm" >DELETED</a></td> --}}
                             {{/if}}
                           </tr>

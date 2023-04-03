@@ -135,17 +135,17 @@
 
                                  {{#each products}}
                                  {{#if this.listed}}
-                                 <a href="/product-details/{{this._id}}">
+                                 
                                  <div class="col-6 col-sm-6 col-md-4 col-lg-4 item ">
                                     <!-- start product image -->
                                     <div class="border">
                                     <div class="product-image border">
                                         <!-- start product image -->
-                                       
+                                            <a href="/product-details/{{this._id}}">
                                             <!-- image --> 
                                             <img class="lazyload" src="{{this.image.[0]}}"  alt="image" title="product" />
                                             <!-- End image -->
-                                         
+                                            </a>
                                             <!-- product label -->
                                             <div class="product-labels"><span class="lbl pr-label3">Popular</span></div>
                                             <!-- End product label -->
@@ -153,13 +153,13 @@
                                         <!-- end product image -->
 
                                         <!-- Start product button -->
-                                        <form class="variants add" action="#" onclick="window.location.href='cart.html'"method="post">
-                                            <button class="btn btn-addto-cart" type="button">Add to cart</button>
-                                        </form>
+                                        <span class="variants add" >
+                                            <button class="btn btn-addto-cart"onclick="addToCart('{{this._id}}')" type="button">Add to cart</button>
+                                        </span>
                                         <div class="button-set">
                                          
-                                            <div class="wishlist-btn">
-                                                <a class="wishlist add-to-wishlist" href="#" title="Add to Wishlist">
+                                            <div class="wishlist-btn" >
+                                                <a class="wishlist add-to-wishlist"  onclick="WishList('{{this._id}}','{{../user._id}}')" title="Add to Wishlist">
                                                     <i class="icon anm anm-heart-l"></i>
                                                 </a>
                                             </div>
@@ -177,23 +177,17 @@
                                         </div>
                                         <!-- End product name -->
                                         <!-- product price -->
-                                        <div class="product-price">
+                                        <div class="product-price pb-2">
                                             <span class="price"> ₹{{this.price}}</span>
                                         </div>
                                         <!-- End product price -->
                                         
-                                        <div class="product-review mb-2">
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
+                                        
                                     </div>
                                     </div>
                                     <!-- End product details -->
                                  </div>
-                                </a>
+                       
                                 {{/if}}
                                 {{/each}}
 

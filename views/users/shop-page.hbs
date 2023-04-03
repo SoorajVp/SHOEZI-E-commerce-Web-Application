@@ -1,4 +1,5 @@
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 
 <div class="template-collection belle">
@@ -7,17 +8,7 @@
 </div>
 
 <div class="pageWrapper">
-	<!--Search Form Drawer-->
-	<div class="search">
-        <div class="search__form">
-            <form class="search-bar__form" action="#">
-                <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
-                <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
-            </form>
-            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
-        </div>
-    </div>
-    <!--End Search Form Drawer-->
+	
    
     
     <!--Body Content-->
@@ -44,12 +35,14 @@
                             <div class="widget-title"><h2>Categories</h2></div>
                             <ul class="sidebar_categories ml-2">
 
-                                    {{#each category}} 
-                                    <li class="lvl-1"><a href="/category-filter/{{this._id}}" class="site-nav">{{this.name}}</a></li>
-                                    {{/each}}
-                                    
-                                    
-                                </ul>
+                                {{#each category}} 
+                                {{!-- <li class="lvl-1"><a href="/category-filter/{{this._id}}" class="site-nav">{{this.sub}}</a></li> --}}
+                                {{!-- <li class="lvl-1"><a  onclick="subCategory('{{this._id}}','{{this.main}}')" class="site-nav">{{this.sub}}</a></li> --}}
+                                <li class="lvl-1"><a href="/shop/{{this._id}}"   class="site-nav">{{this.sub}}</a></li>
+                                {{/each}}
+                                
+                                
+                            </ul>
                         </div>
                         
                         
@@ -136,17 +129,17 @@
 
                                  {{#each products}}
                                  {{#if this.listed}}
-                                 <a href="/product-details/{{this._id}}">
+                                 
                                  <div class="col-6 col-sm-6 col-md-4 col-lg-4 item ">
                                     <!-- start product image -->
                                     <div class="border">
                                     <div class="product-image border">
                                         <!-- start product image -->
-                                       
+                                            <a href="/product-details/{{this._id}}">
                                             <!-- image --> 
                                             <img class="lazyload" src="{{this.image.[0]}}"  alt="image" title="product" />
                                             <!-- End image -->
-                                         
+                                            </a>
                                             <!-- product label -->
                                             <div class="product-labels"><span class="lbl pr-label3">Popular</span></div>
                                             <!-- End product label -->
@@ -154,47 +147,43 @@
                                         <!-- end product image -->
 
                                         <!-- Start product button -->
-                                        <div class="variants add" >
-                                            <button class="btn"  onclick="addToCart('{{this._id}}')" >Add to cart</button>
-                                        </div>
-                                        <div class="button-set">
-                                         
-                                            <div class="wishlist-btn">
-                                                <a class="wishlist add-to-wishlist" href="#"  title="Add to Wishlist">
+                                        <span class="variants add" >
+                                            <button class="btn" onclick="addToCart('{{this._id}}')" >Add to cart</button>
+                                        </span>
+                                        {{#if ../user}}
+                                        <div class="button-set" >
+                                            <div class="wishlist-btn" >
+                                                <a class="wishlist add-to-wishlist"  onclick="WishList('{{this._id}}','{{../user._id}}')" title="Add to Wishlist">
                                                     <i class="icon anm anm-heart-l"></i>
                                                 </a>
                                             </div>
-                                           
                                         </div>
+                                        {{/if}}
                                         <!-- end product button -->
                                     </div>
                                     <!-- end product image -->
-
+                                    
                                     <!--start product details -->
                                     <div class="product-details text-center ">
                                         <!-- product name -->
                                         <div class="product-name">
-                                            <a href="#">{{this.name}}</a>
+                                            <a >{{this.name}}</a>
                                         </div>
                                         <!-- End product name -->
                                         <!-- product price -->
-                                        <div class="product-price">
-                                            <span class="price"> ₹{{this.price}}</span>
+                                        <div class="product-price pb-2">
+                                            <span class="price"> {{this.price}}</span>
                                         </div>
                                         <!-- End product price -->
                                         
-                                        <div class="product-review mb-2">
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                            <i class="font-13 fa fa-star-o"></i>
-                                        </div>
+                                        
                                     </div>
+                                  
+
                                     </div>
                                     <!-- End product details -->
                                  </div>
-                                </a>
+                                
                                 {{/if}}
                                 {{/each}}
 
@@ -228,26 +217,6 @@
     <!--Quick View popup-->
     
     
-</div>
+    </div>
 </div>
 
-
-<script>
-    function addToCart(prodId) {
-        try{
-            $.ajax({
-                url:'/add-to-cart/'+prodId,
-                method:'get',
-                success:(response)=>{
-                  if(response.status){
-                      let count =$('#cart-count').html()
-                      count = parseInt(count)+1
-                      $("#cart-count").html(count)
-                  }
-                }
-              })
-        }catch(err){
-            console.log(err)
-        }
-}
-</script>

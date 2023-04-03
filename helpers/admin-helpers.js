@@ -1,6 +1,8 @@
 const { ObjectId } = require("mongodb-legacy");
 var collection = require("../config/collection");
 var db = require("../config/connection");
+const { reject } = require("bcrypt/promises");
+const async = require("hbs/lib/async");
 // const { objectId } = require("mongodb-legacy").ObjectId;
 
 module.exports = {
@@ -132,17 +134,35 @@ module.exports = {
   },
 
   addCatergory : (category) =>{
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
+      console.log("))))))", category.main, category.sub)
       category.listed = true;
-      db.get().collection(collection.CATEGORY_COLLECTIONS).insertOne(category).then((response) =>{
-        resolve()
-      })
+      let categoryExist = await db.get().collection(collection.CATEGORY_COLLECTIONS).findOne({main: category.main , sub: category.sub})
+      if(categoryExist) {
+        resolve({status: false})
+      }else{
+        db.get().collection(collection.CATEGORY_COLLECTIONS).insertOne(category).then((response) =>{
+          resolve({status: true})
+        })
+      }
+      
     })
   },
 
   getCategory : () =>{
     return new Promise(async(resolve,  reject) =>{
-      let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).find().toArray();
+      // let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).find().toArray();
+      let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).aggregate([
+        {
+          $lookup: {
+            from: 'category',
+            localField: 'category',
+            foreignField: '_id',
+            as: 'catList'
+          }
+        }
+      ])
+      console.log("this is categoory console ----",category)
       resolve(category);
     })
   },
@@ -195,6 +215,66 @@ module.exports = {
     })
   },
 
+  getItemCategory : (category) =>{
+    return new Promise(async(resolve, reject) =>{
+      let catList1 = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({main: category}).toArray();
+      console.log(catList1);
+      resolve(catList1);
+    })
+  },
+
+
+  
+
+  getAllCategory : () =>{
+    return new Promise(async(resolve, reject) =>{
+
+      let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).find().toArray();
+
+      // let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).aggregate([
+      //    {
+      //     '$unwind': {
+      //       'path': '$sub'
+      //     }
+      //   }, {
+      //     '$lookup': {
+      //       'from': 'subcategory', 
+      //       'localField': 'sub', 
+      //       'foreignField': '_id', 
+      //       'as': 'subList'
+      //     }
+      //   }, {
+      //     '$project': {
+      //       'subList': 1, 
+      //       'name': 1
+      //     }
+      //   }
+      // ]).toArray();
+      console.log(category)
+      resolve(category)
+    })
+  },
+
+  getMenCategory : () =>{
+    return new Promise(async(resolve,  reject) =>{
+      let mens = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({main: 'MENS'}).toArray()
+      resolve(mens);
+    })
+  },
+
+  getWomenCategory : () =>{
+    return new Promise(async(resolve,  reject) =>{
+      let women = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({main: 'WOMENS'}).toArray()
+      resolve(women);
+    })
+  },
+
+  getKidsCategory : () =>{
+    return new Promise(async(resolve,  reject) =>{
+      let kids = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({main: 'KIDS'}).toArray()
+      resolve(kids);
+    })
+  },
   
   
 

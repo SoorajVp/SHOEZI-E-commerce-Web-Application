@@ -1,12 +1,29 @@
 
 
+<div class="template-collection belle">
+<div id="pre-loader">
+    <img src="/assets/images/loader.gif" alt="Loading..." />
+</div>
+
+<div class="pageWrapper">
+	<!--Search Form Drawer-->
+	<div class="search">
+        <div class="search__form">
+            <form class="search-bar__form" action="#">
+                <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
+                <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
+            </form>
+            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
+        </div>
+    </div>
+
 <div class="container mt-3 pt-4">
     <h2 class="text-center">Your Orders</h2>
     <div class="row " style=" padding-left: 10%;padding-right: 10%; padding-top: 30px; padding-bottom: 60px;">
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col ">
-                    <div  class="cart style2">
-                		<table class="border shadow">
+                    <div  class="cart style2 table-reponsive">
+                		<table class="border shadow ">
                             <thead class="cart__row cart__header " >
                                 <tr>
                                     <th class="text-center">PRODUCTS</th>
@@ -30,7 +47,6 @@
                                             <a href="#"></a>
                                             <div><p>{{this._id}}</p> </div>
                                         </div>
-                                        
                                     </td>
 
                                     <td class="cart__image-wrapper cart-flex-item">
@@ -47,15 +63,15 @@
                                     
                                     <td class="cart__price-wrapper cart-flex-item">
                                         {{#if (isEqual this.status 'DELIVERED')}}
-                                        <span class="money text-success "><b> {{this.status}}</b></span>
+                                        <span class="money text-success "> {{this.status}}</span>
                                         {{else if (isEqual this.status 'RETURNED')}}
-                                        <span class="money text-secondary "><b> {{this.status}}</b></span>
+                                        <span class="money text-secondary "> {{this.status}}</span>
                                         {{else if (isEqual this.status 'CANCELLED')}}
-                                        <span class="money text-danger "><b> {{this.status}}</b></span>
+                                        <span class="money text-danger "> {{this.status}}</span>
                                         {{else if (isEqual this.status 'SHIPPED')}}
-                                        <span class="money text-warning "><b> {{this.status}}</b></span>
+                                        <span class="money text-warning "> {{this.status}}</span>
                                         {{else}}
-                                        <span class="money text-primary "><b> {{this.status}}</b></span>
+                                        <span class="money text-primary "> {{this.status}}</span>
                                         {{/if}}
                                     </td>
                                     
@@ -63,10 +79,12 @@
 
                                         {{#if (isEqual this.status 'DELIVERED')}}
 
-                                        <form action="/change-order-status/{{this._id}}" method="post">
+                                        {{!-- <form action="/change-order-status/{{this._id}}" method="post">
                                         <button type="submit" class=" btn-danger pl-3 pr-3 py-1">RETURN</button>
                                         <input type="text" value="RETURNED" name="status" hidden>
-                                        </form>
+                                        </form> --}}
+
+                                        <button onclick="changeMyOrderStatus('{{this._id}}','RETURNED', 'RETURN')" class=" btn-danger pl-3 pr-3 py-1">RETURN</button>
 
                                         {{else if (isEqual this.status 'RETURNED')}}
 
@@ -78,10 +96,13 @@
 
                                         {{else}}
                                         
-                                        <form action="/change-order-status/{{this._id}}" method="post">
+                                        {{!-- <form action="/change-order-status/{{this._id}}" method="post">
                                         <button type="submit" class=" btn-danger pl-3 pr-3 py-1">CANCEL</button>
                                         <input type="text" value="CANCELLED" name="status" hidden>
-                                        </form>
+                                        </form> --}}
+
+                                        <button onclick="changeMyOrderStatus('{{this._id}}','CANCELLED', 'CANCEL')" class=" btn-danger pl-3 pr-3 py-1">CANCEL</button>
+
                                         
                                         {{/if}}
 
@@ -115,4 +136,59 @@
                	</div>
     </div>
 </div>
+</div>
+</div>
+
+
+<script>
+
+ function changeMyOrderStatus(userId, status,shortStatus){
+
+  console.log("oobbbbbbbbbbbbbbbbbbbbbbbbbbb");
+  console.log(userId, status);
+
+    Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: `Yes, ${shortStatus} it!`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        `${status}!`,
+        `This order has been ${status}.`,
+        'success'
+      )
+
+        axios({
+             method: 'post',
+             url: `/change-order-status`,
+             data: {
+               userId: userId,
+               status: status
+             }
+           })
+          .then((response) => {
+            console.log("LLLLLLLLLLl",response)
+            if(response.data.status) {
+              //alert("Are you sure");
+              location.reload();
+            }else{
+              console.log("error On Axios change status");
+            }
+
+          })
+      
+    }
+  })
+
+
+
+    
+  
+  }
+</script>
 

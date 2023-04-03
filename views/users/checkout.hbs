@@ -60,7 +60,8 @@
                     </div>
                 </div>
             </div>
-        <form action="/post-order" method="post" id="checkout-form">
+        {{!-- <form action="/post-order" method="post" id="checkout-form"> --}}
+        <form  id="checkout-form">
             <div class="row billing-fields">
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
                     <div class="create-ac-content bg-light-gray padding-20px-all">
@@ -129,7 +130,7 @@
                                             {{!-- <td>S</td> --}}
                                             <td>{{this.quantity}}</td>
 
-                                            <td>{{this.quantity}}x{{this.productDetails.price}}</td>
+                                            <td>{{this.productDetails.subTotal}}</td>
                                         </tr>
                                         {{/each}}
                                         
@@ -294,23 +295,90 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
 
-   // $("#checkout-form").submit((e) =>{
-   //     e.preventDefault();
-   //     $.ajax({
-   //         url: '/place-order',
-   //         method: 'post',
-   //         data: $("#checkout-form").serialize(),
-   //         success:(response) =>{
-   //             console.log(response)
-   //             alert(response);
-   //         }
-   //     })
-   // })
-   
+$("#checkout-form").submit((e)=>{
+
+ var formData = $('#checkout-form').serialize();
+ console.log("this is form data "+ formData);
+    e.preventDefault()
+    $.ajax({
+        url:'/post-order',
+        method:'post',
+        data: formData,
+        success:(response)=>{
+            console.log(response);
+            if(response.method == 'COD'){
+                //alert("Order PLACED")
+                location.href = '/order-success'; 
+            }else if(response.method == 'RAZORPAY'){
+                //alert("Razorpay")
+                razorPayment(response);
+            }else{
+                alert("PAYPAL")
+            }
+            
+           
+        }
+    })
+})
+
+function razorPayment(order) {
+    var options = {
+        "key": "rzp_test_hdHsLrGkVWcilx", // Enter the Key ID generated from the Dashboard
+        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "SHOEZI", //your business name
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+            //alert(response.razorpay_payment_id);
+            //alert(response.razorpay_order_id);
+            //alert(response.razorpay_signature)
+
+            varifyPayment(response, order)
+        },
+        "prefill": {
+            "name": "Gaurav Kumar", //your customer's name
+            "email": "gaurav.kumar@example.com",
+            "contact": "9000090000"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+}
+
+function varifyPayment(payment, order) {
+    $.ajax({
+        url:'/verify-payment',
+        method:'post',
+        data:{
+            payment,
+            order
+        },
+        success: (response) =>{
+            console.log(response);
+            if(response.status){
+                ///alert("Order PLACED")
+                location.href = '/order-success'; 
+            }else{
+                alert("Payment Falied")
+            }
+        }
+    })
+}
+
+
 
 </script>

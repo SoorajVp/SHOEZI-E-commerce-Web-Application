@@ -5,7 +5,10 @@ module.exports = {
     CATEGORY_COLLECTIONS: 'category',
     CART_COLLECTIONS: 'cart',
     ORDER_COLLECTIONS: 'orders',
+    WISHLIST_COLLECTIONS: 'wishlist',
+    SUBCATEGORY_COLLECTIONS: 'subcategory',
     CREDENTIALS: 'admin'
+
 
 
 }

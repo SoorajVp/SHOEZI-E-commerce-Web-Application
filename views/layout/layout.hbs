@@ -28,7 +28,16 @@
     {{!-- Axios cndn link  --}}
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 
+    {{!-- Swal sweet alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     {{else}}
+
+  {{!-- Swal sweet alert --}}
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     {{!-- UserSide Template --}}
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -45,7 +54,22 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
 
+    {{!-- Axios cndn link  --}}
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    
+
      <script src="/assets/js/vendor/jquery-3.3.1.min.js"></script>
+
+     <style>
+      .colored-toast.swal2-icon-success {
+        background-color: #a5dc86 !important;
+        color:#fff;
+      }
+      .colored-toast.swal2-icon-error {
+        background-color: #f27474 !important;
+        color:#fff;
+      }
+     </style>
 
     {{/if}}
   
@@ -106,7 +130,10 @@
       <script src="/javascripts/cart-script.js"></script>
       <script src="/javascripts/math-hepers.js"></script>
 
-      
+      {{!-- Toastify alert --}}
+
+
+
      <script>
 	    	jQuery(document).ready(function(){  
 	    	  jQuery('.closepopup').on('click', function () {

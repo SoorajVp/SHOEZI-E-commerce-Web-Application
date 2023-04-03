@@ -6,6 +6,7 @@ const productHelpers = require('../helpers/product-helpers');
 const cloudinary = require('../utils/cloudinary');
 const path = require('path');
 const { ObjectId } = require('mongodb-legacy');
+const async = require('hbs/lib/async');
 // const { map } = require('../app');
 const objectId = require('mongodb-legacy').ObjectId;
 
@@ -72,15 +73,14 @@ module.exports = {
         productHelpers.getAllProducts().then((products) => {              
             res.render('admin/view-products', {admin:true, products});
         })
-        
-           
     },
 
     addProducts : async (req, res) =>{
-        await adminHelpers.getCategory().then((category)=>{
-            res.render('admin/add-products', {admin:true, category})
-        })
-        
+        let category = await adminHelpers.getCategory();
+        let mens = await adminHelpers.getMenCategory();
+        let womens = await adminHelpers.getWomenCategory();
+        let kids = await adminHelpers.getKidsCategory();
+        res.render('admin/add-products', {admin:true, category, mens, womens, kids})
     },
 
     addProductsPost : async(req, res) =>{
@@ -106,11 +106,16 @@ module.exports = {
 
     editProduct :  async(req,res) => {
         let category = await adminHelpers.getCategory();
-         let product = await productHelpers.getProductDetails(req.params.id);
-        res.render('admin/edit-products',{admin: true, product, category });
+        let product = await productHelpers.getProductDetails(req.params.id);
+        let mens = await adminHelpers.getMenCategory();
+        let womens = await adminHelpers.getWomenCategory();
+        let kids = await adminHelpers.getKidsCategory();
+        res.render('admin/edit-products', {admin: true, product, category, mens, womens, kids});
     },
 
     editProductPost : async (req, res) =>{
+        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+        console.log(req.body)
         try{
             let imgUrls = [];
 
@@ -208,14 +213,21 @@ module.exports = {
     },
 
     categoryView : async(req, res) =>{
-        await adminHelpers.getCategory().then((category) =>{
-            res.render('admin/category', {admin: true, category});
+        await adminHelpers.getAllCategory().then((category) =>{
+            res.render('admin/category', {admin: true, category, Err: req.session.categoryErr});
+            req.session.categoryErr = false;
         })        
     },
 
     categoryPost : (req, res) =>{
-        adminHelpers.addCatergory(req.body).then(() =>{
-            res.redirect('/admin/category');
+        console.log(req.body);
+        adminHelpers.addCatergory(req.body).then((response) =>{
+            if(response.status == false){
+                req.session.categoryErr = "This category is already Exist";
+            }else{
+                res.redirect('/admin/category');
+            }
+            
         })
     },
 
@@ -254,6 +266,7 @@ module.exports = {
             // res.redirect('/admin/order-list');
             console.log("ooooooooooooooooooooooooo");
             console.log(response);
+            response.status = true;
             res.json(response)
         })
     },
@@ -268,7 +281,12 @@ module.exports = {
             res.render('admin/order-details', {admin: true, products, orderDetails})
         })
         
-    }
+    },
+
+
+
+
+    
 
     
 
