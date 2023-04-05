@@ -1,8 +1,11 @@
 const { ObjectId } = require("mongodb-legacy");
 var collection = require("../config/collection");
 var db = require("../config/connection");
-const { reject } = require("bcrypt/promises");
+const { response } = require("express");
 const async = require("hbs/lib/async");
+// const { reject } = require("bcrypt/promises");
+// const async = require("hbs/lib/async");
+// const userAuth = require("../middlewares/userAuth");
 // const { objectId } = require("mongodb-legacy").ObjectId;
 
 module.exports = {
@@ -192,15 +195,17 @@ module.exports = {
 
   ordersList : () =>{
     return new Promise(async(resolve, reject) => {
-      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).find().toArray();
+      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).find().sort({ createdOn: -1 }).toArray();
       resolve(orders);
     })
   },
 
-  changeOrderStatus : (orderId, status) =>{
+  changeOrderStatus : (orderId, orderStatus) =>{
     return new Promise((resolve, reject) =>{
-      db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id: new ObjectId(orderId)},{$set: {status: status}})
+      console.log("this is order status changing", orderId, orderStatus)
+      db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id: new ObjectId(orderId)},{$set: {status: orderStatus}})
       .then((response) =>{
+        console.log("changed status-----",response)
         resolve(response);
       })
     })
@@ -275,6 +280,211 @@ module.exports = {
       resolve(kids);
     })
   },
+
+  weeklyReport: () =>{
+    return new Promise(async(resolve,  reject) =>{
+      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+        {
+          $match: {
+            date: {
+              $gte: new Date(new Date() - 7 * 24 * 60 * 60 * 1000)
+            }
+          }
+        },
+        {
+          $group: {
+            _id: { $week: "$date" },
+            count: { $sum: 1 }
+          }
+        }
+      ]).toArray()
+      console.log("this is sales report----", orders)
+      resolve(orders);
+    })
+  },
+
+  deliveredOrders : () =>{
+    return new Promise(async(resolve,  reject) =>{
+      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).find({status: 'DELIVERED'}).sort({ createdOn: -1 }).toArray()
+      console.log("delivered products----",orders)
+      for(let i=0; i<orders.length; i++){
+        orders[i].items = orders[i].products.length;
+      }
+      // orders.items = orders.products.length
+      resolve(orders);
+    })
+  },
+
+  filterReport : (start, end) =>{
+    
+    return new Promise(async(resolve, reject) =>{
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      console.log(startDate, endDate)
+
+      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+        {
+          $match: {
+            createdOn: {
+              $gte: startDate,
+              $lte: endDate
+            }
+          }
+        },{
+          $match: {
+            status: 'DELIVERED'
+          }
+        }
+      ]).sort({ createdOn: -1 }).toArray()
+
+      console.log("this is filtered order ---", orders);
+      resolve(orders)
+    })
+  },
+
+  getTotalMoney : () =>{
+    return new Promise(async(resolve, reject) =>{
+      let money = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+        { $group: { 
+          _id: null,
+          total: {
+             $sum: "$total" 
+            } 
+          }
+        }
+      ]).toArray()
+      console.log("price",money[0].total);
+      resolve(money[0].total);
+    })
+  },
+
+  getTotalUsers: () =>{
+    return new Promise(async(resolve, reject) =>{
+      const count = await db.get().collection(collection.USER_COLLECTIONS).countDocuments();
+      console.log("users",count);
+      resolve(count);
+    })
+  },
+  getTotalOrders: () =>{
+    return new Promise(async(resolve, reject) =>{
+      const count = await db.get().collection(collection.ORDER_COLLECTIONS).countDocuments();
+      console.log("orders",count);
+      resolve(count);
+    })
+  },
+  
+  addCoupons : (coupon) =>{
+    coupon.created = new Date();
+    coupon.discount = Number(coupon.discount);
+    coupon.expired = new Date(coupon.expired);
+
+    if(coupon.expired > coupon.created){
+      coupon.status = true
+    }else{
+      coupon.status = false
+    }
+    console.log(coupon)
+    return new Promise((resolve, reject) =>{
+      db.get().collection(collection.COUPON_COLLECTIONS).insertOne(coupon).then((response) =>{
+        resolve(response)
+      })
+    })
+  },
+
+  updateCoupon : (coupon , couponId) =>{
+    console.log(coupon , couponId)
+    let date = new Date();
+    return new Promise((resolve, reject) =>{
+      if(coupon.expired > date){
+        coupon.status = true
+      }else{
+        coupon.status = false
+      }
+      db.get().collection(collection.COUPON_COLLECTIONS).updateOne({_id: new ObjectId(couponId)},
+      {
+        $set:{
+          code: coupon.code,
+          discount: Number(coupon.discount),
+          expired: new Date(coupon.expired),
+          status: coupon.status
+        }
+      }).then((response) =>{
+        resolve(response)
+      })
+    })
+  },
+
+  getAllCoupons : () =>{
+    return new Promise(async(resolve, reject) =>{
+      let coupons = await db.get().collection(collection.COUPON_COLLECTIONS).find().toArray();
+      let date = new Date();
+      for(let i=0; i< coupons.length; i++){
+        if(coupons[i].expired > date){
+          coupons[i].status = true
+          db.get().collection(collection.COUPON_COLLECTIONS).updateOne({_id: new ObjectId(coupons[i].Id)},{$set: {status: coupons[i].status}}).then(()=>{})
+        }else{
+          coupons[i].status = false
+          db.get().collection(collection.COUPON_COLLECTIONS).updateOne({_id: new ObjectId(coupons[i].Id)},{$set: {status: coupons[i].status}}).then(()=>{})
+        }
+      }
+      console.log(coupons);
+      resolve(coupons);
+    })
+  },
+
+  couponApply : (couponCode, userId) =>{
+    return new Promise(async(resolve, reject) =>{
+      let date = new Date();
+      console.log(couponCode);
+      let coupon = await db.get().collection(collection.COUPON_COLLECTIONS).findOne({code: couponCode});
+      if(coupon){
+        if(coupon.expired > date){
+          let user = await db.get().collection(collection.COUPON_COLLECTIONS).findOne({code: couponCode, users: { $in: [new ObjectId(userId)] } });
+          console.log("this is coupon data from userId----", user);
+          if(user){
+            console.log("user already exists --------------");
+            resolve({
+              status: false,
+              message:"This Coupon Already used !"
+            });
+          }else{
+            
+            // db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: couponCode}, { $push: { users: userId } });
+            console.log("valid coupon----",coupon.discount);
+            resolve({
+              status: true,
+              offer: coupon.discount
+            })
+          }
+  
+        }else{
+          console.log("coupon expired --------------");
+          resolve({
+            status: false,
+            message:"This Coupon is Expired !"
+          });
+        }
+
+      }else{
+        console.log("invalid coupon code --------------");
+        resolve({
+          status: false,
+          message:"Invalid Coupon code !"
+        });
+      }
+    })
+  },
+
+  usedCoupon : (couponCode, userId) =>{
+    console.log(couponCode, userId)
+    return new promises(async(resolve, reject) =>{
+      db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: couponCode}, { $push: { users: new ObjectId(userId) } }).then((response)=>{
+        console.log("this is response from order status", )
+        resolve()
+      })
+      
+    })
+  }
   
   
 

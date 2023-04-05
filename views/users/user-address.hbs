@@ -87,7 +87,7 @@
         {{#each user.address}}
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border ">
 			<div class="p-3">
-                <p> <b> {{this.name}} </b>  <b class="pl-4 font-weight-normal">{{this.mobile}}  </b> <a href="/remove-address/{{this._id}}" class="text-danger border p-1 float-right"><b> DELETE</b></a></p>
+                <p> <b> {{this.name}} </b>  <b class="pl-4 font-weight-normal">{{this.mobile}}  </b> <a type="button"  onclick="addressRemove('{{this._id}}')" class="text-danger border p-1 float-right"><b> DELETE</b></a></p>
                 <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}}</p>
 
             </div>
@@ -101,3 +101,38 @@
 </div>
 </div>
 
+<script>
+    function addressRemove(addressId){
+        axios({
+            url: `/remove-address/${addressId}`,
+            method: 'get',
+        })
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire(
+              'Deleted!',
+              'This address has been deleted.',
+              'success'
+            )
+            .then((response) =>{
+            console.log(response);
+            location.reload()
+        })
+          }
+        })
+        
+    }
+
+
+
+
+
+</script>

@@ -6,8 +6,6 @@ const productHelpers = require('../helpers/product-helpers');
 const cloudinary = require('../utils/cloudinary');
 const path = require('path');
 const { ObjectId } = require('mongodb-legacy');
-const async = require('hbs/lib/async');
-// const { map } = require('../app');
 const objectId = require('mongodb-legacy').ObjectId;
 
 module.exports = {
@@ -20,10 +18,14 @@ module.exports = {
             res.render('admin/admin-login', {admlogErr: req.session.admlogErr, loginForm: true});
             req.session.admlogErr = false;        
         }
-    },
+    },  
 
-    dashboard : (req, res) =>{
-        res.render('admin/dashboard', {admin:true});
+    dashboard : async(req, res) =>{
+        let money = await adminHelpers.getTotalMoney();
+        let users = await adminHelpers.getTotalUsers();
+        let orders = await adminHelpers.getTotalOrders();
+        
+        res.render('admin/dashboard', {admin:true, money, users, orders});
     },
 
     postAdminlogin : async(req, res) => {
@@ -151,8 +153,30 @@ module.exports = {
         })
     },
     
-    getCoupons : (req, res) =>{
-        res.render('admin/view-coupons', {admin: true});
+    getCoupons : async(req, res) =>{
+        
+        let coupons = await adminHelpers.getAllCoupons();
+        coupons.forEach(coupons => {
+            const created = new Date(coupons.created);
+            const expired = new Date(coupons.expired);
+            coupons.created = created.toLocaleDateString('es-ES', { timeZone: 'UTC' });
+            coupons.expired = expired.toLocaleDateString('es-ES', { timeZone: 'UTC' });
+        });
+        res.render('admin/view-coupons', {admin: true, coupons});
+    },
+
+    addcoupons : (req, res) =>{
+        console.log(req.body);
+        adminHelpers.addCoupons(req.body).then((response) =>{
+            res.redirect('/admin/coupons');
+        })
+    },
+
+    editCoupons : (req, res) =>{
+        console.log(req.body);
+        adminHelpers.updateCoupon(req.body, req.params.id).then((response) =>{
+            res.redirect('/admin/coupons');
+        })
     },
 
     addBanners : (req, res) =>{
@@ -274,16 +298,43 @@ module.exports = {
     getOrderDetails : async(req, res) =>{
         let products = await productHelpers.getOrderedProducts(req.params.id);
          adminHelpers.getUserOrder(req.params.id).then((orderDetails)=>{
-            console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKK",orderDetails)
-            // orderDetails.map((order)=>{
-            //     order.createdOn = (order.createdOn).toLocaleDateString('es-ES')
-            // })
+            console.log("this is order details#########################", orderDetails)
+            orderDetails.createdOn = orderDetails.createdOn.toLocaleDateString('es-ES', { timeZone: 'UTC' });
             res.render('admin/order-details', {admin: true, products, orderDetails})
         })
         
     },
 
 
+    salesReport : async(req, res) =>{
+        
+        let orders = await adminHelpers.deliveredOrders();
+        orders.forEach(order => {
+            const date = new Date(order.createdOn);
+            order.createdOn = date.toLocaleDateString('es-ES',  { timeZone: 'UTC' });;
+            order.total = order.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+          });
+        res.render('admin/sales-report', {admin: true, orders})
+    },
+
+    salesFilter : async(req, res) =>{
+        console.log("this is sales report if", req.body);
+        let orders = await adminHelpers.filterReport(req.body.startDate, req.body.endDate);
+        console.log(orders);
+        orders.forEach(order => {
+            const isoDate = order.createdOn;
+            const date = new Date(isoDate);
+            const options = { timeZone: 'UTC' };
+            const localDateString = date.toLocaleDateString('es-ES', options);
+            order.createdOn = localDateString;
+          });
+        res.render('admin/sales-report', {admin: true, orders});
+        // res.json(orders)
+        // res.redirect('/admin/sales-report');
+    },
+
+
+    
 
 
     

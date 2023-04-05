@@ -25,9 +25,25 @@
         <div class="container">
         	<div class="row">
             	<!--Sidebar-->
-            	<div class="col-12 col-sm-12 col-md-3 col-lg-3 sidebar filterbar">
+            	<div class="col-12 col-sm-12 col-md-3 col-lg-3 sidebar  filterbar">
                 	<div class="closeFilter d-block d-md-none d-lg-none"><i class="icon icon anm anm-times-l"></i></div>
                 	<div class="sidebar_tags">
+
+                        <div class="filters-toolbar__item mb-4 ">
+                        	<label for="SortBy" class="hidden">Sort</label>
+                        	<select name="SortBy" id="SortBy" class="filters-toolbar__input filters-toolbar__input--sort " style=" padding-left: 1%; font-weight: normal; font-size: initial;  border-bottom: inset">
+                                <option value="title-ascending" selected="selected" > SORT  </option>
+                                <option>New Products</option>
+                                <option>Price, low to high</option>
+                                <option>Price, high to low</option>
+                                <option>Alphabetically, A-Z</option>
+                                <option>Alphabetically, Z-A</option>
+                                
+                                {{!-- <option>Date, new to old</option>
+                                <option>Date, old to new</option> --}}
+                        	</select>
+                        	<input class="collection-header__default-sort" type="hidden" value="manual">
+                        </div>
                     	<!--Categories-->
                     	
 
@@ -69,6 +85,8 @@
                                 
                             </ul>
                         </div>
+
+                        
                         <!--End Brand-->
                        
                         <!--Banner-->
@@ -87,7 +105,7 @@
                 	<div class="productList">
                     	<!--Toolbar-->
                         <button type="button" class="btn btn-filter d-block d-md-none d-lg-none"> Product Filters</button>
-                    	<div class="toolbar">
+                    	{{!-- <div class="toolbar">
                         	<div class="filters-toolbar-wrapper">
                             	<div class="row">
                                 	<div class="col-4 col-md-4 col-lg-4 filters-toolbar__item collection-view-as d-flex justify-content-start align-items-center">
@@ -98,9 +116,9 @@
                                         	<img src="/assets/images/list.jpg" alt="List" />
                                         </a>
                                     </div>
-                                    {{!-- <div class="col-4 col-md-4 col-lg-4 text-center filters-toolbar__item filters-toolbar__item--count d-flex justify-content-center align-items-center">
+                                    <div class="col-4 col-md-4 col-lg-4 text-center filters-toolbar__item filters-toolbar__item--count d-flex justify-content-center align-items-center">
                                     	<span class="filters-toolbar__product-count">Showing: 22</span>
-                                    </div> --}}
+                                    </div>
                                     <div class="col-4 col-md-4 col-lg-4 text-right">
                                     	<div class="filters-toolbar__item">
                                       		<label for="SortBy" class="hidden">Sort</label>
@@ -120,7 +138,7 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!--End Toolbar-->
                         <div class="grid-products grid--view-items">
                             <div class="row">

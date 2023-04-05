@@ -1,0 +1,96 @@
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+
+            <!-- [ breadcrumb ] start -->
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="mb-4 float-left ">SALES REPORTS</h4>
+                {{!-- <a  onclick="salesReport()" class="btn btn-primary float-right" >APPLY</a> --}}
+
+               
+                
+
+                <form action="/admin/filtered-sales-report" class="float-right" method="post">
+                
+                <h6 class="float-left p-2">From :</h6>
+                <div class="float-left  pl-2">
+                  <input type="date" class="form-control" id="startDate" name="startDate" />
+                </div>
+                <h6 class="float-left p-2">To :</h6>
+                 <div class="float-left  pl-2 pr-3">
+                  <input type="date" class="form-control" id="endDate" name="endDate" />
+                </div>
+                <button type="submit" class="btn btn-primary">APPLY</button>
+                </form>
+               
+
+                <div class="text-center ">
+                  <div class="table-responsive pt-4">
+                    <table class="table table-striped" style="width: 100%; ">
+                      <thead>
+                        <tr>
+                          <th scope="col">date</th>
+                          <th scope="col">order id</th>
+                          <th scope="col">name</th>
+                          <th scope="col">items</th>
+                          <th scope="col">price</th>
+                          <th scope="col">payment method</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        {{#each orders}}
+
+                          <tr>
+
+                            <th scope="row">{{this.createdOn}}</th>
+                            <td>{{this._id}}</td>
+                            <td>{{this.userId}}</td>
+                            <td>{{this.items}}</td>
+                            <td>{{this.total}}</td>
+                            <td>{{this.paymentMethod}}</td>
+
+                          </tr>
+                        {{/each}}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- [ Main Content ] end -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function salesReport(){
+        let start = document.getElementById('startDate').value;
+        let end = document.getElementById('endDate').value;
+        console.log(start, end);
+
+        axios({
+            url: '/admin/filtered-sales-report',
+            method: 'post',
+            data:{
+                startDate: start,
+                endDate: end
+            }
+        }).then((reponse) =>{
+            console.log(reponse);
+            window.location.href = '/dashboard?';
+        })
+
+    }
+</script>

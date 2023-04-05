@@ -35,7 +35,7 @@
                     </div>
                     {{/each}} --}}
 
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col border shadow" style="background: rgb(247 247 247 / 49%)">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col  " style="background:  rgba(228, 223, 223, 0.49)">
                         <div  class="cart style2 pt-2">
                         	<table class="container">
                                 <thead class="cart__row cart__header">
@@ -71,7 +71,7 @@
                      </div>
 
                     {{#if orderDetails}}
-                    <div class="col-md-6 col-lg-6 col-xl-6 border mt-1 shadow" style="background-color:rgb(247 247 247 / 49%);">
+                    <div class="col-md-6 col-lg-6 col-xl-6  mt-2 " style="background-color: rgba(228, 223, 223, 0.49);">
                    
                         <div class="pl-4 pt-4">
                             <p>ORDER ID :{{orderDetails._id}}</p>
@@ -79,10 +79,12 @@
                             <p>PAYMENT-METHOD :{{orderDetails.paymentMethod}} </p>
                             <p>ORDER STATUS :{{orderDetails.status}} </p>
                             <p>CREATED ON :{{orderDetails.createdOn}} </p>
-                            <h3 class="float-left text-secondary">TOTAL PRICE : </h3><h3 class="text-danger ml-2">{{orderDetails.price}} </h3>
+                            <p>TOTAL PRICE :{{orderDetails.subtotal}} </p>
+                            <p>DISCOUNT :{{orderDetails.discount}} </p>
+                            <h3 class="float-left text-secondary">GRAND TOTAL : </h3><h3 class="text-danger ml-2">{{orderDetails.total}} </h3>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-6 border mt-1 shadow" style="background-color: rgb(247 247 247 / 49%);">
+                    <div class="col-md-6 col-lg-6 col-xl-6  mt-2 " style="background-color: rgba(228, 223, 223, 0.49);">
                         <div class="pl-4 pt-3">
                             <h3 class="text-secondary pb-1">Delivery Details</h3>
                             <p>NAME :{{orderDetails.deliveryDetails.name}} </p>

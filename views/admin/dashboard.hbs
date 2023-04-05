@@ -17,13 +17,14 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-12">
                                             <div class="page-header-title">
-                                                <h5 class="m-b-10">Morris Chart</h5>
+                                                <h5 class="m-b-10">DASHBOARD</h5>
+                                                {{!-- <a href="/admin/sales-report" class="btn btn-primary float-right">SALES REPORT</a> --}}
                                             </div>
-                                            <ul class="breadcrumb">
+                                            {{!-- <ul class="breadcrumb">
                                                 <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
                                                 <li class="breadcrumb-item"><a href="#!">Chart</a></li>
                                                 <li class="breadcrumb-item"><a href="#!">Morris Chart</a></li>
-                                            </ul>
+                                            </ul> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -31,6 +32,75 @@
                             <!-- [ breadcrumb ] end -->
                             <!-- [ Main Content ] start -->
                             <div class="row">
+
+                                <div class="col-xl-3 col-md-6">
+									<div class="card prod-p-card bg-c-red">
+										<div class="card-body">
+											<div class="row align-items-center m-b-25">
+												<div class="col">
+													<h6 class="m-b-5 text-white">Total Profit</h6>
+													<h3 class="m-b-0 text-white">{{money}}</h3>
+												</div>
+												<div class="col-auto">
+													<i class="fas fa-money-bill-alt text-c-red f-18"></i>
+												</div>
+											</div>
+											<p class="m-b-0 text-white"><span class="label label-danger m-r-10">+11%</span>From Previous Month</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+									<div class="card prod-p-card bg-c-blue">
+										<div class="card-body">
+											<div class="row align-items-center m-b-25">
+												<div class="col">
+													<h6 class="m-b-5 text-white">Total Orders</h6>
+													<h3 class="m-b-0 text-white">{{orders}}</h3>
+												</div>
+												<div class="col-auto">
+													<i class="fas fa-database text-c-blue f-18"></i>
+												</div>
+											</div>
+											<p class="m-b-0 text-white"><span class="label label-primary m-r-10">+12%</span>From Previous Month</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+									<div class="card prod-p-card bg-c-green">
+										<div class="card-body">
+											<div class="row align-items-center m-b-25">
+												<div class="col">
+													<h6 class="m-b-5 text-white">Total users</h6>
+													<h3 class="m-b-0 text-white">{{users}}</h3>
+												</div>
+												<div class="col-auto">
+													<i class="fas fa-dollar-sign text-c-green f-18"></i>
+												</div>
+											</div>
+											<p class="m-b-0 text-white"><span class="label label-success m-r-10">+52%</span>From Previous Month</p>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-3 col-md-6">
+                                    <a href="/admin/sales-report">
+									<div class="card prod-p-card bg-c-yellow">
+										<div class="card-body">
+											<div class="row align-items-center m-b-25">
+												<div class="col">
+													<h6 class="m-b-5 text-white">Product Delivered</h6>
+													<h3 class="m-b-0 text-white">6,784</h3>
+												</div>
+												<div class="col-auto">
+													<i class="fas fa-tags text-c-yellow f-18"></i>
+												</div>
+											</div>
+											<p class="m-b-0 text-white"><span class="label label-warning m-r-10">+52%</span>From total collection</p>
+										</div>
+									</div>
+                                    </a>
+								</div>
+
+
                                 <!-- [ donut-Chart ] start -->
                                 {{!-- <div class="col-xl-6">
                                     <div class="card">

@@ -37,6 +37,10 @@ router.get('/unlist/:id',adminAuth.varifyLogin, controller.productUnlist);
 
 router.get('/coupons',adminAuth.varifyLogin, controller.getCoupons);
 
+router.post('/add-coupon', adminAuth.varifyLogin, controller.addcoupons);
+
+router.post('/edit-coupon/:id', adminAuth.varifyLogin, controller.editCoupons);
+
 router.get('/banners',adminAuth.varifyLogin, controller.findBanners);
 
 router.get('/add-banner',adminAuth.varifyLogin, controller.addBanners);
@@ -67,5 +71,10 @@ router.get('/order-details/:id', adminAuth.varifyLogin, controller.getOrderDetai
 
 router.post('/order-status', adminAuth.varifyLogin, controller.OrderStatus);
 
+router.get('/sales-report', adminAuth.varifyLogin, controller.salesReport);
+
+router.post('/filtered-sales-report', adminAuth.varifyLogin, controller.salesFilter);
+
+// router.get('/total-money', adminAuth.varifyLogin, controller.totalMoney);
 
 module.exports = router;

@@ -31,17 +31,17 @@ function changeQuantity(cartId, proId, userId, count){
                   })
             }else{
                 
-                
-                document.getElementById(proId).innerHTML = quantity + count;
-                let totalPrice = response.total
-                document.getElementById('total').innerHTML = totalPrice.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+              
+              document.getElementById(proId).innerHTML = quantity + count;
+              let totalPrice = response.total
+              document.getElementById('total').innerHTML = totalPrice.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
 
-                let price = parseInt(document.getElementById('price').innerHTML);
-                // price = parseInt(price.replace(/[^0-9.-]+/g,""));
-                console.log(price);
-                let qnty = parseInt(document.getElementById(proId).innerHTML);
-                subTotal = price*qnty;
-                document.getElementById(`${proId}subtotal`).innerHTML = subTotal
+              let price = parseInt(document.getElementById(`${proId}price`).innerHTML);
+              // price = parseInt(price.replace(/[^0-9.-]+/g,""));
+              console.log(price);
+              let qnty = parseInt(document.getElementById(proId).innerHTML);
+              subTotal = price*qnty;
+              document.getElementById(`${proId}subtotal`).innerHTML = subTotal
 
             }
         }
@@ -168,12 +168,7 @@ const Toast = Swal.mixin({
   
 async function  subCategory(mainItem, subItem) {
   console.log(mainItem , subItem);
-  // axios.post(`/shop/${mainItem}`,
-  //   data={
-  //     main: mainItem,
-  //     sub: subItem
-  //   }
-  // )
+  
   const res =await axios({
     method:'post',
     url:`/shop/${mainItem}`,

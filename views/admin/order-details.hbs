@@ -45,7 +45,9 @@
                             <p>PAYMENT-METHOD :{{orderDetails.paymentMethod}} </p>
                             <p>ORDER STATUS :{{orderDetails.status}} </p>
                             <p>CREATED ON :{{orderDetails.createdOn}} </p>
-                            <p>TOTAL PRICE :{{orderDetails.price}} </p>
+                            <p>TOTAL PRICE :{{orderDetails.subtotal}} </p>
+                            <p >DISCOUNT : <span>{{orderDetails.discount}} </span></p>
+                            <h6 class="float-left text-secondary"> GRAND TOTAL : </h6><h5 class="text-danger pl-3">{{orderDetails.total}} </h5>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-6 border" style="background-color: rgb(240, 243, 247);">

@@ -7,6 +7,7 @@ module.exports = {
     ORDER_COLLECTIONS: 'orders',
     WISHLIST_COLLECTIONS: 'wishlist',
     SUBCATEGORY_COLLECTIONS: 'subcategory',
+    COUPON_COLLECTIONS: 'coupons',
     CREDENTIALS: 'admin'
 
 

@@ -48,13 +48,9 @@ router.post('/new-password/:id', controller.newPasswordPost);
 
 router.get('/otp-login', controller.otpLogin);
 
-router.post('/otp-login', controller.otpLoginPost);
+router.post('/otp-verify', controller.otpVerify);
 
-router.get('/varify-otp', userAuth.varifyLogin, controller.getOTP);
-
-router.post('/varify-otp', controller.OTPvarify);
-
-// router.get('/category-filter/:id', controller.filterCategory);
+router.post('/otp-user-data', controller.otpUserData);
 
 router.get('/cart-products', userAuth.varifyLogin, controller.cartDetails);
 
@@ -69,6 +65,8 @@ router.post('/remove-cartproducts', controller.cartRemove);
 router.get('/check-out', userAuth.varifyLogin, controller.placeOrder);
 
 router.post('/check-out-address', userAuth.varifyLogin, controller.addOrderAddress);
+
+router.post('/apply-coupon', controller.applyCoupon);
 
 router.post('/post-order', userAuth.varifyLogin, controller.placeOrderPost);
 

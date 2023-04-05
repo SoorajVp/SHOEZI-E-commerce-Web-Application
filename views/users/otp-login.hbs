@@ -10,28 +10,47 @@
           <div class="card-body">
             
             {{!-- <form action="/otp-login" method="post" > --}}
-            <form >
-
+           
+                <div id="sender">
                   <div class="d-flex align-items-center  pb-1">
                     <h3 class=" mx-auto font-weight-bold">LOGIN WITH OTP</h3>   
                   </div>
-
                   <div class="form-outline mb-2 text-center">
                     <label for="" class="py-2" >Enter your Mobile Number</label>
-                    <input type="tel" id="OTPmobile" class="form-control form-control-lg " name="mobile" />
+                    <input type="tel" id="number" class="form-control form-control-lg " name="mobile" />
                   </div>
-
-                   {{#if logErr}}
-                    <span  class="text-center pb-2"><p class="text-danger">{{logErr}}</p></span>
-                  {{/if}}
-
+                  <div id="recaptcha-container"></div>
+                  <span id="senderErr" class="justify-content-center text-danger"></span>
                   <div class="pt-3 ">
-                    {{!-- <button type="button" class="btn btn-outline-primary  btn-block">Login</button> --}}
-                    <button  type="submit"  class="btn btn-block" style="width: 100%;">SEND OTP</button>
-                    
+                   <button  type="button" onclick="phoneAuth()" class="btn btn-block" style="width: 100%;">SEND OTP</button>
+                  </div>   
+                </div>
+
+                <div id="verifier" style="display: none;">
+
+                   <div class="d-flex align-items-center  pb-1">
+                    <h3 class=" mx-auto font-weight-bold">Verify OTP</h3>   
+                  </div>
+                  <div class="form-outline mb-2 text-center">
+                    <label for="" class="py-2" >Enter 6 digit OTP</label>
+                    <input type="tel" id="verificationcode" class="form-control form-control-lg" name="otp" />
+                  </div>
+                    {{!-- <p class="text-right text-primary p-1">Resend OTP</p> --}}
+                  <div class="form-outline mb-2 text-center">
+                    {{!-- <span id="verifySuccess" class="text-success"></span> --}}
+                    <span id="verifyErr" class="text-danger"></span>
+                  </div>
+                  <div class="pt-2 ">
+                    <button class="btn btn-block" onclick="codeverify()" style="width: 100%;">SUBMIT</button>
+                  </div>
+                  {{!-- <span id="p-conf" style="text-align: center;"><p class="text-success">Number Verified</p></span>
+                  <span id="n-conf" style="text-align: center;"><p class="text-danger">ERROR</p></span> --}}
 
                 </div>
-            </form>
+
+
+
+             
           </div>
         </div>
       </div>
@@ -39,23 +58,93 @@
   </div>
 </section>
 
+
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+
+
 <script>
 
-//const form = document.querySelector('form');
-//
-//form.addEventListener('submit', (event) => {
-//  consy  value = document.getElementById('OTPmobile');
-//  console.log(value)
-//  event.preventDefault();
-//
-//  const data = new FormData(form);
-//
-//  axios.post('/submit-form', data)
-//    .then((response) => {
-//      console.log(response.data);
-//    })
-//    .catch((error) => {
-//      console.error(error);
-//    });
-//});
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyC3MIN64hy_oTQfQWUHl0lID-CJkIfci0M",
+    authDomain: "yt-project-a29f8.firebaseapp.com",
+    projectId: "yt-project-a29f8",
+    storageBucket: "yt-project-a29f8.appspot.com",
+    messagingSenderId: "159898773748",
+    appId: "1:159898773748:web:2985334de4f06ff73356a1",
+    measurementId: "G-DLWR9M5SJC"
+};
+// initializing firebase SDK
+firebase.initializeApp(firebaseConfig);
+
+// render recaptcha verifier
+render();
+function render() {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+    recaptchaVerifier.render();
+}
+
+// function for send OTP
+function phoneAuth() {
+    var number = "+91"+document.getElementById('number').value;
+    console.log(number)
+    axios({
+      url:'/otp-verify',
+      method: 'post',
+      data:{
+        mobile: number
+      },
+    })
+      .then((response) =>{
+        console.log(response);
+        if(response.data.status){
+
+          firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
+            window.confirmationResult = confirmationResult;
+            coderesult = confirmationResult;
+            document.getElementById('sender').style.display = 'none';
+            document.getElementById('verifier').style.display = 'block';
+            console.log('OTP Sent');
+          }).catch(function (error) {
+            // error in sending OTP
+            alert(error.message);
+          });
+
+        }else{
+          document.getElementById('senderErr').innerHTML = "This Number is Not registered yet!"
+          //alert("user not found");
+        }
+      })
+}
+
+// function for OTP verify
+function codeverify() {
+    var code = document.getElementById('verificationcode').value;
+    console.log(code)
+    axios({
+      url: '/otp-user-data',
+      method: 'post'
+    })
+    coderesult.confirm(code).then(function () {
+       // document.getElementById('verifySuccess').innerHTML = "OTP Verified"
+       // document.getElementById('p-conf').style.display = 'block';
+       // document.getElementById('n-conf').style.display = 'none';
+        console.log('OTP Verified');
+        location.href = '/'; 
+
+    }).catch(function () {
+         document.getElementById('verifyErr').innerHTML = "Incorrect OTP"
+         //document.getElementById('p-conf').style.display = 'none';
+         //document.getElementById('n-conf').style.display = 'block';
+        console.log('OTP Not correct');
+    })
+}
+
+
+
+
+
+
 </script>

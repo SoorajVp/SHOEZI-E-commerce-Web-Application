@@ -72,15 +72,14 @@
 		                    		<h3 class="m-3 text-white text-center">+ NEW ADDRESS</h3>
 		                    </div>
                             </a>
-                        
 
-                            <input type="text" name="userId" value="{{user._id}}" hidden>
+                            {{!-- <input type="text" name="userId" value="{{user._id}}" hidden> --}}
                             
                             {{#each user.address}}
                             
                             <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border " >
 		                    	<div class="p-3">
-                                    <p> <b> {{this.name}} </b><b class="pl-4 h3"> {{this.mobile}} </b><input type="radio" name="addressId"  value="{{this._id}}" class="float-right" style="accent-color: black ; width: 15px; height: 15px;" required></p>
+                                    <p> <b> {{this.name}} </b><b class="pl-4 h3"> {{this.mobile}} </b><input type="radio" id="addressId" name="addressId"  value="{{this._id}}" class="float-right" style="accent-color: black ; width: 15px; height: 15px;" required></p>
                                     <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}}</p>
                                 </div>
 		                    </label>
@@ -96,11 +95,12 @@
                     	<div class="solid-border">
 							{{!-- <h5><label for="CartSpecialInstructions" class="cart-note__label small--text-center">Do you have any COUPONs</label></h5> --}}
 							<div class="input-group mb-3">
-                              <input type="text" class="form-control" placeholder="ENTER COUPON CODE" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                              <input type="text" id="couponCode" class="form-control" placeholder="ENTER COUPON CODE" aria-label="Recipient's username" aria-describedby="basic-addon2">
                               <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">APPLY COUPON</button>
+                                <button class="btn btn-outline-secondary" onclick="applyCoupon('{{total}}','{{user._id}}')" type="button">APPLY COUPON</button>
                               </div>
                             </div>
+                            <p id="coupon-err" class="text-center text-danger pb-3"></p>
 						</div>
                     </div>
 
@@ -119,7 +119,7 @@
                                             <th>Price</th>
                                             {{!-- <th>Size</th> --}}
                                             <th>Qty</th>
-                                            <th>Subtotal</th>
+                                            <th>Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -137,13 +137,18 @@
                                     </tbody>
                                     <tfoot class="font-weight-400">
                                         <tr>
-                                            <td colspan="3" class="text-right">Shipping </td>
-                                            <td>Free </td>
+                                            <td colspan="3" class="text-right">Sub Total </td>
+                                            <td id="subTotal">{{total}}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="3" class="text-right">Total</td>
-                                            <input type="tel" name="price" value="{{total}}" hidden>
-                                            <td><b>{{total}}</b></td>
+                                            <td colspan="3"  class="text-right">Discount </td>
+                                            <td class="text-danger" id="discount">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-right font-weight-bold h2">Grand Total</td>
+                                            <input type="tel" name="total" value="{{total}}" hidden>
+                                            <input type="tel" name="userId" id="userId" value="{{user._id}}" hidden>
+                                            <td ><b id="grand-total" class="text-success h3">{{total}}</b></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -159,7 +164,7 @@
                                     <div id="">
 
                                         <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2">
-                                            <input type="radio" name="payment-method" value="COD" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
+                                            <input type="radio" name="paymentType" value="COD" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                             <a class="pt-4" ><h3> CASH ON DELIVERY </h3></a>
                                          </label>
                                           
@@ -175,12 +180,12 @@
                                             <div id="collapseThree" class="collapse" data-parent="#accordion">
 
                                                 <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2  mb-2 pt-2">
-                                                  <input type="radio" name="payment-method" value="PAYPAL" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
+                                                  <input type="radio" name="paymentType" value="PAYPAL" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                                   <a class="pt-4" ><h3> PAYPAL</h3></a>
                                                 </label>
                                                 {{!-- <hr> --}}
                                                 <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border-top mb-2 pt-2">
-                                                  <input type="radio" name="payment-method" value="RAZORPAY" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
+                                                  <input type="radio" name="paymentType" value="RAZORPAY" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                                   <a class="pt-4" ><h3>Razorpay </h3></a>
                                                 </label>
 
@@ -200,7 +205,8 @@
                                 </div>
 
                                 <div class="order-button-payment ">
-                                    <button class="btn" value="Place order" type="submit">Place order</button>
+                                    {{!-- <button class="btn" value="Place order" type="submit">Place order</button> --}}
+                                    <button class="btn" onclick="placeOrder()" value="Place order" type="button">Place order</button>
                                 </div>
                             </div>
                         </div>
@@ -301,36 +307,81 @@
 
 <script>
 
-$("#checkout-form").submit((e)=>{
+async function applyCoupon(total, user){
+    const code = document.getElementById("couponCode").value;
+    console.log( code, user, total);
+    await axios({
+        url: '/apply-coupon',
+        method: 'post',
+        data:{
+            price: total,
+            userId: user,
+            code: code
+        }
+    })
+    .then((response) =>{
+        console.log(response);
+        if(response.data.status == true){
+            discount = Number(response.data.discount);
+            document.getElementById("discount").innerHTML = discount;
+            // let subTotal = document.getElementById("subTotal").value;
+            let subTotal = Number(total);
+            console.log(discount, subTotal);
+            let grand = Number(subTotal-discount);
+            document.getElementById("grand-total").innerHTML = subTotal-discount;
+        }else{
+            document.getElementById("coupon-err").innerHTML = response.data.message;
+        }
+    })
+}
 
- var formData = $('#checkout-form').serialize();
- console.log("this is form data "+ formData);
-    e.preventDefault()
-    $.ajax({
+
+
+function placeOrder(){
+
+ let subtotal = document.querySelector("#subTotal").innerHTML;
+ let discount = document.querySelector("#discount").innerHTML;
+ let total = document.querySelector("#grand-total").innerHTML;
+ let userId = document.querySelector("#userId").value;
+
+ let addressId = document.querySelector('input[name="addressId"]:checked').value;
+ let payment = document.querySelector('input[name="paymentType"]:checked').value;
+ let couponCode = document.querySelector("#couponCode").value;
+
+console.log("This is offer data---", userId ,subtotal, discount, total, addressId, payment, couponCode);
+
+    axios({
         url:'/post-order',
         method:'post',
-        data: formData,
-        success:(response)=>{
-            console.log(response);
-            if(response.method == 'COD'){
-                //alert("Order PLACED")
-                location.href = '/order-success'; 
-            }else if(response.method == 'RAZORPAY'){
-                //alert("Razorpay")
-                razorPayment(response);
-            }else{
-                alert("PAYPAL")
-            }
-            
-           
-        }
+        data: {
+          userId: userId,
+          addressId: addressId,
+          payment: payment,
+          subtotal: subtotal,
+          discount: discount,
+          total: total,
+          couponCode: couponCode
+         },
     })
-})
+    .then((response)=>{
+        console.log(response);
+        console.log(response.data.method);
+        if(response.data.method == 'COD'){
+            // alert("Order PLACED")
+            location.href = '/order-success'; 
+        }else if(response.data.method == 'RAZORPAY'){
+            // alert("Razorpay")
+            razorPayment(response.data);
+        }else{
+            alert("PAYPAL")
+        }
+    })
+}
 
 function razorPayment(order) {
     var options = {
         "key": "rzp_test_hdHsLrGkVWcilx", // Enter the Key ID generated from the Dashboard
-        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "amount": parseInt(order.amount), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         "currency": "INR",
         "name": "SHOEZI", //your business name
         "description": "Test Transaction",
@@ -360,12 +411,14 @@ function razorPayment(order) {
 }
 
 function varifyPayment(payment, order) {
+    let couponCode = document.querySelector("#couponCode").value;
+    let userId = document.querySelector("#userId").value;
     $.ajax({
         url:'/verify-payment',
         method:'post',
         data:{
             payment,
-            order
+            order,
         },
         success: (response) =>{
             console.log(response);

@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const { ObjectId, Db } = require("mongodb-legacy");
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
-const { resolve } = require("path");
+// const { resolve } = require("path");
+// const async = require("hbs/lib/async");
 // const { default: items } = require("razorpay/dist/types/items");
 
 var instance = new Razorpay({
@@ -125,7 +126,9 @@ module.exports = {
 
   checkMobile : (Mobile) =>{
     return new Promise(async (resolve, reject) =>{
+      Mobile = Mobile.replace("+91", "");
       Mobile = Number(Mobile);
+      console.log(Mobile)
       let response = {}
       let user = await db.get().collection(collection.USER_COLLECTIONS).findOne({mobile: Mobile});
       if(user){
@@ -136,6 +139,19 @@ module.exports = {
         response.status = false;
         resolve(response);
       }
+    })
+  },
+
+  getUserMobiledetails : (Mobile) =>{
+    return new Promise(async (resolve, reject) =>{
+      Mobile = Number(Mobile);
+      let response = {}
+      let user = await db.get().collection(collection.USER_COLLECTIONS).findOne({mobile: Mobile});
+      
+      response.user = user;
+      response.status = true;
+      resolve(response);
+      
     })
   },
 
@@ -213,7 +229,7 @@ module.exports = {
         }
       ])
       .toArray();
-      console.log("Cart items", cartItems)
+      console.log("Cart items------", cartItems)
       resolve(cartItems);
     })
   },
@@ -303,6 +319,7 @@ module.exports = {
         }
       ]).toArray();
       try{
+        console.log("this is cart details-----")
         console.log(cartTotal[0].total);
         resolve(cartTotal[0].total);
       }catch(err){
@@ -336,7 +353,23 @@ module.exports = {
 
   placeOrder : async(order, products) =>{
     return new Promise(async(resolve, reject) => {
-      console.log(order.userId, order.addressId);
+      if(order.couponCode){
+        console.log("coupon exists ")
+
+         db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: order.couponCode}, 
+          { 
+            $push: {
+              users: new ObjectId(order.userId) 
+            } 
+          })
+          .then(()=>{})
+
+      }else{
+        console.log("coupon not exists ")
+      }
+      console.log("this is ordered price :---------------");
+      console.log("this is ordered price :---------------",order);
+      order.total = parseInt(order.total.replace(/[^\d.-]/g, ''));
       let UserDetails = await db.get().collection(collection.USER_COLLECTIONS).aggregate([
         {
           $match:{
@@ -353,7 +386,7 @@ module.exports = {
         }
       ]).toArray()
       
-      let status = order['payment-method']=='COD'?'PLACED':'PENDING'
+      let status = order.payment == 'COD'?'PLACED':'PENDING'
       let orderObj = {
         deliveryDetails:{
           name: UserDetails[0].address.name,
@@ -364,12 +397,15 @@ module.exports = {
           pincode: Number(UserDetails[0].address.pincode)
         },
         userId: new ObjectId(order.userId),
-        paymentMethod: order['payment-method'],
+        paymentMethod: order.payment,
         products: products,
         status: status,
-        price: order.price,
+        subtotal: Number(order.subtotal),
+        discount: Number(order.discount),
+        total: Number(order.total),
         createdOn: new Date()
       }
+      console.log("this order Object===",orderObj)
       await db.get().collection(collection.ORDER_COLLECTIONS).insertOne(orderObj)
       .then((response) => {
         response.status = orderObj.paymentMethod;
@@ -383,7 +419,7 @@ module.exports = {
 
   myOrderList : (userId) =>{
     return new Promise(async(resolve, reject) =>{
-      let orderList = await db.get().collection(collection.ORDER_COLLECTIONS).find({userId: new ObjectId(userId)}).toArray();
+      let orderList = await db.get().collection(collection.ORDER_COLLECTIONS).find({userId: new ObjectId(userId)}).sort({ createdOn: -1 }).toArray();
       resolve(orderList);
     })
   },
@@ -410,12 +446,17 @@ module.exports = {
 
   verifyOrderPayment : (details) =>{
     return new Promise((resolve, reject) =>{
+      console.log("this function is reached--------------------");
       let hmac = crypto.createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH') //createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH');
       hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
       hmac = hmac.digest('hex');
-      if(hmac == details['payment[razorpay_signature]']){
+      console.log(hmac)
+      console.log(details['payment[razorpay_signature]'])
+      if(hmac === details['payment[razorpay_signature]']){
+        console.log("condition truewwwww");
         resolve();
       }else{
+        console.log("condition falseeee");
         reject()
       }
     })
@@ -498,8 +539,7 @@ module.exports = {
     });
     resolve(WishlistItems);
     })
-  }
-
+  },
 
   
  

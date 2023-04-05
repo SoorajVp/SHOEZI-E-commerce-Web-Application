@@ -214,7 +214,7 @@ img {
 					
 					<button type="button"  name="cancel" class="bg-secondary text-white p-2">Cancel</button>
 					</a>
-					<button type="submit" id="submit" class="btn-primary p-2">Update</button>
+					<button type="submit" onclick="addressUpdate()" id="submit" class="btn-primary p-2">Update</button>
 				</div>
 			</div>
 			
@@ -265,6 +265,18 @@ img {
 
 
 <script>
+
+function addressUpdate(){
+	Swal.fire({
+	  position: 'top-end',
+	  icon: 'success',
+	  title: 'Your work has been saved',
+	  showConfirmButton: false,
+	  timer: 1500
+	})
+}
+
+
  // vars
 let result = document.querySelector('.result'),
 img_result = document.querySelector('.img-result'),

@@ -6,7 +6,9 @@ const productHelpers = require("../helpers/product-helpers");
 const userHelpers = require("../helpers/user-helpers");
 const otpVarify = require('../api/twilio');
 const { getOrderProductList } = require("../helpers/user-helpers");
-const Swal = require('sweetalert2')
+const Swal = require('sweetalert2');
+const async = require("hbs/lib/async");
+// const async = require("hbs/lib/async");
 
 module.exports = {
   homepage: async(req, res) => {
@@ -81,7 +83,7 @@ module.exports = {
       for(let i=0; i< products.length; i++){
         products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
       }
-      
+
       if (req.session.loggedin) {
         let user = req.session.user; 
         let cartCount = await userHelpers.getCartCount(req.session.user._id);
@@ -211,83 +213,37 @@ module.exports = {
   },
 
   otpLogin : (req, res) =>{ 
-    res.render('users/otp-login', {logErr: req.session.logErr});
+    res.render('users/otp-login');
     req.session.logErr = false;   
   },
 
-  getOTP : (req, res) =>{
-    console.log("============",req.session.otpNumber);
-    if(req.session.otpNumber){
-      res.redirect('/varify-otp')
-    }else{
-      res.redirect('/otp-login');
-    }
-    
-  },
-
-  otpLoginPost : async(req, res) =>{
-    console.log("!@#$%^&*)(*&^!@#$%^&",req.body.mobile);
-    let response = await userHelpers.checkMobile(req.body.mobile)
+  otpVerify : async(req, res) =>{
+    console.log("this is otp number----", req.body);
+    await userHelpers.checkMobile(req.body.mobile).then((response) =>{
+      console.log("This is reponse from find user mobile",response)
       if(response.status){
-        console.log("55555555555555555555555555", response.status);
-        console.log(response.user.mobile);
-        req.session.otpNumber = response.user.mobile;
-        await otpVarify.sendOtp(response.user.mobile).then((result) =>{
-          console.log("88888888888888888888888888", result);
-          if(result){
-            res.render('users/otp-enter', {logErr: req.session.logErr});
-            req.session.logErr = false; 
-          }else{
-            console.log("OTP is not sended .......");
-            console.log("999999999999999999999", result);
-            res.redirect('/varify-otp');
-          }
-          
-        })        
+        req.session.otpMobile = response.user.mobile;
+        res.json(response);
       }else{
-        console.log("66666666666666666666", response.status);
-        req.session.logErr = "Mobile is not Registered";
-        res.redirect('/otp-login');
+        res.json(response);
       }
+    })
   },
 
+  otpUserData : async(req, res) =>{
+    console.log("this is session mobile----", req.session.otpMobile)
+    await userHelpers.getUserMobiledetails(req.session.otpMobile).then((response) =>{
+      console.log(response);
+      if(response.status){
+        req.session.loggedin = true;
+        req.session.user = response.user;
+        res.json(response)
+      }else{
+        res.json(response)
+      }
+    })
+  },
   
-
-  OTPvarify : async(req, res) =>{
-    console.log("current otp number---",req.session.otpNumber);
-    let response = await otpVarify.verifyOtp(req.session.otpNumber, req.body.otp);
-    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    console.log(response);
-    if(response){
-      let result = await userHelpers.checkMobile(req.session.otpNumber);
-      console.log("This is result of mobile find ---",result);
-      req.session.user = result.user;
-      req.session.loggedin = true;
-      res.redirect('/');
-    }else{
-      req.session.logErr = "Invalid OTP"
-      res.redirect('/varify-otp');
-    }
-  },
-
-  filterCategory : async(req, res) =>{
-    console.log("ttttttttttttttttttttttttttttt", req.params.id);
-    if(req.session.user){
-        let user = req.session.user;
-        let category = await adminHelpers.getCategory();
-        let cartCount = await userHelpers.getCartCount(req.session.user._id);
-        await productHelpers.categoryService(req.params.id).then((products) =>{
-          res.render('users/category-products', {products, category, user, cartCount});
-        })
-    }else{
-      let category = await adminHelpers.getCategory();
-      await productHelpers.categoryService(req.params.id).then((products) =>{
-        res.render('users/category-products', {products, category});
-      })
-    }
-    
-  },
-
   cartDetails : async(req, res) =>{
     let user = req.session.user;
     let cartCount = await userHelpers.getCartCount(req.session.user._id);
@@ -303,10 +259,7 @@ module.exports = {
   },
 
   addToCart : (req, res) =>{
-    console.log("^^^^^^^^^^^^^^^^^^^ API CALL ^^^^^^^^^^^^^^^^^^^^^^^^");
-    console.log(req.params.id);
     userHelpers.updateCart(req.params.id, req.session.user._id).then(() =>{
-      console.log("end reached ---------------------------------",);
       res.json({
         status: true,
         message: 'added to cart'
@@ -317,7 +270,6 @@ module.exports = {
   },
 
   homeAddToCart : async(req, res) => {
-    console.log("home page add to card-----------",req.body.proId);
     await userHelpers.updateCart(req.body.proId, req.session.user._id).then((response) =>{
       res.json({status : true,
         message: "item added to cart"
@@ -346,10 +298,7 @@ module.exports = {
     let products = await userHelpers.getCartproducts(user._id);
     let cartCount = await userHelpers.getCartCount(req.session.user._id);
     let total = await userHelpers.getTotalAmount(req.session.user._id);
-    total = total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-
     // total = total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-    console.log("BBBBBBBBB", products)
     res.render('users/checkout',{total, user, cartCount, products});
   },
 
@@ -358,15 +307,18 @@ module.exports = {
     userHelpers.findUser(req.params.id).then((user) =>{
         req.session.user = user;
         res.redirect('/address');
+        
     })
   },
 
   removeAddress : async(req, res) =>{
+    console.log(req.params.id)
     let addressId = req.params.id;
     await userHelpers.AddressDelete(addressId, req.session.user._id);
     let user = await userHelpers.findUser(req.session.user._id);
     req.session.user = user;
-    res.redirect('/address');
+    // res.redirect('/address');
+    res.json({status: true});
     
   },
 
@@ -379,22 +331,22 @@ module.exports = {
   },
 
   placeOrderPost : async(req, res) =>{
-    console.log(req.body);
+    console.log("this is req.body");
+    console.log("this order datas------",req.body);
     let products = await userHelpers.getOrderProductList(req.body.userId);
-    // let totalPrice = await userHelpers.getTotalAmount(req.body.userId);
-    // console.log("total------------", totalPrice)
-    // let address = await userHelpers.getAddress(req.body.userId, req.body.addressId);
+   
     userHelpers.placeOrder(req.body, products).then((response) => {
-      console.log("+++++++++++++++++++++++++++")
+      console.log("+++++++++++++++++++++++++++", response.status)
       response.insertedId = ""+response.insertedId
       console.log(response);
       if(response.status == 'COD'){
         response.method = 'COD'
         res.json(response);
       }else if(response.status == 'RAZORPAY'){
-        userHelpers.generateRazorpay(response.insertedId, req.body.price).then((response) =>{
+        console.log("rezorpay----")
+        userHelpers.generateRazorpay(response.insertedId, req.body.total).then((response) =>{
           response.method = 'RAZORPAY' 
-          console.log(response);
+          console.log("this is response from razorpay----",response);
           res.json(response);
         })
       }else{
@@ -403,14 +355,38 @@ module.exports = {
     })
   },
 
+  applyCoupon : (req, res) =>{
+    console.log(req.body);
+    adminHelpers.couponApply(req.body.code, req.body.userId).then((response) =>{
+      console.log("this is response from the coupon---", response);
+      if(response.status){
+        // const totalAmount = 1000;
+        // const percentage = 20;
+        const discountValue = (response.offer / 100) * req.body.price;
+        console.log(discountValue);
+        res.json({
+          status: true,
+          discount: discountValue
+        });
+      }else{
+        res.json(response);
+      }
+
+    })
+  },
+
   MyOrders : async(req, res) =>{
     let user = req.session.user;
     let orders = await userHelpers.myOrderList(user._id);
     let cartCount = await userHelpers.getCartCount(user._id);
     console.log("***" , orders)
-    orders.map((order)=>{
-      order.createdOn = (order.createdOn).toLocaleDateString('es-ES')
-    })
+    orders.forEach(order => {
+      const isoDate = order.createdOn;
+      const date = new Date(isoDate);
+      const options = { timeZone: 'UTC' };
+      const localDateString = date.toLocaleDateString('es-ES', options);
+      order.createdOn = localDateString;
+    });
     res.render('users/order-list', {user, orders, cartCount});
 
   },
@@ -422,7 +398,6 @@ module.exports = {
     let cartCount = await userHelpers.getCartCount(user._id);
     console.log("!!!!!!!",orderDetails);
     res.render('users/order-details', {user, cartCount, products, orderDetails});
-
   },
 
   myOrderStatus : async(req, res) =>{
@@ -441,14 +416,16 @@ module.exports = {
 
   varifyPayment : (req, res) =>{
     console.log("this is the last log", req.body);
-    userHelpers.verifyOrderPayment(req.body).then(() =>{
+    userHelpers.verifyOrderPayment(req.body).then(async() =>{
+      console.log("condition truewwwww");
       let orderStatus = 'PLACED'
-      console.log('this is the last console and the order id is',req.body['order[receipt]'])
-      adminHelpers.changeOrderStatus(req.body['order[receipt]'], orderStatus).then(() =>{
+      console.log('this is the last console and the order id is',req.body['order[receipt]']);
+      await adminHelpers.changeOrderStatus(req.body['order[receipt]'], orderStatus).then(() =>{
         console.log("payment successfull");
         res.json({status: true});
       })
     }).catch((err) =>{
+      console.log("condition falseeee");
       res.json({status: false})
     })
   },
