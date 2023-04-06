@@ -1,13 +1,14 @@
 // const { response } = require("../app");
 // const { response } = require("express");
-const { Db } = require("mongodb");
+// const { Db } = require("mongodb");
 const adminHelpers = require("../helpers/admin-helpers");
 const productHelpers = require("../helpers/product-helpers");
 const userHelpers = require("../helpers/user-helpers");
-const otpVarify = require('../api/twilio');
+const orderHelpers = require("../helpers/order-helpers");
+// const otpVarify = require('../api/twilio');
 const { getOrderProductList } = require("../helpers/user-helpers");
 const Swal = require('sweetalert2');
-const async = require("hbs/lib/async");
+// const async = require("hbs/lib/async");
 // const async = require("hbs/lib/async");
 
 module.exports = {
@@ -82,6 +83,9 @@ module.exports = {
 
       for(let i=0; i< products.length; i++){
         products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+        if(products[i].offer){
+           products[i].total = products[i].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+        }
       }
 
       if (req.session.loggedin) {
@@ -120,6 +124,12 @@ module.exports = {
   productDetails : async(req, res) =>{
     let product = await productHelpers.getProductDetails(req.params.id);
     product.price = product.price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+    
+    if(product.offer){
+      product.total = product.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+    }
+    product.price = product.price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+
     if(req.session.loggedin){
       let user = req.session.user; 
       let cartCount = await userHelpers.getCartCount(req.session.user._id);
@@ -439,6 +449,17 @@ module.exports = {
     let user = req.session.user;
     let cartCount = await userHelpers.getCartCount(user._id);
     let items = await userHelpers.getWishListItems(user._id);
+    console.log(items)
+
+    items.forEach(item => {
+      console.log(item)
+      // item.result[0].total = item[0].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      item.result[0].price = item.result[0].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      if(item.result[0].total){
+        item.result[0].total = item.result[0].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      }
+    });
+
     res.render('users/wishlist', {user, cartCount, items});
   },
 

@@ -534,9 +534,7 @@ module.exports = {
           }
         ]
     ).toArray();
-    WishlistItems.forEach(item => {
-      console.log(item);
-    });
+    
     resolve(WishlistItems);
     })
   },

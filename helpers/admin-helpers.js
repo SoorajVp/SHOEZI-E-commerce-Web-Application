@@ -1,8 +1,8 @@
 const { ObjectId } = require("mongodb-legacy");
 var collection = require("../config/collection");
 var db = require("../config/connection");
-const { response } = require("express");
-const async = require("hbs/lib/async");
+// const { response } = require("express");
+// const async = require("hbs/lib/async");
 // const { reject } = require("bcrypt/promises");
 // const async = require("hbs/lib/async");
 // const userAuth = require("../middlewares/userAuth");
@@ -342,36 +342,7 @@ module.exports = {
     })
   },
 
-  getTotalMoney : () =>{
-    return new Promise(async(resolve, reject) =>{
-      let money = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
-        { $group: { 
-          _id: null,
-          total: {
-             $sum: "$total" 
-            } 
-          }
-        }
-      ]).toArray()
-      console.log("price",money[0].total);
-      resolve(money[0].total);
-    })
-  },
-
-  getTotalUsers: () =>{
-    return new Promise(async(resolve, reject) =>{
-      const count = await db.get().collection(collection.USER_COLLECTIONS).countDocuments();
-      console.log("users",count);
-      resolve(count);
-    })
-  },
-  getTotalOrders: () =>{
-    return new Promise(async(resolve, reject) =>{
-      const count = await db.get().collection(collection.ORDER_COLLECTIONS).countDocuments();
-      console.log("orders",count);
-      resolve(count);
-    })
-  },
+  
   
   addCoupons : (coupon) =>{
     coupon.created = new Date();

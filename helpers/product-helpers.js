@@ -1,7 +1,7 @@
 const db = require('../config/connection');
 const collection = require('../config/collection');
 const { ObjectId } = require('mongodb-legacy');
-const async = require('hbs/lib/async');
+// const async = require('hbs/lib/async');
 // const { response } = require('express');
 
 module.exports = {
@@ -9,9 +9,13 @@ module.exports = {
     addProducts : (products, callback) =>{
         console.log(products.category);
         products.category = new ObjectId(products.category);
-        products.subcategory = new ObjectId(products.subcategory);
-        products.price = Number(products.price);
+        products.quantity = Number(products.quantity);
         products.listed = true;
+        products.price = Number(products.price);
+        products.offer = Number(products.discount);
+        products.discount = (products.discount / 100) * products.price;
+        products.total = products.price - products.discount;
+
         console.log(products);
         
         db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne(products).then((data) =>{
@@ -100,9 +104,14 @@ module.exports = {
 
     updateProduct : (product,prodId) =>{
         product.price = Number(product.price);
+        product.quantity = Number(product.quantity);
         product.category = new ObjectId(product.category);
         product.listed = true;
+        product.offer = Number(product.discount);
+        product.discount = (product.discount / 100) * product.price;
+        product.total = product.price - product.discount;
         console.log(product)
+
         return new Promise( async(resolve, reject)=>{
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id: new ObjectId(prodId)},{
                 $set:{
@@ -110,7 +119,11 @@ module.exports = {
                     category: product.category,
                     brand : product.brand,
                     description: product.description,
+                    quantity: product.quantity,
                     price: product.price,
+                    offer: product.offer,
+                    discount: product.discount,
+                    total: product.total
                 }
             })
         })

@@ -2,6 +2,7 @@ var db = require('../config/connection');
 var collection = require('../config/collection');
 const userHelpers = require('../helpers/user-helpers');
 const adminHelpers = require('../helpers/admin-helpers');
+const orderHelpers = require('../helpers/order-helpers');
 const productHelpers = require('../helpers/product-helpers');
 const cloudinary = require('../utils/cloudinary');
 const path = require('path');
@@ -21,11 +22,21 @@ module.exports = {
     },  
 
     dashboard : async(req, res) =>{
-        let money = await adminHelpers.getTotalMoney();
-        let users = await adminHelpers.getTotalUsers();
-        let orders = await adminHelpers.getTotalOrders();
+        const today = new Date();
+         let totalAmount = await orderHelpers.getTotalMoney();
+        // let users = await adminHelpers.getTotalUsers();
+        // let orders = await adminHelpers.getTotalOrders();
+
+        let dailyOrders = await orderHelpers.dailySales(today)
+        let weeklyOrders= await orderHelpers.weeklySales(today)
+        let monthlyOrders= await orderHelpers.monthlySales(today)
+
+        totalAmount = totalAmount.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+        dailyOrders = dailyOrders.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+        weeklyOrders = weeklyOrders.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+        monthlyOrders = monthlyOrders.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
         
-        res.render('admin/dashboard', {admin:true, money, users, orders});
+        res.render('admin/dashboard', {admin:true, dailyOrders, weeklyOrders, monthlyOrders, totalAmount});
     },
 
     postAdminlogin : async(req, res) => {
@@ -72,7 +83,8 @@ module.exports = {
     },
 
     getAllProducts : (req, res) =>{
-        productHelpers.getAllProducts().then((products) => {              
+        productHelpers.getAllProducts().then((products) => {   
+            console.log("this is product admin side---", products.length)           
             res.render('admin/view-products', {admin:true, products});
         })
     },
@@ -277,7 +289,9 @@ module.exports = {
     getOrders : async(req, res) =>{
         let orders = await adminHelpers.ordersList();
         console.log(orders)
+        
         orders.map((order)=>{
+            order.total = order.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
             order.createdOn = (order.createdOn).toLocaleDateString('es-ES')
         })
         res.render('admin/order-list', {admin: true, orders});

@@ -89,6 +89,7 @@
                   <button class="btn border btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     CATEGORY
                   </button>
+                  <input type="radio" name="category" value="{{product.category}}"  >
                   {{#each category}}
                   <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                       
@@ -123,7 +124,6 @@
                       </li>
                     </ul>
                     {{/each}}
-              
               </div>
 
                       
@@ -151,9 +151,14 @@
                         >{{product.description}}</textarea>
                       </div>
 
-                      <div class="form-group">
+                      <div class="col-6 float-left">
                         <label>Quantity</label>
-                        <input type="number" class="form-control" name="quantity" value="{{product.quantity}}" />
+                        <input type="tel" class="form-control" value="{{product.quantity}}" name="quantity" />
+                      </div>
+
+                      <div class="form-group col-6 float-left">
+                        <label>Discount ( % )</label>
+                        <input type="tel" class="form-control" value="{{product.offer}}" name="discount" />
                       </div>
 
                       <div class="form-group">

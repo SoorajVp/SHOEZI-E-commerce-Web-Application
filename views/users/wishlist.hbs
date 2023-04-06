@@ -35,7 +35,11 @@
                                             <!-- End image -->
                                             </a>
                                             <!-- product label -->
-                                            <div class="product-labels"><span class="lbl pr-label3">Popular</span></div>
+
+                                            {{#if this.result.[0].offer}}
+                                             <div class="product-labels"><span class="lbl pr-label3">- {{this.result.[0].offer}}% </span></div>
+                                            {{/if}}
+
                                             <!-- End product label -->
                                         
                                         <!-- end product image -->
@@ -64,9 +68,17 @@
                                         </div>
                                         <!-- End product name -->
                                         <!-- product price -->
-                                        <div class="product-price">
-                                            <span class="price"> ₹{{this.result.[0].price}}</span>
+
+                                        {{#if this.result.[0].offer}}
+                                        <div class="product-price pb-2">
+                                            <span class="old-price">{{this.result.[0].price}}</span>
+                                            <span class="price">{{this.result.[0].total}}</span>
                                         </div>
+                                        {{else}}
+                                         <div class="product-price pb-2">
+                                            <span class="price"> {{this.result.[0].price}}</span>
+                                        </div>
+                                        {{/if}}
                                         <!-- End product price -->
                                         
                                         

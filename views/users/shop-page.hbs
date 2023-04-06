@@ -159,7 +159,9 @@
                                             <!-- End image -->
                                             </a>
                                             <!-- product label -->
-                                            <div class="product-labels"><span class="lbl pr-label3">Popular</span></div>
+                                            {{#if this.offer}}
+                                            <div class="product-labels"><span class="lbl pr-label3">- {{this.offer}}% </span></div>
+                                            {{/if}}
                                             <!-- End product label -->
                                         
                                         <!-- end product image -->
@@ -189,9 +191,18 @@
                                         </div>
                                         <!-- End product name -->
                                         <!-- product price -->
+                                        {{#if this.offer}}
                                         <div class="product-price pb-2">
+                                            <span class="old-price">{{this.price}}</span>
+                                            <span class="price">{{this.total}}</span>
+                                        </div>
+                                        {{else}}
+                                       
+
+                                         <div class="product-price pb-2">
                                             <span class="price"> {{this.price}}</span>
                                         </div>
+                                        {{/if}}
                                         <!-- End product price -->
                                         
                                         

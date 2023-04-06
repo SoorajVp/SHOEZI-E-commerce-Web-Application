@@ -23,8 +23,8 @@
                         <tr>
                           <th scope="col">ORDER ID</th>
                           <th scope="col">USER NAME</th>
-                          <th scope="col">PLACE</th>
                           <th scope="col">DATE</th>
+                          <th scope="col">AMOUNT</th>
                           <th scope="col">PAYMENT TYPE</th>
                           <th scope="col">STATUS</th>
                           <th scope="col">ABOUT</th>
@@ -36,8 +36,8 @@
                           <tr id="tableRow">
                             <th scope="row">{{this._id}}</th>
                             <td>{{this.deliveryDetails.name}}</td>
-                            <td>{{this.deliveryDetails.district}}</td>
                             <td>{{this.createdOn}}</td>
+                            <td>{{this.total}}</td>
                             <td>{{this.paymentMethod}}</td>
                             {{!-- <td><b class="text-success font-weight-bold">{{this.status}}</b></td> --}}
                             <td>
@@ -50,16 +50,6 @@
                               <b class="text-danger font-weight-bold">CANCELLED</b>
                               {{else if (isEqual this.status 'SHIPPED')}}
 
-                              {{!-- <div class="dropdown">
-                                   <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{this.status}}
-                                  </button>
-                                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <form action="/admin/order-status/{{this._id}}" method="post"><input type="text" value="DELIVERED" name="status" hidden><button class="dropdown-item " type="submit">DELIVERED</button></a></form>
-                                    <form action="/admin/order-status/{{this._id}}" method="post"><input type="text" value="CANCELLED" name="status" hidden><button class="dropdown-item" type="submit">CANCEL</button></a></form>         
-                                  </div>
-                                </div> --}}
-
                                 <div class="dropdown">
                                   <button class="btn btn-outline-primary dropdown-toggle " type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{this.status}}
@@ -70,17 +60,7 @@
                                   </div>
                                 </div>
 
-
-                              {{else}}
-                                {{!-- <div class="dropdown">
-                                   <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{this.status}}
-                                  </button>
-                                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <form action="/admin/order-status/{{this._id}}" method="post"><input type="text" value="SHIPPED" name="status" hidden><button class="dropdown-item " type="submit">SHIPPED</button></a></form>
-                                    <form action="/admin/order-status/{{this._id}}" method="post"><input type="text" value="CANCELLED" name="status" hidden><button class="dropdown-item" type="submit">CANCEL</button></a></form>
-                                  </div>
-                                </div> --}}
+                              {{else if (isEqual this.status 'PLACED')}}
 
                                 <div class="dropdown">
                                   <button class="btn btn-outline-primary dropdown-toggle" type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,6 +68,18 @@
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','SHIPPED')" >SHIPPED</a>
+                                    <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','CANCELLED')" >CANCEL</a>
+                                  </div>
+                                </div>
+
+                              {{else}}
+
+                              <div class="dropdown">
+                                  <button class="btn btn-outline-primary dropdown-toggle" type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{this.status}}
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    {{!-- <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','SHIPPED')" >SHIPPED</a> --}}
                                     <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','CANCELLED')" >CANCEL</a>
                                   </div>
                                 </div>
