@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>documents</title>
+    {{!-- <link rel="stylesheet" href="/assets/css/errorPage.css"> --}}
 
     {{#if admin}}
      {{!-- Admin Side Template --}}
@@ -25,6 +26,15 @@
     <!-- vendor css -->
     <link rel="stylesheet" href="/admin-assets/css/style.css">
 
+    {{!-- Data tables links admin side --}}
+    
+    {{!-- <script src="/assets/js/vendor/jquery-3.3.1.min.js"></script> --}}
+    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+  
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    
+
     {{!-- Axios cndn link  --}}
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 
@@ -34,7 +44,7 @@
 
     {{else}}
 
-  {{!-- Swal sweet alert --}}
+    {{!-- Swal sweet alert --}}
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -98,6 +108,7 @@
     {{#if admin}}
     {{!-- AdminSide Template --}}
     
+    
     <!-- Required Js -->
     <script src="/admin-assets/js/vendor-all.min.js"></script>
     <script src="/admin-assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -107,7 +118,34 @@
     <script src="/admin-assets/plugins/chart-morris/js/morris.min.js"></script>
     <script src="/admin-assets/js/pages/chart-morris-custom.js"></script>
 
-
+  {{!-- dataTable --}}
+    
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('#userTable').DataTable();
+      });
+    
+      $(document).ready(function () {
+        $('#productTable').DataTable();
+      });
+      $(document).ready(function () {
+        $('#couponTable').DataTable();
+      });
+      $(document).ready(function () {
+        $('#bannerTable').DataTable();
+      });
+      $(document).ready(function () {
+        $('#categoryTable').DataTable();
+      });
+      $(document).ready(function () {
+        $('#salesTable').DataTable();
+      });
+      $(document).ready(function () {
+        $('#orderTable').DataTable();
+      });
+    </script>
+    
     {{else}}
 
     {{!-- UserSide Template --}}

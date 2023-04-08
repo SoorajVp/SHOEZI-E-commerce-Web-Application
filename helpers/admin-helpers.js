@@ -170,9 +170,15 @@ module.exports = {
     })
   },
 
-  updateCategory : (catgoryId, categoryName) =>{
+  updateCategory : (catgoryId, category) =>{
     return new Promise((resolve, reject) =>{
-      db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({_id: new ObjectId(catgoryId)}, {$set: {name: categoryName}});
+      console.log("this is edit category items", category)
+      db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({_id: new ObjectId(catgoryId)}, 
+      {$set: {
+        url: category.url,
+        main: category.main,
+        sub: category.sub,
+      }});
       resolve();
     })
   },
@@ -193,32 +199,11 @@ module.exports = {
     })
   },
 
-  ordersList : () =>{
-    return new Promise(async(resolve, reject) => {
-      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).find().sort({ createdOn: -1 }).toArray();
-      resolve(orders);
-    })
-  },
+ 
 
-  changeOrderStatus : (orderId, orderStatus) =>{
-    return new Promise((resolve, reject) =>{
-      console.log("this is order status changing", orderId, orderStatus)
-      db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id: new ObjectId(orderId)},{$set: {status: orderStatus}})
-      .then((response) =>{
-        console.log("changed status-----",response)
-        resolve(response);
-      })
-    })
-  },
 
-  getUserOrder : (orderId) =>{
-    return new Promise(async(resolve, reject) =>{
-      await db.get().collection(collection.ORDER_COLLECTIONS).findOne({_id: new ObjectId(orderId)}).then((response)=>{
-        resolve(response);
-      })
-      
-    })
-  },
+
+ 
 
   getItemCategory : (category) =>{
     return new Promise(async(resolve, reject) =>{
@@ -303,44 +288,9 @@ module.exports = {
     })
   },
 
-  deliveredOrders : () =>{
-    return new Promise(async(resolve,  reject) =>{
-      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).find({status: 'DELIVERED'}).sort({ createdOn: -1 }).toArray()
-      console.log("delivered products----",orders)
-      for(let i=0; i<orders.length; i++){
-        orders[i].items = orders[i].products.length;
-      }
-      // orders.items = orders.products.length
-      resolve(orders);
-    })
-  },
+  
 
-  filterReport : (start, end) =>{
-    
-    return new Promise(async(resolve, reject) =>{
-      const startDate = new Date(start);
-      const endDate = new Date(end);
-      console.log(startDate, endDate)
-
-      let orders = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
-        {
-          $match: {
-            createdOn: {
-              $gte: startDate,
-              $lte: endDate
-            }
-          }
-        },{
-          $match: {
-            status: 'DELIVERED'
-          }
-        }
-      ]).sort({ createdOn: -1 }).toArray()
-
-      console.log("this is filtered order ---", orders);
-      resolve(orders)
-    })
-  },
+ 
 
   
   
@@ -385,6 +335,14 @@ module.exports = {
     })
   },
 
+  deleteCoupon : (couponId) =>{
+    return new Promise((resolve, reject) =>{
+      db.get().collection(collection.COUPON_COLLECTIONS).deleteOne({_id: new ObjectId(couponId)}).then((response)=>{
+        resolve(response);
+      })
+    })
+  },
+
   getAllCoupons : () =>{
     return new Promise(async(resolve, reject) =>{
       let coupons = await db.get().collection(collection.COUPON_COLLECTIONS).find().toArray();
@@ -398,7 +356,7 @@ module.exports = {
           db.get().collection(collection.COUPON_COLLECTIONS).updateOne({_id: new ObjectId(coupons[i].Id)},{$set: {status: coupons[i].status}}).then(()=>{})
         }
       }
-      console.log(coupons);
+      // console.log(coupons);
       resolve(coupons);
     })
   },

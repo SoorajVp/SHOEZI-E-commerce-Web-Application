@@ -7,7 +7,7 @@ const { ObjectId } = require('mongodb-legacy');
 module.exports = {
 
     addProducts : (products, callback) =>{
-        console.log(products.category);
+        console.log(products.url);
         products.category = new ObjectId(products.category);
         products.quantity = Number(products.quantity);
         products.listed = true;
@@ -46,9 +46,7 @@ module.exports = {
                         path: '$proDetails'
                     }
                 }
-                
             ]).toArray();
-            console.log("%%%%---------------------");
                 console.log(products)
                 resolve(products);
             })
@@ -63,8 +61,7 @@ module.exports = {
                     foreignField: "_id",
                     as: "proDetails"
                   }
-                }
-                ,{
+                },{
                     $unwind: {
                         path: '$proDetails'
                     }
@@ -83,20 +80,68 @@ module.exports = {
         return new Promise(async(resolve, reject) =>{
             let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
                {
-                $match: {
-                    category: new ObjectId(catId)
-                }
+                $match: { category: new ObjectId(catId) }
                }
-
             ]).toArray();
-            // console.log(products)
             resolve(products);
         })
     },
 
+    getProductsLowToHigh : (category) =>{
+        return new Promise(async(resolve, reject) =>{
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
+                $lookup:{
+                    from: collection.CATEGORY_COLLECTIONS,
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "proDetails"
+                  }
+                },{
+                    $unwind: {
+                        path: '$proDetails'
+                    }
+                },{
+                    $match:{
+                      'proDetails.main': category
+                    }
+                },{ 
+                    $sort: { total: 1 } 
+                }
+            ]).toArray();
+            resolve(products)
+        })
+    },
+
+    getProductsHighToLow : (category) =>{
+        return new Promise(async(resolve, reject) =>{
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
+                $lookup:{
+                    from: collection.CATEGORY_COLLECTIONS,
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "proDetails"
+                  }
+                },{
+                    $unwind: {
+                        path: '$proDetails'
+                    }
+                },{
+                    $match:{
+                      'proDetails.main': category
+                    }
+                },{ 
+                    $sort: { total: -1 } 
+                }
+            ]).toArray();
+            resolve(products)
+        })
+    },
+
+
+
     getProductDetails : (prodId) =>{
         return new Promise ((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: new ObjectId(prodId)}).then((product) =>{
+            db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({url: prodId}).then((product) =>{
                 resolve(product);
             })
         })
@@ -110,11 +155,12 @@ module.exports = {
         product.offer = Number(product.discount);
         product.discount = (product.discount / 100) * product.price;
         product.total = product.price - product.discount;
-        console.log(product)
+        console.log(product.url)
 
         return new Promise( async(resolve, reject)=>{
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id: new ObjectId(prodId)},{
                 $set:{
+                    url: product.url,
                     name: product.name,
                     category: product.category,
                     brand : product.brand,
@@ -149,40 +195,7 @@ module.exports = {
         })
     },
 
-    getOrderedProducts : (orderId) =>{
-        return new Promise(async(resolve, reject) => {
-            let orderItems = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
-                {
-                    $match: {
-                        _id: new ObjectId(orderId)
-                    }
-                },{
-                    $unwind:"$products"
-                },{
-                    $project: {
-                        item: '$products.item',
-                        quantity: '$products.quantity'
-                    }
-                },{
-                    $lookup: {
-                        from: collection.PRODUCT_COLLECTIONS,
-                        localField: 'item',
-                        foreignField: '_id',
-                        as: 'product'
-                    }
-                },{
-                    $project: {
-                        item: 1,
-                        quantity: 1,
-                        product: {
-                            $arrayElemAt: ['$product',0]
-                        }
-                    }
-                }
-            ]).toArray();
-            resolve(orderItems);
-        })
-    }
+   
     
 
     

@@ -8,11 +8,17 @@
 <div class="card h-100">
 	<div class="card-body" >
 		<div class="account-settings" style="text-align: center;">
-			<div class="user-profile pb-3">
+			<div class="user-profile ">
 				<div class="user-avatar">
-					<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin" width="70px" style="border-radius: 50px; float: left;">
-					<h6 class="user-name pt-3">{{user.Username}}</h6>
-				    <h7 class="user-email">{{user.email}}</h7>
+					{{#if user.profile}}
+					<img src="{{user.profile}}" alt="Maxwell Admin" width="80px" style="border-radius: 50px; ">
+					{{else}}
+					<img src="https://www.seekpng.com/png/detail/72-729756_how-to-add-a-new-user-to-your.png" alt="Maxwell Admin" width="80px" style="border-radius: 50px; ">
+					{{/if}}
+					<div class="text-center">
+						 <h6 class="user-name pt-2 ">{{user.Username}}</h6>
+				   		 {{!-- <h7 class="user-email">{{user.email}}</h7> --}}
+					</div>
 				</div>
 				
 			</div>
@@ -48,13 +54,13 @@
             </div>
             </a>
             
-            <a href="" style="text-decoration: none;">
+            <a href="/wishList" style="text-decoration: none;">
             <div class="border mt-2">
                 <h4 class="pt-2">Wishlist</h4>
             </div>
             </a>
 
-            <a href="" style="text-decoration: none;">
+            <a href="/cart-products" style="text-decoration: none;">
             <div class="border mt-1 text-info">
                 <h4 class=" pt-2 ">Cart items</h4>
             </div>
@@ -85,10 +91,10 @@
         </a>		
 
         {{#each user.address}}
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border ">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border" style="background-color: rgba(245, 242, 245, 0.487);">
 			<div class="p-3">
                 <p> <b> {{this.name}} </b>  <b class="pl-4 font-weight-normal">{{this.mobile}}  </b> <a type="button"  onclick="addressRemove('{{this._id}}')" class="text-danger border p-1 float-right"><b> DELETE</b></a></p>
-                <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}}</p>
+                <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}}  <a type="button"  class="text-success border pl-3 pr-2 p-1 float-right"><b> EDIT</b></a></p>
 
             </div>
 		</div>
@@ -103,10 +109,7 @@
 
 <script>
     function addressRemove(addressId){
-        axios({
-            url: `/remove-address/${addressId}`,
-            method: 'get',
-        })
+        
         Swal.fire({
           title: 'Are you sure?',
           text: "You won't be able to revert this!",
@@ -122,14 +125,24 @@
               'This address has been deleted.',
               'success'
             )
+            axios({
+                url: `/remove-address/${addressId}`,
+                method: 'get',
+            })
             .then((response) =>{
-            console.log(response);
-            location.reload()
-        })
+                console.log(response);
+                location.reload()
+            })
+
+            
           }
         })
+
+        
+        
         
     }
+
 
 
 

@@ -16,9 +16,9 @@
               <div class="card-body">
                 <h4 class="mb-4 text-center">ORDERS  LiST</h4>
 
-                <div class="text-center">
+                <div class="">
                   <div class="table-responsive">
-                    <table class="table table-striped" style="width: 100%;">
+                    <table class="table table-striped" id="orderTable" style="width: 100%;">
                       <thead>
                         <tr>
                           <th scope="col">ORDER ID</th>
@@ -38,9 +38,9 @@
                             <td>{{this.deliveryDetails.name}}</td>
                             <td>{{this.createdOn}}</td>
                             <td>{{this.total}}</td>
-                            <td>{{this.paymentMethod}}</td>
+                            <td class="text-center">{{this.paymentMethod}}</td>
                             {{!-- <td><b class="text-success font-weight-bold">{{this.status}}</b></td> --}}
-                            <td>
+                            <td class="text-center">
 
                               {{#if (isEqual this.status 'DELIVERED')}}
                               <b class="text-success font-weight-bold">DELIVERED</b>
@@ -75,7 +75,7 @@
                               {{else}}
 
                               <div class="dropdown">
-                                  <button class="btn btn-outline-primary dropdown-toggle" type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <button class="btn btn-outline-info dropdown-toggle" type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{this.status}}
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

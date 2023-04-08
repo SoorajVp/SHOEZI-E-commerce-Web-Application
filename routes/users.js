@@ -3,7 +3,7 @@ var router = express.Router();
 var userAuth = require('../middlewares/userAuth');
 var controller = require('../controllers/userController');
 
-const client = require('twilio')('ACfcf5b2f4b1d55c97b0540ad72f1e704c', '8fb497f938d4dc4923b2bc1e556825eb');
+
 
 
 router.get('/', controller.homepage);
@@ -20,7 +20,7 @@ router.post('/signup', controller.postSignup);
 
 router.get('/shop/:id', controller.shop);
 
-// router.post('/shop/:id', controller.shop);
+// router.get('/shop/filter/:id', controller.shopFilter);
 
 router.get('/product-details/:id', controller.productDetails);
 
@@ -58,15 +58,15 @@ router.get('/add-to-cart/:id', userAuth.varifyLogin, controller.addToCart);
 
 router.get('/shop-add-to-cart', userAuth.varifyLogin, controller.homeAddToCart);
 
-router.post('/change-product-quantity', controller.cartQuantity);
+router.post('/change-product-quantity', userAuth.varifyLogin, controller.cartQuantity);
 
-router.post('/remove-cartproducts', controller.cartRemove);
+router.post('/remove-cartproducts', userAuth.varifyLogin, controller.cartRemove);
 
 router.get('/check-out', userAuth.varifyLogin, controller.placeOrder);
 
 router.post('/check-out-address', userAuth.varifyLogin, controller.addOrderAddress);
 
-router.post('/apply-coupon', controller.applyCoupon);
+router.post('/apply-coupon', userAuth.varifyLogin, controller.applyCoupon);
 
 router.post('/post-order', userAuth.varifyLogin, controller.placeOrderPost);
 
@@ -84,7 +84,7 @@ router.get('/wishList', userAuth.varifyLogin, controller.wishList);
 
 router.post('/wishList', userAuth.varifyLogin, controller.wishListPost);
 
-router.post('/remove-wishlist', controller.removeWishlist);
+router.post('/remove-wishlist', userAuth.varifyLogin, controller.removeWishlist);
 
 
 module.exports = router;

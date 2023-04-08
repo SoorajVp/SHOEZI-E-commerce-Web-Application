@@ -41,6 +41,8 @@ router.post('/add-coupon', adminAuth.varifyLogin, controller.addcoupons);
 
 router.post('/edit-coupon/:id', adminAuth.varifyLogin, controller.editCoupons);
 
+router.get('/remove-coupon/:id', adminAuth.varifyLogin, controller.removeCoupons);
+
 router.get('/banners',adminAuth.varifyLogin, controller.findBanners);
 
 router.get('/add-banner',adminAuth.varifyLogin, controller.addBanners);

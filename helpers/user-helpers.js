@@ -8,10 +8,7 @@ const crypto = require('crypto');
 // const async = require("hbs/lib/async");
 // const { default: items } = require("razorpay/dist/types/items");
 
-var instance = new Razorpay({
-   key_id: 'rzp_test_hdHsLrGkVWcilx', 
-   key_secret: 'TjTh7QEfolm1HOt4AG4hjemH' 
-})
+
 
 
 module.exports = {
@@ -224,7 +221,7 @@ module.exports = {
           }
         },{
           $addFields: {
-            'productDetails.subTotal': { $multiply: ["$productDetails.price", "$quantity"] }
+            'productDetails.subTotal': { $multiply: ["$productDetails.total", "$quantity"] }
           }
         }
       ])
@@ -313,7 +310,7 @@ module.exports = {
         },{
           $group:{
             _id: null,
-            total: {$sum: {$multiply: ['$quantity','$productDetails.price']}}
+            total: {$sum: {$multiply: ['$quantity','$productDetails.total']}}
           }
           
         }
@@ -344,123 +341,12 @@ module.exports = {
     })
   },
 
-  getOrderProductList : (userId) =>{
-    return new Promise(async(resolve, reject) =>{
-      let cart = await db.get().collection(collection.CART_COLLECTIONS).findOne({user: new ObjectId(userId)});
-      resolve(cart.products);
-    })
-  },
+  
 
-  placeOrder : async(order, products) =>{
-    return new Promise(async(resolve, reject) => {
-      if(order.couponCode){
-        console.log("coupon exists ")
+  
 
-         db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: order.couponCode}, 
-          { 
-            $push: {
-              users: new ObjectId(order.userId) 
-            } 
-          })
-          .then(()=>{})
 
-      }else{
-        console.log("coupon not exists ")
-      }
-      console.log("this is ordered price :---------------");
-      console.log("this is ordered price :---------------",order);
-      order.total = parseInt(order.total.replace(/[^\d.-]/g, ''));
-      let UserDetails = await db.get().collection(collection.USER_COLLECTIONS).aggregate([
-        {
-          $match:{
-            _id: new ObjectId(order.userId)
-          }
-        },{
-          $unwind:{
-            path: "$address"
-          }
-        },{
-          $match:{
-            "address._id": new ObjectId(order.addressId)
-          }
-        }
-      ]).toArray()
-      
-      let status = order.payment == 'COD'?'PLACED':'PENDING'
-      let orderObj = {
-        deliveryDetails:{
-          name: UserDetails[0].address.name,
-          mobile: UserDetails[0].address.mobile,
-          address: UserDetails[0].address.address,
-          city: UserDetails[0].address.city,
-          district: UserDetails[0].address.district,
-          pincode: Number(UserDetails[0].address.pincode)
-        },
-        userId: new ObjectId(order.userId),
-        paymentMethod: order.payment,
-        products: products,
-        status: status,
-        subtotal: Number(order.subtotal),
-        discount: Number(order.discount),
-        total: Number(order.total),
-        createdOn: new Date()
-      }
-      console.log("this order Object===",orderObj)
-      await db.get().collection(collection.ORDER_COLLECTIONS).insertOne(orderObj)
-      .then((response) => {
-        response.status = orderObj.paymentMethod;
-        db.get().collection(collection.CART_COLLECTIONS).deleteOne({user: new ObjectId(order.userId)}).then(()=>{
-          resolve(response);
-        })
-       
-      })
-    })
-  },
 
-  myOrderList : (userId) =>{
-    return new Promise(async(resolve, reject) =>{
-      let orderList = await db.get().collection(collection.ORDER_COLLECTIONS).find({userId: new ObjectId(userId)}).sort({ createdOn: -1 }).toArray();
-      resolve(orderList);
-    })
-  },
-
-  generateRazorpay : (orderId, total) =>{
-    total = parseInt(total);
-    return new Promise((resolve, reject) =>{
-      const options = {
-        amount: total*100,
-        currency: "INR",
-        receipt: orderId,
-        notes: {
-          key1: "value3",
-          key2: "value2"
-        }
-      };
-      instance.orders.create(options, function(err, order) {
-        console.log("NEW order",order);
-        resolve(order)
-      });
-
-    })
-  },
-
-  verifyOrderPayment : (details) =>{
-    return new Promise((resolve, reject) =>{
-      console.log("this function is reached--------------------");
-      let hmac = crypto.createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH') //createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH');
-      hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
-      hmac = hmac.digest('hex');
-      console.log(hmac)
-      console.log(details['payment[razorpay_signature]'])
-      if(hmac === details['payment[razorpay_signature]']){
-        console.log("condition truewwwww");
-        resolve();
-      }else{
-        console.log("condition falseeee");
-        reject()
-      }
-    })
-  },
 
 
   addWishList : (proId, userId) =>{

@@ -14,12 +14,14 @@
 
             <div class="card">
               <div class="card-body">
-                <h4>Products List</h4>
+                <h4 class="float-left">Products List</h4>
 
                 <a href="/admin/add-products" class="btn btn-success float-right mb-3">Add Products</a>
-                <div>
+                <div >
+                  <hr class="mt-5">
+
                   <div class="table-responsive">
-                    <table class="table table-striped" style="width: 100%;">
+                    <table class="table table-striped" id="productTable" style="width: 100%;">
                       <thead>
                         <tr>
                           
@@ -44,7 +46,7 @@
                             <td>
                               <img src="{{this.image.[0]}}" alt="" style="width: 55px;"/>
                             </td>
-                            <td><a href="/admin/edit-products/{{this._id}}" class="btn btn-primary ">EDIT</a></td>
+                            <td><a href="/admin/edit-products/{{this.url}}" class="btn btn-primary ">EDIT</a></td>
                             {{#if this.listed}}
                               <td><a
                                   href="/admin/unlist/{{this._id}}"

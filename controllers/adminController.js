@@ -5,6 +5,7 @@ const adminHelpers = require('../helpers/admin-helpers');
 const orderHelpers = require('../helpers/order-helpers');
 const productHelpers = require('../helpers/product-helpers');
 const cloudinary = require('../utils/cloudinary');
+const slugify = require('slugify');
 const path = require('path');
 const { ObjectId } = require('mongodb-legacy');
 const objectId = require('mongodb-legacy').ObjectId;
@@ -14,7 +15,6 @@ module.exports = {
     adminlogin : (req,res) =>{   
         if(req.session.adminloggedin){
             res.redirect('/admin');
-            // res.render('admin/dashboard', {admin:true});
         }else{
             res.render('admin/admin-login', {admlogErr: req.session.admlogErr, loginForm: true});
             req.session.admlogErr = false;        
@@ -26,7 +26,6 @@ module.exports = {
          let totalAmount = await orderHelpers.getTotalMoney();
         // let users = await adminHelpers.getTotalUsers();
         // let orders = await adminHelpers.getTotalOrders();
-
         let dailyOrders = await orderHelpers.dailySales(today)
         let weeklyOrders= await orderHelpers.weeklySales(today)
         let monthlyOrders= await orderHelpers.monthlySales(today)
@@ -40,20 +39,25 @@ module.exports = {
     },
 
     postAdminlogin : async(req, res) => {
-        let admin = await db.get().collection(collection.CREDENTIALS).findOne({email:req.body.email});
-        if(admin){
-            if(admin.password == req.body.password){
-                req.session.admin = req.body.email;
-                req.session.adminloggedin = true;
-                res.redirect('/admin');
+        try {
+            let admin = await db.get().collection(collection.CREDENTIALS).findOne({email:req.body.email});
+            if(admin){
+                if(admin.password == req.body.password){
+                    req.session.admin = req.body.email;
+                    req.session.adminloggedin = true;
+                    res.redirect('/admin');
+                }else{
+                    req.session.admlogErr = "Invalid username or password";
+                    res.redirect('/admin/login');
+                }
             }else{
                 req.session.admlogErr = "Invalid username or password";
-                res.redirect('/admin/login');
+                res.redirect('/admin/login')
             }
-        }else{
-            req.session.admlogErr = "Invalid username or password";
-            res.redirect('/admin/login')
+        } catch (error) {
+            console.log(error)
         }
+        
     },
 
     adminlogout : (req, res) =>{
@@ -84,7 +88,6 @@ module.exports = {
 
     getAllProducts : (req, res) =>{
         productHelpers.getAllProducts().then((products) => {   
-            console.log("this is product admin side---", products.length)           
             res.render('admin/view-products', {admin:true, products});
         })
     },
@@ -98,15 +101,14 @@ module.exports = {
     },
 
     addProductsPost : async(req, res) =>{
+        req.body.url = slugify(req.body.name);
         try{
             productHelpers.addProducts(req.body, async(id) =>{             
                 let imgUrls = [];
-
                 for(let i=0; i<req.files.length; i++){
                     let result = await cloudinary.uploader.upload(req.files[i].path);
                     imgUrls.push(result.url);                   
                 } 
-
                 if(imgUrls.length !== 0){
                     productHelpers.addProductImg(id, imgUrls);
                 }
@@ -128,11 +130,9 @@ module.exports = {
     },
 
     editProductPost : async (req, res) =>{
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-        console.log(req.body)
+        req.body.url = slugify(req.body.name);
         try{
             let imgUrls = [];
-
             for(let i=0; i<req.files.length; i++){
                 let result = await cloudinary.uploader.upload(req.files[i].path);
                 imgUrls.push(result.url);
@@ -178,16 +178,31 @@ module.exports = {
     },
 
     addcoupons : (req, res) =>{
-        console.log(req.body);
-        adminHelpers.addCoupons(req.body).then((response) =>{
+        try {
+            adminHelpers.addCoupons(req.body)
+        } catch (error) {
+            console.log(error)
+        } finally{
             res.redirect('/admin/coupons');
-        })
+        }
     },
 
     editCoupons : (req, res) =>{
-        console.log(req.body);
-        adminHelpers.updateCoupon(req.body, req.params.id).then((response) =>{
+        try {
+            adminHelpers.updateCoupon(req.body, req.params.id)
+        } catch (error) {
+            console.log(error)
+        } finally{
             res.redirect('/admin/coupons');
+        }
+        
+    },
+
+    removeCoupons : (req, res) =>{
+        console.log("this is coupon param-----")
+        console.log(req.params.id)
+        adminHelpers.deleteCoupon(req.params.id).then((response) =>{
+            res.json(response)
         })
     },
 
@@ -208,7 +223,6 @@ module.exports = {
                 let result = await cloudinary.uploader.upload(req.file.path);
                 adminHelpers.updateBannerImg(id, result.url);
             })
-
         }catch(err){
             console.log(err);
         }finally{
@@ -236,13 +250,11 @@ module.exports = {
         try{
             adminHelpers.updateBanner(req.params.id, req.body);
             let result = await cloudinary.uploader.upload(req.file.path);
-
             if(result.url){
                 adminHelpers.updateBannerImg(req.params.id, result.url);
             }
-            
         }catch(err){
-            console.log("try fond error",err);
+            console.log(err);
         }finally{
             res.redirect('/admin/banners');
         }
@@ -256,28 +268,36 @@ module.exports = {
     },
 
     categoryPost : (req, res) =>{
-        console.log(req.body);
-        adminHelpers.addCatergory(req.body).then((response) =>{
-            if(response.status == false){
-                req.session.categoryErr = "This category is already Exist";
-            }else{
-                res.redirect('/admin/category');
-            }
-            
-        })
+        try {
+            req.body.url = slugify(req.body.main+" "+req.body.sub, { lower: true });
+            adminHelpers.addCatergory(req.body).then((response) =>{
+                if(response.status == false){
+                    req.session.categoryErr = "This category is already Exist";
+                }else{
+                    res.redirect('/admin/category');
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        
     },
 
     editCategory :  async(req, res) =>{
-        await adminHelpers.updateCategory(req.params.id, req.body.name).then(()=>{
-            res.redirect('/admin/category');
-        })
+        try {
+            req.body.url = slugify(req.body.main+" "+req.body.sub, { lower: true });
+            await adminHelpers.updateCategory(req.params.id, req.body).then(()=>{
+                res.redirect('/admin/category');
+            })
+        } catch (error) {
+            console.log(error)
+        }
     },
 
     categoryList : (req, res) =>{
         adminHelpers.listCategory(req.params.id).then((response) =>{
             res.redirect('/admin/category');
         })
-        
     },
 
     categoryUnlist : (req, res) =>{
@@ -287,9 +307,7 @@ module.exports = {
     },
 
     getOrders : async(req, res) =>{
-        let orders = await adminHelpers.ordersList();
-        console.log(orders)
-        
+        let orders = await orderHelpers.ordersList();
         orders.map((order)=>{
             order.total = order.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
             order.createdOn = (order.createdOn).toLocaleDateString('es-ES')
@@ -298,21 +316,20 @@ module.exports = {
     },
 
     OrderStatus : (req, res) =>{
-        console.log("ooooooooooooooooooooooooo");
-        console.log( req.body.userId , req.body.status)
-        adminHelpers.changeOrderStatus(req.body.userId, req.body.status).then((response) =>{
-            // res.redirect('/admin/order-list');
-            console.log("ooooooooooooooooooooooooo");
-            console.log(response);
-            response.status = true;
-            res.json(response)
-        })
+        try {
+            console.log( req.body.userId , req.body.status)
+            orderHelpers.changeOrderStatus(req.body.userId, req.body.status).then((response) =>{
+                response.status = true;
+                res.json(response)
+            })
+        } catch (error) {
+            console.log(error)
+        }
     },
 
     getOrderDetails : async(req, res) =>{
-        let products = await productHelpers.getOrderedProducts(req.params.id);
-         adminHelpers.getUserOrder(req.params.id).then((orderDetails)=>{
-            console.log("this is order details#########################", orderDetails)
+        let products = await orderHelpers.getOrderedProducts(req.params.id);
+         orderHelpers.getUserOrder(req.params.id).then((orderDetails)=>{
             orderDetails.createdOn = orderDetails.createdOn.toLocaleDateString('es-ES', { timeZone: 'UTC' });
             res.render('admin/order-details', {admin: true, products, orderDetails})
         })
@@ -322,7 +339,7 @@ module.exports = {
 
     salesReport : async(req, res) =>{
         
-        let orders = await adminHelpers.deliveredOrders();
+        let orders = await orderHelpers.deliveredOrders();
         orders.forEach(order => {
             const date = new Date(order.createdOn);
             order.createdOn = date.toLocaleDateString('es-ES',  { timeZone: 'UTC' });;
@@ -332,19 +349,23 @@ module.exports = {
     },
 
     salesFilter : async(req, res) =>{
-        console.log("this is sales report if", req.body);
-        let orders = await adminHelpers.filterReport(req.body.startDate, req.body.endDate);
-        console.log(orders);
-        orders.forEach(order => {
-            const isoDate = order.createdOn;
-            const date = new Date(isoDate);
-            const options = { timeZone: 'UTC' };
-            const localDateString = date.toLocaleDateString('es-ES', options);
-            order.createdOn = localDateString;
-          });
-        res.render('admin/sales-report', {admin: true, orders});
-        // res.json(orders)
-        // res.redirect('/admin/sales-report');
+        try {
+            let orders = await orderHelpers.filterReport(req.body.startDate, req.body.endDate);
+            console.log(orders);
+            orders.forEach(order => {
+                const isoDate = order.createdOn;
+                const date = new Date(isoDate);
+                const options = { timeZone: 'UTC' };
+                const localDateString = date.toLocaleDateString('es-ES', options);
+                order.createdOn = localDateString;
+            });
+        } catch (error) {
+            console.log(error)
+        } finally {
+            res.render('admin/sales-report', {admin: true, orders});
+        }
+        
+        
     },
 
 

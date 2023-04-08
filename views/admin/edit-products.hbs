@@ -87,9 +87,9 @@
 
                 <div class="dropdown">
                   <button class="btn border btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    CATEGORY
+                    {{product.category}}
                   </button>
-                  <input type="radio" name="category" value="{{product.category}}"  >
+                  <input type="radio" name="category" value="{{product.category}}" checked hidden >
                   {{#each category}}
                   <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                       

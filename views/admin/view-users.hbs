@@ -1,6 +1,7 @@
 <!-- [ Pre-loader ] End -->
 <!-- [ navigation menu ] start -->
 
+
 <!-- [ Header ] end -->
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
@@ -14,14 +15,15 @@
 
             <div class="card">
               <div class="card-body">
-                <h4 class="mb-4 ">Users List</h4>
-                <a href="/admin/add-products" class="btn btn-success float-right mb-3">Add Products</a>
+                <h4 class="mb-4 float-left">Users List</h4>
+                {{!-- <a href="/admin/add-products" class="btn btn-success float-right mb-5">Add Products</a> --}}
+                <hr class="mt-5">
 
-                <div class="text-center">
+                <div class="">
                   <div class="table-responsive">
-                    <table class="table table-striped" style="width: 100%; ">
-                      <thead>
-                        <tr>
+                    <table class="table table-striped" id="userTable" style="width: 100%; ">
+                      <thead >
+                        <tr >
                           <th scope="col">ID</th>
                           <th scope="col">Name</th>
                           <th scope="col">Email</th>
@@ -38,9 +40,9 @@
                             <td>{{this.email}}</td>
                             <td>{{this.mobile}}</td>
                             {{#if this.status}}
-                              <td><a href=""class="btn btn-danger btn-sm" data-toggle="modal" data-target="#blockUser{{this._id}}">BLOCK</a></td>
+                              <td class="text-center"><a href=""class="btn btn-danger btn-sm  " data-toggle="modal" data-target="#blockUser{{this._id}}">BLOCK</a></td>
                             {{else}}
-                              <td><a href="" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#blockUser{{this._id}}">UNBLOCK</a></td>
+                              <td class="text-center"><a href="" class="btn btn-warning btn-sm " data-toggle="modal" data-target="#blockUser{{this._id}}">UNBLOCK</a></td>
                             {{/if}}
                           </tr>
                         {{/each}}
@@ -97,3 +99,6 @@
 </div>
 
 {{/each}}
+
+
+

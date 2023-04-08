@@ -18,19 +18,30 @@
 
 <div class="jumbotron text-center">
     <div class="justify-content-center" style=" margin-top: -4%;">
-        <img src="/assets/images/Confirmed-bro.png" alt="" style="width: 300px;">
+        <img src="/assets/images/Confirmed-bro.png" alt="" style="width: 200px;">
     </div>
-  <h1 class="text-success" style=" font-size: 45px;">Order Confirmed !</h1>
+  <h1 class="text-success" style=" font-size: 35px;">Order Confirmed !</h1>
   <p class="lead"><strong>We received your purchase request;</strong> we'll be in touch shortly!</p>
   <hr>
-  <a href="/my-orders" class="btn" style="width: 20%;" id="specialButton" > Order Details</a>
+  <div class="row text-center">
+    <div class="col-lg-4 col-md-4 col-xl-4 col-sm-12  ">
+       {{!-- <a href="/my-orders" class="btn "style="width: 50%;" id="specialButton"> Order Details</a> --}}
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-xl-4 col-sm-12 d-flex ">
+       <a href="/my-orders" class="btn  mr-2"style="width: 50%;" id="specialButton"> Order Details</a>
+        <a href="/" class="btn " style="width: 50%;" id="specialButton" > Back to Shop</a>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-xl-3  col-sm-12  ">
+    </div>
+  </div>
   <p class="p-2">
     Having trouble? <a href="">Contact us</a>
   </p>
   <p class="lead">
     {{!-- <a class="btn btn-primary btn-sm" href="/shop" role="button">Continue to shopping</a> --}}
-    <a href="/"><button class="btn-info">Continue to shopping</button></a>
-    
+    {{!-- <a href="/"><button class="btn-info">Continue to shopping</button></a> --}}
   </p>
 </div>
 </div>

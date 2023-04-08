@@ -13,7 +13,7 @@
             <div class="card">
               <div class="card-body">
 
-                <div class="text-center">
+                <div class="">
 
                     {{!-- <h6 class="p-2">ADD CATEGORY</h6> --}}
 
@@ -44,11 +44,11 @@
 
                     <hr>
 
-                    <h6 class="pb-2"> CATEGORY LIST</h6>
+                    <h6 class=" text-center"> CATEGORY LIST</h6>
 
                   <div class="table-responsive">
 
-                    <table class="table table-striped" style="width: 100%;">
+                    <table class="table table-striped" id="categoryTable" style="width: 100%;">
                       <thead>
                         <tr>
                           <th scope="col">Category ID</th>
@@ -125,7 +125,7 @@
         <div class="form-group col-md-12 ">
             <label for="exampleFormControlSelect1">CATEGORY</label>
             <select class="form-control " name="main" id="exampleFormControlSelect1">
-              <option value="{{this.name}}">{{this.main}}</option>
+              <option value="{{this.main}}">{{this.main}}</option>
               <option value="MENS">MENS</option>
               <option value="WOMEN">WOMEN</option>
               <option value="KIDS">KIDS</option>

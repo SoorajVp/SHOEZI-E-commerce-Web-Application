@@ -9,7 +9,6 @@
 
 <div class="pageWrapper">
 	
-   
     
     <!--Body Content-->
     <div id="page-content">
@@ -29,25 +28,19 @@
                 	<div class="closeFilter d-block d-md-none d-lg-none"><i class="icon icon anm anm-times-l"></i></div>
                 	<div class="sidebar_tags">
 
-                        <div class="filters-toolbar__item mb-4 ">
-                        	<label for="SortBy" class="hidden">Sort</label>
-                        	<select name="SortBy" id="SortBy" class="filters-toolbar__input filters-toolbar__input--sort " style=" padding-left: 1%; font-weight: normal; font-size: initial;  border-bottom: inset">
-                                <option value="title-ascending" selected="selected" > SORT  </option>
-                                <option>New Products</option>
-                                <option>Price, low to high</option>
-                                <option>Price, high to low</option>
-                                <option>Alphabetically, A-Z</option>
-                                <option>Alphabetically, Z-A</option>
-                                
-                                {{!-- <option>Date, new to old</option>
-                                <option>Date, old to new</option> --}}
-                        	</select>
-                        	<input class="collection-header__default-sort" type="hidden" value="manual">
-                        </div>
                     	<!--Categories-->
                     	
 
                         <div class="sidebar_widget filterBox filter-widget">
+                            <div class="row mb-4" >
+                                {{!-- <h4></h4> --}}
+                                <div class="col-6">
+                                    <a href="/shop/low-to-high"><button class="btn-block">LOW TO HIGH</button></a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="/shop/high-to-low"><button class="btn-block">HIGH TO LOW</button></a>
+                                </div>
+                            </div>
                             <div class="widget-title"><h2>Categories</h2></div>
                             <ul class="sidebar_categories ml-2">
 
@@ -56,7 +49,6 @@
                                 {{!-- <li class="lvl-1"><a  onclick="subCategory('{{this._id}}','{{this.main}}')" class="site-nav">{{this.sub}}</a></li> --}}
                                 <li class="lvl-1"><a href="/shop/{{this._id}}"   class="site-nav">{{this.sub}}</a></li>
                                 {{/each}}
-                                
                                 
                             </ul>
                         </div>
@@ -153,7 +145,7 @@
                                     <div class="border">
                                     <div class="product-image border">
                                         <!-- start product image -->
-                                            <a href="/product-details/{{this._id}}">
+                                            <a href="/product-details/{{this.url}}">
                                             <!-- image --> 
                                             <img class="lazyload" src="{{this.image.[0]}}"  alt="image" title="product" />
                                             <!-- End image -->
@@ -249,3 +241,23 @@
     </div>
 </div>
 
+
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", ()=>{
+		const totalCountInput = document.getElementById('totalCount');
+		const totalCount = Number(totalCountInput.value);
+		const currentPageInput = document.getElementById('currentPage');
+		const currentPage = Number(currentPageInput.value);
+		const totalPages = Math.ceil(totalCount/10);
+		let page =  currentPage || 1;
+		const paginationElement = document.querySelector('.pagination');
+		let pageLinks = '';
+
+		for (let i = 1; i <= totalPages; i++) {
+		    pageLinks += `<ul style="list-style-type: none;"><li class="page-item${i === page ? ' active' : ''}"><a class="page-link" style="color: black;" href="?page=${i}">${i}</a></li></ul>`;
+		}
+		paginationElement.innerHTML = pageLinks;
+	});
+</script>
