@@ -85,7 +85,7 @@
 <div class="card h-100">
 	<div class="card-body">
 		
-		<form action="/add-address/{{user._id}}" method="post" id="addressForm" >
+		<form action="/add-address/{{user._id}}"  id="addressValidate" method="post" >
 		
 		<div class="row gutters">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -162,28 +162,5 @@
 </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script>
-	jQuery('#addressForm').validate({
-    rules:{
-        name:required,
-        mobile:{
-            required: true,
-            number: true,
-            minlength: 10,
-            maxlength: 10
-        },
-        city: required,
-        address: required,
-        pincode: {
-            required: true,
-            number: true,
-            minlength: 6
-        }
-    },
-    messages:{
-    }
-})
-</script>
+

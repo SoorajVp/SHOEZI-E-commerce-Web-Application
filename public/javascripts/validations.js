@@ -1,38 +1,29 @@
 
 
-
-jQuery('#addressForm').validate({
+jQuery('#loginForm').validate({
     rules:{
-        name:required,
-        mobile:{
-            required: true,
-            number: true,
-            minlength: 10,
-            maxlength: 10
-        },
-        city: required,
-        address: required,
-        pincode: {
-            required: true,
-            number: true,
-            minlength: 6
+        emailId:{
+            require: true,
+            email: true
         }
     },
     messages:{
+        emailId:{
+            email:"* Please Enter A Valid Email"
+        }
     }
 })
+
 
 jQuery('#formValidate').validate({
     rules:{
         password1: {
             required : true,
             minlength : 8
-            
         },
         password2: {
             required : true,
             equalTo : '#password1'
-
         }
     },
     messages:{
@@ -46,4 +37,21 @@ jQuery('#formValidate').validate({
         }
     }
 })
+
+
+
+jQuery('#addressValidate').validate({
+    rules:{
+        name: required,
+        mobile: number,
+        address: required,
+        city: required,
+        district: required,
+        pincode: required
+    },
+    messages:{
+        name: "enter your name"
+    }
+})
+
 

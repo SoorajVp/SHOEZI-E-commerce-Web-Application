@@ -3,6 +3,7 @@ var collection = require("../config/collection");
 var db = require("../config/connection");
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const productHelpers = require("./product-helpers");
 // const { default: items } = require("razorpay/dist/types/items");
 var instance = new Razorpay({
    key_id: process.env.RAZORPAY_KEY_ID, 
@@ -13,9 +14,9 @@ module.exports = {
 
   placeOrder : async(order, products) =>{
     return new Promise(async(resolve, reject) => {
+      
       if(order.couponCode){
         console.log("coupon exists ")
-
          db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: order.couponCode}, 
           { 
             $push: {
@@ -27,10 +28,10 @@ module.exports = {
       }else{
         console.log("coupon not exists ")
       }
-      console.log("this is ordered price :---------------");
-      console.log("this is ordered price :---------------",order);
+
       
       order.total = parseInt(order.total.replace(/[^\d.-]/g, ''));
+
       let UserDetails = await db.get().collection(collection.USER_COLLECTIONS).aggregate([
         {
           $match:{
@@ -48,6 +49,8 @@ module.exports = {
       ]).toArray()
       
       let status = order.payment == 'COD'?'PLACED':'PENDING'
+      
+
       let orderObj = {
         deliveryDetails:{
           name: UserDetails[0].address.name,
@@ -66,14 +69,20 @@ module.exports = {
         total: Number(order.total),
         createdOn: new Date()
       }
-      console.log("this order Object===",orderObj)
+      
+
+      console.log("this order Object--------", orderObj)
+
       await db.get().collection(collection.ORDER_COLLECTIONS).insertOne(orderObj)
       .then((response) => {
         response.status = orderObj.paymentMethod;
-        db.get().collection(collection.CART_COLLECTIONS).deleteOne({user: new ObjectId(order.userId)}).then(()=>{
-          resolve(response);
-        })
-       
+        console.log("this is inserted id from placed products----", response.insertedId);
+         
+          
+          db.get().collection(collection.CART_COLLECTIONS).deleteOne({user: new ObjectId(order.userId)}).then(()=>{
+            resolve(response);
+          })
+        
       })
     })
   },
@@ -106,7 +115,7 @@ module.exports = {
   },
 
   
-  verifyOrderPayment : (details) =>{
+   verifyOrderPayment : (details) =>{
     return new Promise((resolve, reject) =>{
       console.log("this function is reached--------------------");
       let hmac = crypto.createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH') //createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH');

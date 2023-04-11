@@ -359,10 +359,11 @@ module.exports = {
                 const localDateString = date.toLocaleDateString('es-ES', options);
                 order.createdOn = localDateString;
             });
+            res.render('admin/sales-report', {admin: true, orders});
+
         } catch (error) {
             console.log(error)
         } finally {
-            res.render('admin/sales-report', {admin: true, orders});
         }
         
         

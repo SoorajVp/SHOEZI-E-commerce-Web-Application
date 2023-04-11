@@ -1,5 +1,10 @@
 
-
+<style>
+label.error {
+  color: rgb(219, 35, 35);
+  font-size: smaller;
+}
+</style>
 
 <section class="vh-100" style="background-color: #fffdfd;">
   <div class="container py-4 h-100">
@@ -25,7 +30,7 @@
 
                   <div class="form-group">
                     	<label for="address_zip">Email ID</label>
-                  	<input type="email" id="emailId"  name="email" placeholder="Email">
+                  	<input type="email" id="emailId"  name="email" placeholder="Email" >
                   </div>
 
                   <div class="form-group">
@@ -80,17 +85,5 @@
 
 
 <script>
-	jQuery('#loginForm').validate({
-    rules:{
-        emailId:{
-            require: true,
-            email: true
-        }
-    },
-    messages:{
-        emailId:{
-            email:"Please Enter A Valid Email"
-        }
-    }
-})
+
 </script>

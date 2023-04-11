@@ -195,6 +195,15 @@ module.exports = {
         })
     },
 
+    decrementQuantity : (products) =>{
+        console.log("this is products from decrement quuantity  foreach ----------", products.item)
+        return new Promise((resolve, reject) =>{
+            db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne(
+                { _id: products.item },
+                { $inc: { quantity : -products.quantity } }
+            )
+        })
+    }   
    
     
 

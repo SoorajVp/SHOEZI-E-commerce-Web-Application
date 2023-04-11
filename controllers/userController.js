@@ -167,7 +167,8 @@ module.exports = {
         let cartCount = await userHelpers.getCartCount(req.session.user._id);
         res.render("users/shop-page", { products, category, logged: true, user, cartCount});
       } else {
-        res.render('users/shop-page',{ products, category });
+        res.render('users/shop-page',{ products, category 
+        });
       }
 
     }
@@ -433,13 +434,24 @@ module.exports = {
   },
 
   placeOrderPost : async(req, res) =>{
+
     try {
+
       let products = await orderHelpers.getOrderCartProducts(req.body.userId);
+      console.log("this is prooducts from the cart side----" , products)
+
       orderHelpers.placeOrder(req.body, products).then((response) => {
-        console.log("+++++++++++++++++++++++++++", response.status)
+        console.log("+++++++++++++++++++++++++++", response)
+        
         response.insertedId = ""+response.insertedId
         console.log(response);
+
         if(response.status == 'COD'){
+
+          products.forEach(function(values) {
+            productHelpers.decrementQuantity(values)
+          })
+          
           response.method = 'COD'
           res.json(response);
         }else if(response.status == 'RAZORPAY'){
@@ -452,6 +464,7 @@ module.exports = {
         }else{
           res.json(response);
         }
+        
       })
     } catch (error) {
       console.log(error)
@@ -521,6 +534,7 @@ module.exports = {
   },
 
   varifyPayment : (req, res) =>{
+
     try {
       console.log("this is the last log", req.body);
       orderHelpers.verifyOrderPayment(req.body).then(async() =>{

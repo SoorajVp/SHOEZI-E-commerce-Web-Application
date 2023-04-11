@@ -49,7 +49,7 @@
                                         <div class="zoompro-span">
                                             <img class="blur-up lazyload zoompro" data-zoom-image="{{product.image.[0]}}" alt="" src="{{product.image.[0]}}" />               
                                         </div>
-                                        <div class="product-labels"><span class="lbl on-sale">Sale</span><span class="lbl pr-label1">new</span></div>
+                                        {{!-- <div class="product-labels"><span class="lbl on-sale">Sale</span><span class="lbl pr-label1">new</span></div> --}}
                                         
                                     </div>
 
@@ -85,11 +85,11 @@
                                         <a href="#" class="next" title="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                     </div>
 
-                                    {{!-- {{#if stock}}
-                                    <div class="product-stock"> <span class="instock text-success font-weight-bold">IN STOCK</span></div>
+                                    {{#if (isEqual product.quantity 0)}}
+                                        <div class="product-stock"> <span class="instock text-danger mt-3 h3">OUT STOCK</span></div>
                                     {{else}}
-                                    <div class="product-stock"> <span class="instock text-danger font-weight-bold">OUT STOCK</span></div>
-                                    {{/if}} --}}
+                                        <div class="product-stock"> <span class="instock text-success  h3">IN STOCK</span></div>
+                                    {{/if}}
 
                                     <div class="product-single__description py-2">
                                       <p>Category : <b> {{product.category}}</b></p>
@@ -101,14 +101,14 @@
                                         <span class="visually-hidden">Regular price</span>
                                         <s id="ComparePrice-product-template"><span class="money">{{product.price}}</span></s>
                                         <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                            <span id="ProductPrice-product-template"><span class="money">{{product.total}}</span></span>
+                                            <span id="ProductPrice-product-template"><span class="money  font-weight-normal">{{product.total}}</span></span>
                                         </span>
                                         <span class="discount-badge"> <span class="devider">|</span>&nbsp;
                                             {{!-- <span>You Save</span>
                                             <span id="SaveAmount-product-template" class="product-single__save-amount">
                                             <span class="money">$100.00</span>
                                             </span> --}}
-                                            <span class="off text-success">(<span>-{{product.offer}}</span>%)</span>
+                                            <span class="off text-primary">(<span>-{{product.offer}}</span>%)</span>
                                         </span>  
                                     </p>
                                     {{else}}
@@ -141,12 +141,19 @@
                                     <!-- Product Action -->
 
                                     <div class="product-action clearfix pt-3">
-                                       
+                                       {{#if (isEqual product.quantity 0)}}
+                                       <div class="product-form__item--submit pb-2" >
+                                            <span  id="cart-count" class="btn">
+                                                <span>Add to cart</span>
+                                            </span>
+                                        </div>
+                                       {{else}}
                                         <div class="product-form__item--submit pb-2">
                                             <span onclick="addToCart('{{product._id}}')"  id="cart-count" class="btn">
                                                 <span>Add to cart</span>
                                             </span>
                                         </div>
+                                        {{/if}}
 
                                          <div class="shopify-payment-button" data-shopify="payment-button">
                                                 <button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Buy it now</button>
@@ -236,10 +243,8 @@
                                         {{/if}}
                                         <!-- End product price -->
                                         
-                                        
                                     </div>
                                   
-
                                     </div>
                                 </div>
                                 {{/each}}

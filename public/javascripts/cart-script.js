@@ -1,11 +1,9 @@
 // const { default: axios } = require("axios");
 
 function changeQuantity(cartId, proId, userId, count){
-    console.log("-----------------------")
-    console.log(userId);
     let quantity = parseInt(document.getElementById(proId).innerHTML);
-    
     count = parseInt(count);
+    console.log("this cart quantity ----------", quantity)
     
     $.ajax({
         url:'/change-product-quantity',
@@ -24,12 +22,12 @@ function changeQuantity(cartId, proId, userId, count){
                 //alert("Product remove from Cart");
                 setTimeout(() => {
                     location.reload()
-                }, 2500);
+                }, 1900);
                 Toast.fire({
                     icon: 'error',
                     title: 'Item removed from Cart !'
                   })
-            }else{
+            }else if(response.status){
                 
               
               document.getElementById(proId).innerHTML = quantity + count;
@@ -38,11 +36,15 @@ function changeQuantity(cartId, proId, userId, count){
 
               let price = parseInt(document.getElementById(`${proId}price`).innerHTML);
               // price = parseInt(price.replace(/[^0-9.-]+/g,""));
-              console.log(price);
               let qnty = parseInt(document.getElementById(proId).innerHTML);
               subTotal = price*qnty;
               document.getElementById(`${proId}subtotal`).innerHTML = subTotal
 
+            }else{
+              swal({
+                title: " <small>Reached Maximum Limit</small>!",
+                html: true
+              });
             }
         }
     })
@@ -64,7 +66,7 @@ function removeCartproduct(cartId, proId){
                 //alert("Product remove from Cart");
                 setTimeout(() => {
                     location.reload()
-                }, 2000);
+                }, 1900);
                 Toast.fire({
                     icon: 'error',
                     title: 'Item removed from Cart !'

@@ -139,6 +139,76 @@
 
                                  {{#each products}}
                                  {{#if this.listed}}
+                                 {{#if (isEqual this.quantity 0)}}
+                                 
+                                 <div class="col-6 col-sm-6 col-md-4 col-lg-4 item grid-view-item--sold-out ">
+                                    <!-- start product image -->
+                                    <div class="border">
+                                    <div class="product-image border">
+                                        <!-- start product image -->
+                                            <a href="/product-details/{{this.url}}">
+                                            <!-- image --> 
+                                            <img class="grid-view-item__image  lazyload" src="{{this.image.[0]}}"  alt="image" title="product" /> 
+
+                                            <span class="sold-out"><span class="py-1 text-secondary h3 border border-secondary ">out of stock</span></span>
+
+                                            </a>
+                                            <!-- product label -->
+                                            {{#if this.offer}}
+                                            <div class="product-labels"><span class="lbl pr-label3">- {{this.offer}}% </span></div>
+                                            {{/if}}
+                                            <!-- End product label -->
+                                        
+                                        <!-- end product image -->
+
+                                        <!-- Start product button -->
+                                        {{!-- <span class="variants add" >
+                                            <button class="btn" onclick="addToCart('{{this._id}}')" >Add to cart</button>
+                                        </span> --}}
+                                        {{#if ../user}}
+                                        <div class="button-set" >
+                                            <div class="wishlist-btn" >
+                                                <a class="wishlist add-to-wishlist"  onclick="WishList('{{this._id}}','{{../user._id}}')" title="Add to Wishlist">
+                                                    <i class="icon anm anm-heart-l"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        {{/if}}
+                                        <!-- end product button -->
+                                    </div>
+                                    <!-- end product image -->
+                                    
+                                    <!--start product details -->
+                                    <div class="product-details text-center ">
+                                        <!-- product name -->
+                                        <div class="product-name">
+                                            <a >{{this.name}}</a>
+                                        </div>
+                                        <!-- End product name -->
+                                        <!-- product price -->
+                                        {{#if this.offer}}
+                                        <div class="product-price pb-2">
+                                            <span class="old-price">{{this.price}}</span>
+                                            <span class="price">{{this.total}}</span>
+                                        </div>
+                                        {{else}}
+                                       
+
+                                         <div class="product-price pb-2">
+                                            <span class="price"> {{this.price}}</span>
+                                        </div>
+                                        {{/if}}
+                                        <!-- End product price -->
+                                        
+                                        
+                                    </div>
+                                  
+
+                                    </div>
+                                    <!-- End product details -->
+                                 </div>
+
+                                 {{else}}
                                  
                                  <div class="col-6 col-sm-6 col-md-4 col-lg-4 item ">
                                     <!-- start product image -->
@@ -206,6 +276,7 @@
                                  </div>
                                 
                                 {{/if}}
+                                {{/if}}
                                 {{/each}}
 
                             </div>
@@ -244,20 +315,3 @@
 
 
 
-<script>
-	document.addEventListener("DOMContentLoaded", ()=>{
-		const totalCountInput = document.getElementById('totalCount');
-		const totalCount = Number(totalCountInput.value);
-		const currentPageInput = document.getElementById('currentPage');
-		const currentPage = Number(currentPageInput.value);
-		const totalPages = Math.ceil(totalCount/10);
-		let page =  currentPage || 1;
-		const paginationElement = document.querySelector('.pagination');
-		let pageLinks = '';
-
-		for (let i = 1; i <= totalPages; i++) {
-		    pageLinks += `<ul style="list-style-type: none;"><li class="page-item${i === page ? ' active' : ''}"><a class="page-link" style="color: black;" href="?page=${i}">${i}</a></li></ul>`;
-		}
-		paginationElement.innerHTML = pageLinks;
-	});
-</script>

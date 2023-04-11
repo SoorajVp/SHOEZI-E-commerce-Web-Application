@@ -220,26 +220,6 @@ module.exports = {
     return new Promise(async(resolve, reject) =>{
 
       let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).find().toArray();
-
-      // let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).aggregate([
-      //    {
-      //     '$unwind': {
-      //       'path': '$sub'
-      //     }
-      //   }, {
-      //     '$lookup': {
-      //       'from': 'subcategory', 
-      //       'localField': 'sub', 
-      //       'foreignField': '_id', 
-      //       'as': 'subList'
-      //     }
-      //   }, {
-      //     '$project': {
-      //       'subList': 1, 
-      //       'name': 1
-      //     }
-      //   }
-      // ]).toArray();
       console.log(category)
       resolve(category)
     })

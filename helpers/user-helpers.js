@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { ObjectId, Db } = require("mongodb-legacy");
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const productHelpers = require("./product-helpers");
 // const { resolve } = require("path");
 // const async = require("hbs/lib/async");
 // const { default: items } = require("razorpay/dist/types/items");
@@ -159,6 +160,7 @@ module.exports = {
       quantity: 1
     }
     return new Promise(async(resolve, reject) =>{
+      let product = await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: new ObjectId(proId)})
       let userCart = await db.get().collection(collection.CART_COLLECTIONS).findOne({user: new ObjectId(userId)});
       if(userCart){
         let proExist = userCart.products.findIndex(product => product.item == proId);
@@ -244,27 +246,66 @@ module.exports = {
   },
 
   changeProductQuantity : (details) =>{
-    return new Promise((resolve, reject) =>{
+    return new Promise(async(resolve, reject) =>{
       details.count = parseInt(details.count);
       details.quantity = parseInt(details.quantity);
+      let product = await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: new ObjectId(details.product)});
+      console.log("this is products from change products quantity-----", product)
+
       if(details.count == -1 && details.quantity == 1){
+          
         db.get().collection(collection.CART_COLLECTIONS).updateOne({_id: new ObjectId(details.cart)},
         {
           $pull: {products: {item: new ObjectId(details.product)}}
         }).then((response) =>{
           resolve({removeProduct: true})
         })
-      }else{
-        db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:new ObjectId(details.cart),
-          'products.item':new ObjectId(details.product)},
-          {
-              $inc:{'products.$.quantity':details.count}
-          })
-          .then((response)=>{
-              resolve({status: true});
-          })
 
-      }     
+      }else{
+        console.log("this cart button -----", details.count)
+        
+
+
+          let cart = await db.get().collection(collection.CART_COLLECTIONS).aggregate([
+            {
+              '$match': {
+                '_id': new ObjectId(details.cart)
+              }
+            }, {
+              '$unwind': {
+                'path': '$products'
+              }
+            }, {
+              '$match': {
+                'products.item': new ObjectId(details.product)
+              }
+            }
+        ]).toArray()
+        console.log("this is count of checking out of stock", cart, details.count);
+
+        if((product.quantity - (cart[0].products.quantity + details.count)) >= 0){
+
+          db.get().collection(collection.CART_COLLECTIONS).updateOne({_id: new ObjectId(details.cart),
+            'products.item':new ObjectId(details.product)},
+            {
+                $inc:{'products.$.quantity': details.count}
+            })
+            .then(async()=>{
+              console.log("true");
+              resolve({status: true})
+            })
+          
+          
+        }else{
+
+          console.log("false")
+          resolve({status: false});
+        }
+        
+      }
+
+      
+           
     })
   },
 
@@ -340,14 +381,6 @@ module.exports = {
       })
     })
   },
-
-  
-
-  
-
-
-
-
 
   addWishList : (proId, userId) =>{
     console.log(proId , userId)
