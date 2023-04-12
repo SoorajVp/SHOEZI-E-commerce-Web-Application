@@ -32,11 +32,11 @@
                 		<table>
                             <thead class="cart__row cart__header">
                                 <tr>
-                                    <th colspan="2" class="text-center">PRODUCTS</th>
-                                    <th class="text-center">PRICE</th>
+                                    <th colspan="2" class="">PRODUCTS</th>
+                                    <th class="text-left">PRICE</th>
                                     <th class="text-center">QUANTITY</th>
                                     <th class="text-right">TOTAL</th>
-                                    <th class="action">&nbsp;</th>
+                                    <th class="">&nbsp;</th>
                                 </tr>
                             </thead>
                     		<tbody>
@@ -98,21 +98,30 @@
                     
                	</div>
                 <div class="col-12 col-sm-12 col-md-4 col-lg-4 cart__footer">
+
+                    <div class="solid-border" style="background-color: rgb(236 239 239 / 50%);">
+                      <div class="row">
+                      	<span class="col-12 col-sm-6 cart__subtotal-title">Wallet amount</span>
+                        <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right "> <span class="money text-danger" >{{user.walletAmount}}</span></span>
+                      </div>
+                      <div class="cart__shipping">Use your wallet amount for purchasing</div>
+                     
+                    </div>
                 	
-                    <div class="solid-border">
+                    <div class="solid-border" style="background-color: rgb(236 239 239 / 50%);">
                       <div class="row">
                       	<span class="col-12 col-sm-6 cart__subtotal-title"><strong>Subtotal</strong></span>
                         <span class="col-12 col-sm-6 cart__subtotal-title cart__subtotal text-right"><span class="money" id='total'>{{totalValue}}</span></span>
                       </div>
                       <div class="cart__shipping">Shipping &amp; taxes calculated at checkout</div>
-                      <p class="cart_tearm">
+                      <p class="cart_tearm pb-4">
                         <label>
                           <input type="checkbox" name="tearm" id="cartTearm" class="checkbox" value="tearm" required="">
                            I agree with the terms and conditions</label>
                       </p>
-                      <a href="/check-out">
+                      <a href="/check-out" class="">
                       <input  name="checkout" id="cartCheckout" class="btn btn--small-wide checkout" value="Checkout" disabled="disabled"></a>
-                      <div class="paymnet-img"><img src="/assets/images/payment-img.jpg" alt="Payment"></div>
+                      {{!-- <div class="paymnet-img"><img src="/assets/images/payment-img.jpg" alt="Payment"></div> --}}
                     </div>
 
                 </div>

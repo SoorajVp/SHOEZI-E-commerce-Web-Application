@@ -86,5 +86,6 @@ router.post('/wishList', userAuth.varifyLogin, controller.wishListPost);
 
 router.post('/remove-wishlist', userAuth.varifyLogin, controller.removeWishlist);
 
+router.get('/my-wallet', userAuth.varifyLogin, controller.myWallet)
 
 module.exports = router;

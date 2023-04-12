@@ -72,6 +72,16 @@
                                   </div>
                                 </div>
 
+                              {{else if (isEqual this.status 'RETURN')}}
+
+                              <div class="dropdown">
+                                  <button class="btn btn-outline-danger dropdown-toggle" type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{this.status}}
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" onclick="returnWallet('{{this._id}}','{{this.userId}}','RETURNED')" >RETURNED</a>
+                                  </div>
+                                </div>
                               {{else}}
 
                               <div class="dropdown">
@@ -109,7 +119,10 @@
 <!-- [ Main Content ] end -->
    
 
+{{!-- Swal sweet alert 2 --}}
 
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
 <script>
   
   
@@ -119,35 +132,72 @@
   console.log("oooooooooo777777777777777777777oooooooo");
   console.log(userId, status);
     axios({
-     method: 'post',
-     url: `/admin/order-status`,
-     data: {
-       userId: userId,
-       status: status
-     }
-   })
-  .then((response) => {
-    console.log("LLLLLLLLLLl",response)
-    if(response.data.status) {
-      //alert("Are you sure");
-      setTimeout(function() {
-        location.reload();
-      }, 1500);
-         Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: `This Order has been ${status} Succesfully`,
-            showConfirmButton: false,
-            timer: 1500
-          })
-          
-    }else{
-      console.log("error On Axios change status");
-    }
-    
-  })
+       method: 'post',
+       url: `/admin/order-status`,
+       data: {
+         userId: userId,
+         status: status
+       }
+     })
+    .then((response) => {
+      console.log("LLLLLLLLLLl",response)
+      if(response.data.status) {
+        //alert("Are you sure");
+        setTimeout(function() {
+          location.reload();
+        }, 1500);
+           Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: `This Order has been ${status} Succesfully`,
+              showConfirmButton: false,
+              timer: 1500
+            })
+
+      }else{
+        console.log("error On Axios change status");
+      }
+
+    })
   
   }
+
+
+function returnWallet(orderId, userId, status){
+  console.log("ppppppppppppppppppppppppppppppp");
+ console.log(orderId, status, userId);
+
+  swal({
+     title: "Are you sure?",
+     text: "You will not be able to recover this imaginary file!",
+     type: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#DD6B55",
+     confirmButtonText: "Yes, delete it!",
+     closeOnConfirm: false
+   },
+   function(){
+     axios({
+       method: 'post',
+       url: `/admin/return-wallet`,
+       data: {
+         orderId: orderId,
+         status: status,
+         userId: userId
+       }
+     }).then((response) =>{
+      setTimeout(() => {
+        location.reload()
+      }, 2000);
+
+      swal("Deleted!", "Your imaginary file has been deleted.", "success");
+        
+     })
+   });
+
+ 
+}
+  
 </script>
 
  {{!-- <script src="/javascripts/helper-functions.js"></script> --}}

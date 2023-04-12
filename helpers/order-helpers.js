@@ -48,8 +48,8 @@ module.exports = {
         }
       ]).toArray()
       
-      let status = order.payment == 'COD'?'PLACED':'PENDING'
-      
+      // let status = order.payment == 'COD' && 'WALLET'?'PLACED':'PENDING'
+      let status = order.payment == 'COD' || order.payment == 'WALLET' ? 'PLACED' : 'PENDING';
 
       let orderObj = {
         deliveryDetails:{
@@ -78,13 +78,18 @@ module.exports = {
         response.status = orderObj.paymentMethod;
         console.log("this is inserted id from placed products----", response.insertedId);
          
+        resolve(response);
           
-          db.get().collection(collection.CART_COLLECTIONS).deleteOne({user: new ObjectId(order.userId)}).then(()=>{
-            resolve(response);
-          })
         
       })
     })
+  },
+
+  EmptyCart : (userId) =>{
+
+    db.get().collection(collection.CART_COLLECTIONS).deleteOne({user: new ObjectId(userId)})
+    // return 0;
+
   },
 
   getOrderCartProducts : (userId) =>{
@@ -365,6 +370,33 @@ module.exports = {
           resolve(orders)
         })
       },
+
+
+      addReturnWallet : (userId, orderId) => {
+        console.log("this is wallet function-----------")
+
+         return new Promise(async(resolve, reject) =>{
+          let order = await db.get().collection(collection.ORDER_COLLECTIONS).findOne({_id: new ObjectId(orderId)})
+          console.log("this is order details from wallet page------", order);
+          db.get().collection(collection.USER_COLLECTIONS).updateOne({_id: new ObjectId(userId)},
+          {
+               $inc: { walletAmount: order.total } 
+          }).then(()=>{ 
+            resolve({status: true})
+          })
+         })
+      },
+
+      changeWalletAmount : (userId, total) =>{
+        return new Promise((resolve, reject) =>{
+          db.get().collection(collection.USER_COLLECTIONS).updateOne({_id: new ObjectId(userId)},
+          {
+            $inc: { walletAmount: -total } 
+          }).then(() =>{
+            resolve();
+          })
+        })
+      }
     
 
 

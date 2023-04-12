@@ -9,7 +9,7 @@ jQuery('#loginForm').validate({
     },
     messages:{
         emailId:{
-            email:"* Please Enter A Valid Email"
+            email:"* Please Enter a Valid Email"
         }
     }
 })

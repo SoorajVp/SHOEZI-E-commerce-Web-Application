@@ -8,6 +8,7 @@ const cloudinary = require('../utils/cloudinary');
 const slugify = require('slugify');
 const path = require('path');
 const { ObjectId } = require('mongodb-legacy');
+const { response } = require('express');
 const objectId = require('mongodb-legacy').ObjectId;
 
 module.exports = {
@@ -101,7 +102,9 @@ module.exports = {
     },
 
     addProductsPost : async(req, res) =>{
+
         req.body.url = slugify(req.body.name);
+
         try{
             productHelpers.addProducts(req.body, async(id) =>{             
                 let imgUrls = [];
@@ -268,12 +271,15 @@ module.exports = {
     },
 
     categoryPost : (req, res) =>{
+        console.log("this is category daata -----", req.body)
         try {
             req.body.url = slugify(req.body.main+" "+req.body.sub, { lower: true });
             adminHelpers.addCatergory(req.body).then((response) =>{
-                if(response.status == false){
-                    req.session.categoryErr = "This category is already Exist";
+                console.log(response)
+                if(response.status){
+                    res.redirect('/admin/category');
                 }else{
+                    req.session.categoryErr = response.message;
                     res.redirect('/admin/category');
                 }
             })
@@ -327,13 +333,22 @@ module.exports = {
         }
     },
 
+    returnWallet : (req, res) =>{
+        console.log("this is return wallet -------", req.body);
+        orderHelpers.addReturnWallet(req.body.userId, req.body.orderId).then((response) =>{
+            orderHelpers.changeOrderStatus(req.body.orderId, req.body.status).then((resp)=>{
+                res.json(response);
+            })
+        })
+        
+    },
+
     getOrderDetails : async(req, res) =>{
         let products = await orderHelpers.getOrderedProducts(req.params.id);
          orderHelpers.getUserOrder(req.params.id).then((orderDetails)=>{
             orderDetails.createdOn = orderDetails.createdOn.toLocaleDateString('es-ES', { timeZone: 'UTC' });
             res.render('admin/order-details', {admin: true, products, orderDetails})
         })
-        
     },
 
 

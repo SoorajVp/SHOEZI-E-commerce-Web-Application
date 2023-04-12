@@ -162,24 +162,50 @@ module.exports = {
     return new Promise(async(resolve, reject) =>{
       let product = await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: new ObjectId(proId)})
       let userCart = await db.get().collection(collection.CART_COLLECTIONS).findOne({user: new ObjectId(userId)});
+      
       if(userCart){
         let proExist = userCart.products.findIndex(product => product.item == proId);
         if(proExist != -1){
-          db.get().collection(collection.CART_COLLECTIONS).updateOne({user:new ObjectId(userId),
-            'products.item': new ObjectId(proId)},
-          {
-            $inc: {'products.$.quantity': 1}
-          })
-          .then(() =>{
-            resolve()
-          })
+
+          let cart = await db.get().collection(collection.CART_COLLECTIONS).aggregate([
+            {
+              '$match': {
+                user: new ObjectId(userId)
+              }
+            }, {
+              '$unwind': {
+                'path': '$products'
+              }
+            }, {
+              '$match': {
+                'products.item': new ObjectId(proId)
+              }
+            }
+          ]).toArray();
+
+          if((product.quantity - (cart[0].products.quantity + 1)) >= 0){
+
+            db.get().collection(collection.CART_COLLECTIONS).updateOne({ user:new ObjectId(userId),
+              'products.item': new ObjectId(proId)},
+            {
+              $inc: {'products.$.quantity': 1}
+            })
+            .then(() =>{
+              resolve({status: true})
+            })
+
+          }else{
+            console.log("out of stock----");
+            resolve({status: false})
+          }
+
         }else{
           db.get().collection(collection.CART_COLLECTIONS).updateOne({user: new ObjectId(userId)},
           {
             $push: {products: proObj}
           })
           .then(() =>{
-            resolve();
+            resolve({status: true});
           })
         } 
 
@@ -189,7 +215,7 @@ module.exports = {
           products: [proObj]
         }
         db.get().collection(collection.CART_COLLECTIONS).insertOne(cartObj).then((response) =>{
-          resolve();
+          resolve({status: true});
         })
       }
     })

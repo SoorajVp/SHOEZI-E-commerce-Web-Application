@@ -26,7 +26,7 @@
                         {{!-- <label class="input-group-text" for="inputGroupSelect01">Options</label> --}}
                       </div>
                       <select class="custom-select" name="main" id="inputGroupSelect01">
-                        <option selected>--- CATEGORY ---</option>
+                        <option selected> MAIN CATEGORY </option>
                         <option value="MENS">MENS</option>
                         <option value="WOMENS">WOMENS</option>
                         <option value="KIDS">KIDS</option>
@@ -34,11 +34,11 @@
                         {{!-- <input type="text" class="form-control " name="main" placeholder="CATEGORY " aria-label="Recipient's username" aria-describedby="basic-addon2" required> --}}
                         <input type="text" class="form-control ml-2" name="sub" placeholder="SUB CATEGORY " aria-label="Recipient's username" aria-describedby="basic-addon2" required>
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-success pl-3" type="button">ADD CATEGORY</button>
+                            <button type="submit" class="btn btn-success pl-3" >ADD CATEGORY</button>
                         </div>
                     </div>
                     {{#if Err}}
-                      <span class="justify-content-center"><p class="text-danger">{{Err}}</p></span>
+                      <span class="justify-content-center"><p class="text-danger text-center">{{Err}}</p></span>
                     {{/if}}
                     </form>
 

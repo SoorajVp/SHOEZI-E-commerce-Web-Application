@@ -52,6 +52,29 @@
                                 
                             </ul>
                         </div>
+
+                        <div class="sidebar_widget filterBox filter-widget">
+                            <div class="widget-title">
+                            	<h2>Price</h2>
+                            </div>
+                            {{!-- <form action="#" method="post" class="price-filter"> --}}
+                            <div class="price-filter">
+                                <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                	<div class="ui-slider-range ui-widget-header ui-corner-all"></div>
+                                    <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+                                    <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 text-left">
+                                        <p class="d-flex"><input id="amount1" type="text" value="50" > <input id="amount2" type="text" value="5000" ></p>
+                                    </div>
+                                    <div class="col-6 text-right margin-25px-top">
+                                        <button onclick="slideFilter()" class="btn btn-secondary btn--small">filter</button>
+                                    </div>
+                                </div>
+                             </div>
+                            {{!-- </form> --}}
+                        </div>
                         
                         
                         <!--Brand-->
@@ -150,7 +173,7 @@
                                             <!-- image --> 
                                             <img class="grid-view-item__image  lazyload" src="{{this.image.[0]}}"  alt="image" title="product" /> 
 
-                                            <span class="sold-out"><span class="py-1 text-secondary h3 border border-secondary ">out of stock</span></span>
+                                            <span class="sold-out"><span class="py-1 text-danger h4 border border-danger ">out of stock</span></span>
 
                                             </a>
                                             <!-- product label -->
@@ -187,14 +210,13 @@
                                         <!-- End product name -->
                                         <!-- product price -->
                                         {{#if this.offer}}
-                                        <div class="product-price pb-2">
-                                            <span class="old-price">{{this.price}}</span>
-                                            <span class="price">{{this.total}}</span>
-                                        </div>
+                                            <div class="product-price pb-2">
+                                                <span class="old-price">{{this.price}}</span>
+                                                <span class="price">{{this.total}}</span>
+                                            </div>
                                         {{else}}
-                                       
 
-                                         <div class="product-price pb-2">
+                                        <div class="product-price pb-2">
                                             <span class="price"> {{this.price}}</span>
                                         </div>
                                         {{/if}}
@@ -296,13 +318,7 @@
         </div>
         
     </div>
-    <!--End Body Content-->
     
-    <!--Footer-->
-    
-    <!--End Footer-->
-    
-    <!--Scoll Top-->
     <span id="site-scroll"><i class="icon anm anm-angle-up-r"></i></span>
     <!--End Scoll Top-->
     
@@ -312,6 +328,15 @@
     </div>
 </div>
 
+
+
+<script>
+    function slideFilter() {
+        let amount1 = document.querySelector("#amount1").value;
+        let amount2 = document.querySelector("#amount2").value;
+        location.assign(`/shop/?low=${amount1}&high=${amount2}`)
+    }
+</script>
 
 
 

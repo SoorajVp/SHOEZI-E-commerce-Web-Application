@@ -162,6 +162,12 @@
                             <div class="payment-method">
                                 <div class="payment-accordion">
                                     <div id="">
+                                        {{#if (greaterThan user.walletAmount total )}}
+                                        <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2">
+                                            <input type="radio" name="paymentType" value="WALLET" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
+                                            <a class="pt-4" ><h3> WALLET AMOUNT </h3></a>
+                                         </label>
+                                         {{/if}}
 
                                         <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2">
                                             <input type="radio" name="paymentType" value="COD" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>

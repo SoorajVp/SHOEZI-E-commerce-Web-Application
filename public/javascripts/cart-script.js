@@ -52,30 +52,41 @@ function changeQuantity(cartId, proId, userId, count){
 
 
 function removeCartproduct(cartId, proId){
+  swal({
+    title: "Are you sure?",
+    text: "You will not be able to recover this cart item !",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#DD6B55",
+    confirmButtonText: "Yes, delete it !",
+    closeOnConfirm: false
+  },
+  function(){
     $.ajax({
-        url:'/remove-cartproducts',
-        data: {
-            cart: cartId,
-            product: proId,
-            
-        },
-        method:'post',
-        success:(response) =>{
-            console.log("changeQuantity functions -------------------",response)
-            if(response.removeProduct){
-                //alert("Product remove from Cart");
-                setTimeout(() => {
-                    location.reload()
-                }, 1900);
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Item removed from Cart !'
-                  })
-                
-            }
-        }
-    })
+      url:'/remove-cartproducts',
+      data: {
+          cart: cartId,
+          product: proId,
+          
+      },
+      method:'post',
+      success:(response) =>{
+          console.log("changeQuantity functions -------------------",response)
+          if(response.removeProduct){
+              setTimeout(() => {
+                  location.reload()
+              }, 2000);
+              swal("Deleted!", "Your cart item has been deleted.", "success");
+          }
+      }
+  })
+    
+  });
+    
 }
+
+
+
 
 
 function addToCart(prodId) {
@@ -84,6 +95,7 @@ try{
         url:'/add-to-cart/'+prodId,
         method:'get',
         success:(response)=>{
+          console.log(response)
           if(response.status){
 
               let count =$('#cart-count').html()
@@ -95,6 +107,11 @@ try{
                 title: 'Item added to cart !'
               })
 
+          }else{
+            Toast.fire({
+              icon: 'error',
+              title: 'Reached Maximum Limit !'
+            })
           }
         }
       })
@@ -184,3 +201,6 @@ async function  subCategory(mainItem, subItem) {
   }
   
 }
+
+
+

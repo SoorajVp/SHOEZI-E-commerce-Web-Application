@@ -73,6 +73,8 @@ router.get('/order-details/:id', adminAuth.varifyLogin, controller.getOrderDetai
 
 router.post('/order-status', adminAuth.varifyLogin, controller.OrderStatus);
 
+router.post('/return-wallet', adminAuth.varifyLogin, controller.returnWallet);
+
 router.get('/sales-report', adminAuth.varifyLogin, controller.salesReport);
 
 router.post('/filtered-sales-report', adminAuth.varifyLogin, controller.salesFilter);

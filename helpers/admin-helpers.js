@@ -139,15 +139,27 @@ module.exports = {
   addCatergory : (category) =>{
     return new Promise(async(resolve, reject) => {
       console.log("))))))", category.main, category.sub)
+      category.sub = category.sub.toUpperCase()
       category.listed = true;
-      let categoryExist = await db.get().collection(collection.CATEGORY_COLLECTIONS).findOne({main: category.main , sub: category.sub})
-      if(categoryExist) {
-        resolve({status: false})
-      }else{
-        db.get().collection(collection.CATEGORY_COLLECTIONS).insertOne(category).then((response) =>{
-          resolve({status: true})
+      if(category.main == "MAIN CATEGORY"){
+        resolve({
+          status: false,
+          message: "* Please select the Main Category"
         })
+      }else{
+          let categoryExist = await db.get().collection(collection.CATEGORY_COLLECTIONS).findOne({main: category.main , sub: category.sub})
+          if(categoryExist) {
+            resolve({
+              status: false,
+              message: "* This category is already Exist"
+            })
+          }else{
+            db.get().collection(collection.CATEGORY_COLLECTIONS).insertOne(category).then((response) =>{
+              resolve({status: true})
+            })
+          }
       }
+      
       
     })
   },

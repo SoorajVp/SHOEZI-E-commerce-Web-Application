@@ -101,7 +101,7 @@ module.exports = {
   },
 
   shop: async(req, res) => {
-
+   
     let value = req.params.id
 
     if(value === value.toUpperCase()){
@@ -167,8 +167,7 @@ module.exports = {
         let cartCount = await userHelpers.getCartCount(req.session.user._id);
         res.render("users/shop-page", { products, category, logged: true, user, cartCount});
       } else {
-        res.render('users/shop-page',{ products, category 
-        });
+        res.render('users/shop-page',{ products, category });
       }
 
     }
@@ -337,6 +336,14 @@ module.exports = {
       let products = await userHelpers.getCartproducts(user._id);
       let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
       totalValue = totalValue.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+
+      if(user.walletAmount){
+        user.walletAmount = user.walletAmount.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      }else{
+        user.walletAmount = 0;
+        user.walletAmount = user.walletAmount.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      }
+
       res.render('users/cart-details', {user, products, cartCount, totalValue});
     }else{
       res.render('users/empty-cart', {user, cartCount})
@@ -345,11 +352,13 @@ module.exports = {
   },
 
   addToCart : (req, res) =>{
-    userHelpers.updateCart(req.params.id, req.session.user._id).then(() =>{
-      res.json({
-        status: true,
-        message: 'added to cart'
-      });
+    userHelpers.updateCart(req.params.id, req.session.user._id).then((response) =>{
+      // res.json({
+      //   status: true,
+      //   message: 'added to cart'
+      // });
+      console.log("this is reponse from add to cart---------------------", response)
+      res.json(response);
     }).catch((err)=>{
       console.log("this is catched error...........",err);
     })
@@ -357,9 +366,12 @@ module.exports = {
 
   homeAddToCart : async(req, res) => {
     await userHelpers.updateCart(req.body.proId, req.session.user._id).then((response) =>{
-      res.json({status : true,
-        message: "item added to cart"
-      });
+      // res.json({status : true,
+      //   message: "item added to cart"
+      // });
+      console.log("this is reponse from add to cart---------------------", response)
+
+      res.json(response);
     })
   },
 
@@ -394,6 +406,8 @@ module.exports = {
     let cartCount = await userHelpers.getCartCount(req.session.user._id);
     let total = await userHelpers.getTotalAmount(req.session.user._id);
     // total = total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+
+    
     res.render('users/checkout',{total, user, cartCount, products});
   },
 
@@ -451,9 +465,22 @@ module.exports = {
           products.forEach(function(values) {
             productHelpers.decrementQuantity(values)
           })
-          
+
+          orderHelpers.EmptyCart(req.body.userId);
           response.method = 'COD'
           res.json(response);
+
+        }else if(response.status == 'WALLET'){
+
+          orderHelpers.changeWalletAmount(req.body.userId, req.body.total);
+          products.forEach(function(values) {
+            productHelpers.decrementQuantity(values)
+          })
+          orderHelpers.EmptyCart(req.body.userId);
+
+          response.method = 'COD'
+          res.json(response);
+
         }else if(response.status == 'RAZORPAY'){
           console.log("rezorpay----")
           orderHelpers.generateRazorpay(response.insertedId, req.body.total).then((response) =>{
@@ -473,7 +500,6 @@ module.exports = {
   },
 
   applyCoupon : (req, res) =>{
-
     console.log(req.body);
     try {
       adminHelpers.couponApply(req.body.code, req.body.userId).then((response) =>{
@@ -533,12 +559,23 @@ module.exports = {
     }
   },
 
-  varifyPayment : (req, res) =>{
+  varifyPayment : async(req, res) =>{
 
     try {
+
+      let products = await orderHelpers.getOrderCartProducts(req.session.user._id);
+      console.log("this is prooducts from the cart side----" , products)
+
       console.log("this is the last log", req.body);
       orderHelpers.verifyOrderPayment(req.body).then(async() =>{
         console.log("condition truewwwww");
+
+        products.forEach(function(values) {
+          productHelpers.decrementQuantity(values)
+        })
+
+        orderHelpers.EmptyCart(req.session.user._id);
+
         let orderStatus = 'PLACED'
         console.log('this is the last console and the order id is',req.body['order[receipt]']);
         await orderHelpers.changeOrderStatus(req.body['order[receipt]'], orderStatus).then(() =>{
@@ -600,6 +637,19 @@ module.exports = {
       console.log(error)
     }
     
+  },
+
+  myWallet : async(req, res) =>{
+    let user = req.session.user;
+    let cartCount = await userHelpers.getCartCount(user._id);
+    if(user.walletAmount){
+      user.walletAmount = user.walletAmount.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      res.render('users/user-wallet', {user, cartCount})
+    }else{
+      user.walletAmount = 0;
+      user.walletAmount = user.walletAmount.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      res.render('users/user-wallet', {user, cartCount})
+    }
   }
 
   
