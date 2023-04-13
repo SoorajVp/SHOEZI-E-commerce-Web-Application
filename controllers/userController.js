@@ -61,23 +61,6 @@ module.exports = {
     
   },
 
-  // postLogin: (req, res) => {
-  //   userHelpers.doLogin(req.body).then((response) => {
-  //     if (response.status) {
-  //       if (response.unblocked) {
-  //         req.session.loggedin = true;
-  //         req.session.user = response.user;
-  //         res.redirect("/");
-  //       } else {
-  //         req.session.logErr = "This Account is Blocked";
-  //         res.redirect("/login");
-  //       }
-  //     } else {
-  //       req.session.logErr = "Invalid username or Password";
-  //       res.redirect("/login");
-  //     }
-  //   });
-  // },
 
   signup: (req, res) => {
     if (req.session.loggedin) {
@@ -97,81 +80,176 @@ module.exports = {
     } catch (error) {
       console.log(error)
     }
+  },
+
+
+
+  shop: async(req, res) => {
+    try {
+      let value = req.params.id
+      if(value === value.toUpperCase()){
+          console.log("Filter from Main category---------")
+          req.session.main = value; 
+          req.session.sub = false;
+        
+          let category = await adminHelpers.getItemCategory(req.session.main);
+          let products = await productHelpers.getShopItems(req.session.main);
+        
+          for(let i=0; i< products.length; i++){
+            products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+            if(products[i].offer){
+              products[i].total = products[i].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+            }
+          }
+          if (req.session.loggedin) {
+            let user = req.session.user; 
+            let cartCount = await userHelpers.getCartCount(req.session.user._id);
+
+            if(req.session.filteredProducts){
+              products=req.session.filteredProducts;
+              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.session.main});
+              req.session.filteredProducts = false
+            }else{
+              console.log("this is filtered products---------------------------------nulllllll")
+              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.session.main});
+            }
+          
+          } else {
+
+            if(req.session.filteredProducts){
+              products=req.session.filteredProducts;
+              res.render('users/shop-page',{ products, category, sessionCategory: req.session.main });
+              req.session.filteredProducts = false
+            }else{
+              res.render('users/shop-page',{ products, category, sessionCategory: req.session.main });
+            }
+          }
+      
+      }else if(req.params.id == 'low-to-high'){
+      
+          let category = await adminHelpers.getItemCategory(req.session.main);
+          let products = await productHelpers.getProductsLowToHigh(req.session.main);
+          for(let i=0; i< products.length; i++ ){
+            products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+          }
+        
+          if (req.session.loggedin) {
+            let user = req.session.user; 
+            let cartCount = await userHelpers.getCartCount(req.session.user._id);
+          
+            if(req.session.filteredProducts){
+              products=req.session.filteredProducts;
+              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
+              req.session.filteredProducts = false
+            }else{
+              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
+            }
+          
+          } else {
+          
+            if(req.session.filteredProducts){
+              products=req.session.filteredProducts;
+              res.render('users/shop-page',{ products, category, sessionCategory: req.params.id });
+              req.session.filteredProducts = false
+            }else{
+              res.render('users/shop-page',{ products, category, sessionCategory: req.params.id });
+            }
+          }
+      
+      }else if(req.params.id == 'high-to-low'){
+        
+          let category = await adminHelpers.getItemCategory(req.session.main);
+          let products = await productHelpers.getProductsHighToLow(req.session.main);
+          for(let i=0; i< products.length; i++){
+            products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+          }
+          if (req.session.loggedin) {
+            let user = req.session.user; 
+            let cartCount = await userHelpers.getCartCount(req.session.user._id);
+          
+            if(req.session.filteredProducts){
+              products=req.session.filteredProducts;
+              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
+              req.session.filteredProducts = false
+            }else{
+              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
+            }
+          
+          } else {
+            if(req.session.filteredProducts){
+              products=req.session.filteredProducts;
+              res.render('users/shop-page',{ products, category, sessionCategory: req.params.id });
+              req.session.filteredProducts = false
+            }else{
+              res.render('users/shop-page',{ products, category, sessionCategory: req.params.id });
+            }
+          }
+      
+      }else{
+      
+          req.session.sub = req.params.id;
+          let category = await adminHelpers.getItemCategory(req.session.main);
+          let products = await productHelpers.getShopItemsSub(req.params.id);
+          for(let i=0; i< products.length; i++){
+            products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+          }
+        
+          if (req.session.loggedin) {
+            let user = req.session.user; 
+            let cartCount = await userHelpers.getCartCount(req.session.user._id);
+          
+            if(req.session.filteredProducts){
+              products=req.session.filteredProducts;
+              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
+              req.session.filteredProducts = false
+            }else{
+              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
+            }
+          
+          } else {
+          
+            if(req.session.filteredProducts){
+              products=req.session.filteredProducts;
+              res.render('users/shop-page',{ products, category , sessionCategory: req.params.id});
+              req.session.filteredProducts = false
+            }else{
+              res.render('users/shop-page',{ products, category , sessionCategory: req.params.id});
+            }
+            
+          }
+      }
+    } catch (error) {
+      
+    }
+    
     
   },
 
-  shop: async(req, res) => {
-   
-    let value = req.params.id
 
-    if(value === value.toUpperCase()){
 
-      req.session.category = value; 
-      let category = await adminHelpers.getItemCategory(req.session.category);
-      let products = await productHelpers.getShopItems(req.session.category);
-      for(let i=0; i< products.length; i++){
-        products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-        if(products[i].offer){
-          products[i].total = products[i].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-        }
-      }
-      if (req.session.loggedin) {
-        let user = req.session.user; 
-        let cartCount = await userHelpers.getCartCount(req.session.user._id);
-        res.render("users/shop-page", { products, category, logged: true, user, cartCount});
-      } else {
-        res.render('users/shop-page',{ products, category });
-      }
 
-    }else if(req.params.id == 'low-to-high'){
 
-      let category = await adminHelpers.getItemCategory(req.session.category);
-      let products = await productHelpers.getProductsLowToHigh(req.session.category);
-      for(let i=0; i< products.length; i++){
-        products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-      }
-      if (req.session.loggedin) {
-        let user = req.session.user; 
-        let cartCount = await userHelpers.getCartCount(req.session.user._id);
-        res.render("users/shop-page", { products, category, logged: true, user, cartCount});
-      } else {
-        res.render('users/shop-page',{ products, category });
-      }
+  shopFilter : async(req, res) =>{
     
-    }else if(req.params.id == 'high-to-low'){
-      
-      let category = await adminHelpers.getItemCategory(req.session.category);
-      let products = await productHelpers.getProductsHighToLow(req.session.category);
-      for(let i=0; i< products.length; i++){
-        products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-      }
-      if (req.session.loggedin) {
-        let user = req.session.user; 
-        let cartCount = await userHelpers.getCartCount(req.session.user._id);
-        res.render("users/shop-page", { products, category, logged: true, user, cartCount});
-      } else {
-        res.render('users/shop-page',{ products, category });
-      }
+    try {
+      console.log("this is console from filter -----", req.body);
+      console.log("this is sub", req.session.sub)
+      if(req.session.sub){
+        console.log("this is console from  sub catogory filter-------- -----")
 
-    }else{
-
-      let category = await adminHelpers.getItemCategory(req.session.category);
-      let products = await productHelpers.getShopItemsSub(req.params.id);
-      console.log(products)
-
-      for(let i=0; i< products.length; i++){
-        products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        let products = await productHelpers.filterProductsSub(req.body.low, req.body.high, req.session.sub);
+        req.session.filteredProducts = products
+        res.json({response: true})
+      }else{
+        console.log("this is console from  main catogory filter-------- -----")
+        let products = await productHelpers.filterProductsMain(req.body.low, req.body.high, req.body.category);
+        req.session.filteredProducts = products
+        res.json({response: true})
       }
-      if (req.session.loggedin) {
-        let user = req.session.user; 
-        let cartCount = await userHelpers.getCartCount(req.session.user._id);
-        res.render("users/shop-page", { products, category, logged: true, user, cartCount});
-      } else {
-        res.render('users/shop-page',{ products, category });
-      }
-
+    } catch (error) {
+      console.log(error)
     }
-
+    
   },
 
  
@@ -217,7 +295,6 @@ module.exports = {
       let user = req.session.user;
       let cartCount = await userHelpers.getCartCount(req.session.user._id);
       res.render('users/user-addAddress', {user, cartCount})
-     
   },
 
   addAddressPost : async(req, res) =>{
@@ -353,14 +430,9 @@ module.exports = {
 
   addToCart : (req, res) =>{
     userHelpers.updateCart(req.params.id, req.session.user._id).then((response) =>{
-      // res.json({
-      //   status: true,
-      //   message: 'added to cart'
-      // });
-      console.log("this is reponse from add to cart---------------------", response)
       res.json(response);
     }).catch((err)=>{
-      console.log("this is catched error...........",err);
+      console.log(err);
     })
   },
 

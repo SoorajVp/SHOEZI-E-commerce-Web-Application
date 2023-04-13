@@ -289,8 +289,6 @@ module.exports = {
 
       }else{
         console.log("this cart button -----", details.count)
-        
-
 
           let cart = await db.get().collection(collection.CART_COLLECTIONS).aggregate([
             {
@@ -321,7 +319,6 @@ module.exports = {
               resolve({status: true})
             })
           
-          
         }else{
 
           console.log("false")
@@ -329,9 +326,6 @@ module.exports = {
         }
         
       }
-
-      
-           
     })
   },
 

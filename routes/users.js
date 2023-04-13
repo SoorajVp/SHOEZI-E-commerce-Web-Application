@@ -20,7 +20,7 @@ router.post('/signup', controller.postSignup);
 
 router.get('/shop/:id', controller.shop);
 
-// router.get('/shop/filter/:id', controller.shopFilter);
+router.post('/shop/filter', controller.shopFilter);
 
 router.get('/product-details/:id', controller.productDetails);
 

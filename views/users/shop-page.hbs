@@ -41,6 +41,8 @@
                                     <a href="/shop/high-to-low"><button class="btn-block">HIGH TO LOW</button></a>
                                 </div>
                             </div>
+                                
+
                             <div class="widget-title"><h2>Categories</h2></div>
                             <ul class="sidebar_categories ml-2">
 
@@ -66,7 +68,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6 text-left">
-                                        <p class="d-flex"><input id="amount1" type="text" value="50" > <input id="amount2" type="text" value="5000" ></p>
+                                        <p class="d-flex"><input id="amount1" type="text" value="50" > 
+                                        <input id="amount2" type="text" value="5000"  data-category="{{sessionCategory}}"></p>
+                                        <input id="category" type="text" value="{{sessionCategory}}" >
+                                        
                                     </div>
                                     <div class="col-6 text-right margin-25px-top">
                                         <button onclick="slideFilter()" class="btn btn-secondary btn--small">filter</button>
@@ -230,6 +235,7 @@
                                     <!-- End product details -->
                                  </div>
 
+
                                  {{else}}
                                  
                                  <div class="col-6 col-sm-6 col-md-4 col-lg-4 item ">
@@ -334,7 +340,30 @@
     function slideFilter() {
         let amount1 = document.querySelector("#amount1").value;
         let amount2 = document.querySelector("#amount2").value;
-        location.assign(`/shop/?low=${amount1}&high=${amount2}`)
+        let category = document.querySelector("#category").value;
+
+        //location.assign(`/shop/?low=${amount1}&high=${amount2}`)
+
+        console.log(amount1, amount2);
+
+        axios({
+            url: `/shop/filter`,
+            method: 'post',
+            data: {
+                low: amount1,
+                high: amount2,
+                category: category
+            }
+        })
+        .then((response)=>{
+            console.log(response);
+            var category = document.querySelector("#amount2").dataset.category
+            console.log(category)
+            location.href = `/shop/${category}`
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
     }
 </script>
 

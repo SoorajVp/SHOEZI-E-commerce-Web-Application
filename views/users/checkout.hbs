@@ -79,8 +79,8 @@
                             
                             <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border " >
 		                    	<div class="p-3">
-                                    <p> <b> {{this.name}} </b><b class="pl-4 h3"> {{this.mobile}} </b><input type="radio" id="addressId" name="addressId"  value="{{this._id}}" class="float-right" style="accent-color: black ; width: 15px; height: 15px;" required></p>
-                                    <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}}</p>
+                                    <p> <b> {{this.name}} </b><b class="pl-4 h3"> {{this.mobile}} </b><input type="radio" id="addressId" name="addressId"  value="{{this._id}}" class="float-right" style="accent-color: black ; width: 15px; height: 15px;" checked required></p>
+                                    <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}} </p>
                                 </div>
 		                    </label>
                            
@@ -349,10 +349,10 @@ function placeOrder(){
  let discount = document.querySelector("#discount").innerHTML;
  let total = document.querySelector("#grand-total").innerHTML;
  let userId = document.querySelector("#userId").value;
+ let couponCode = document.querySelector("#couponCode").value;
 
  let addressId = document.querySelector('input[name="addressId"]:checked').value;
  let payment = document.querySelector('input[name="paymentType"]:checked').value;
- let couponCode = document.querySelector("#couponCode").value;
 
 console.log("This is offer data---", userId ,subtotal, discount, total, addressId, payment, couponCode);
 

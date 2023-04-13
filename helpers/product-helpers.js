@@ -203,7 +203,62 @@ module.exports = {
                 { $inc: { quantity : -products.quantity } }
             )
         })
-    }   
+    },
+
+    filterProductsMain : (low, high, category) =>{
+        low = Number(low)
+        high = Number(high)
+        console.log("this is console from filter -----", low, high, category);
+        return new Promise(async(resolve, reject) =>{
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
+                $lookup:{
+                    from: collection.CATEGORY_COLLECTIONS,
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "proDetails"
+                  }
+                },{
+                    $unwind: {
+                        path: '$proDetails'
+                    }
+                },{
+                    $match: {
+                      'proDetails.main': category
+                    }
+                  },{
+                    $match:{
+                       total:{$lte:high,$gte:low}
+                    }
+                }
+            ]).toArray();
+        console.log("this is console from filter -----", products);
+
+            resolve(products)
+        })
+    },
+
+    filterProductsSub : (low, high, category) => {
+        low = Number(low)
+        high = Number(high)
+        console.log("this is console from filter -----", low, high);
+        return new Promise(async(resolve, reject) =>{
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
+               {
+                $match: { 
+                    category: new ObjectId(category),
+                }
+               },
+               {
+                $match:{
+                   total:{$lte:high,$gte:low}
+                }
+               }
+            ]).toArray();
+            console.log("this is products from filtered page-----------------------", products);
+
+            resolve(products);
+        })
+    },
    
     
 
