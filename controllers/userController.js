@@ -85,6 +85,9 @@ module.exports = {
 
 
   shop: async(req, res) => {
+
+    console.log("param by search function ---------------", req.params.id);
+
     try {
       let value = req.params.id
       if(value === value.toUpperCase()){
@@ -185,6 +188,37 @@ module.exports = {
             }
           }
       
+      }else if(req.params.id == 'search'){
+
+          if(req.session.loggedin) {
+            let user = req.session.user; 
+            let category = await adminHelpers.getItemCategory(req.session.main);
+            let cartCount = await userHelpers.getCartCount(req.session.user._id);
+            products = req.session.filteredProducts;
+            for(let i=0; i< products.length; i++){
+              products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+              if(products[i].offer){
+                products[i].total = products[i].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+              }
+            }
+            res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.session.main});
+            req.session.filteredProducts = false;
+
+          }else{
+
+            let category = await adminHelpers.getItemCategory(req.session.main);
+            products = req.session.filteredProducts;
+            for(let i=0; i< products.length; i++){
+              products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+              if(products[i].offer){
+                products[i].total = products[i].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+              }
+            }
+            res.render("users/shop-page", { products, category, sessionCategory: req.session.main});
+            req.session.filteredProducts = false;
+
+          }
+
       }else{
       
           req.session.sub = req.params.id;
@@ -215,11 +249,11 @@ module.exports = {
             }else{
               res.render('users/shop-page',{ products, category , sessionCategory: req.params.id});
             }
-            
+
           }
       }
     } catch (error) {
-      
+      console.log("shop page error", error);
     }
     
     
@@ -722,6 +756,17 @@ module.exports = {
       user.walletAmount = user.walletAmount.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
       res.render('users/user-wallet', {user, cartCount})
     }
+  },
+
+  search : async(req, res) =>{
+    
+    console.log("this is search function-------", req.body)
+    let key = req.body.key;
+    let products = await productHelpers.searchProducts(key);
+    req.session.filteredProducts = products;
+    res.redirect('/shop/search');
+    // res.json({response: response.length})
+
   }
 
   

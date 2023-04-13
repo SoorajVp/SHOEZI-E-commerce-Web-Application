@@ -88,4 +88,6 @@ router.post('/remove-wishlist', userAuth.varifyLogin, controller.removeWishlist)
 
 router.get('/my-wallet', userAuth.varifyLogin, controller.myWallet)
 
+router.post('/search', controller.search)
+
 module.exports = router;

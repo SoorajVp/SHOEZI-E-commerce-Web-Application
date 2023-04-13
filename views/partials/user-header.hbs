@@ -2,6 +2,20 @@
 
 {{#if errorPage}}
 {{else}}
+
+  <div class="search">
+        <div class="search__form">
+            <form class="search-bar__form" action="/search" method="post">
+                <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
+                <input type="text" name="category" value="search" hidden>
+                <input class="search__input" id="searchKey" type="search" name="key" value="" placeholder="Search " aria-label="Search" autocomplete="off">
+                <button type="submit" hidden></button>
+            </form>
+            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
+        </div>
+    </div>
+
+
     <div class="header-wrap animated d-flex ">
     	<div class="container-fluid shadow ">        
             <div class="row align-items-center ">
@@ -38,7 +52,7 @@
 
                             {{!-- <li class="lvl1 parent dropdown"><a href="/my-orders">My Orders<i class="anm anm-angle-down-l"></i></a></li> --}}
                         
-                        {{!-- <li class="lvl1"><a href="#"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a></li> --}}
+                            {{!-- <li class="lvl1"><a href="#"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a></li> --}}
                         
 
                         {{#if user}}
@@ -97,6 +111,10 @@
                         <span id="cart-count" class="site-header__cart-count" data-cart-render="item_count">{{cartCount}}</span>
                         {{/if}}
                       </a>
+
+                      <div class="site-header__search" style="font-size: 23px; text-decoration: none; float: left;">
+                    	  <button type="button" class="search-trigger" style="border: white;"><i class="icon anm anm-search-l"></i></button>
+                    </div>
                         
 
                         
@@ -195,3 +213,31 @@
 	<!--End Mobile Menu-->
 
   {{/if}}
+
+
+  <script>
+
+    //const input = document.getElementById('searchKey');
+//
+    //  input.addEventListener('keyup', function() {
+    //   // console.log(input)
+    //    axios.get('/search', {
+    //      data: {
+    //        key: input.value
+    //      }
+    //    })
+    //    .then(function(response) {
+    //      // handle response
+    //      console.log("heyyyy",response.data.response)
+    //    })
+    //    .catch(function(error) {
+    //      // handle error
+    //    });
+    //  });
+
+    function search() {
+
+      const key = document.getElementById('search-box').value;
+    }
+      
+  </script>

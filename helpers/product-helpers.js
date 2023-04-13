@@ -259,6 +259,38 @@ module.exports = {
             resolve(products);
         })
     },
+
+    searchProducts : (key) =>{
+        return new Promise(async(resolve, reject) =>{
+            let result = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
+                {
+                  '$lookup': {
+                    'from': 'category', 
+                    'localField': 'category', 
+                    'foreignField': '_id', 
+                    'as': 'result'
+                  }
+                }, {
+                  '$unwind': {
+                    'path': '$result'
+                  }
+                },
+                {
+                  $match: {
+                    // 'name': { $regex: new RegExp(key, 'i') } 
+                    $or: [
+                      { name: { $regex: new RegExp(key, 'i') } },
+                      { 'result.main': { $regex: new RegExp(key, 'i') } },
+                      { 'result.sub': { $regex: new RegExp(key, 'i') } }
+                    ]
+                  }
+                }
+              ]).toArray();
+            console.log("this is search result ------" , result);
+            resolve(result)
+              
+        })
+    }
    
     
 
