@@ -473,9 +473,6 @@ module.exports = {
 
   homeAddToCart : async(req, res) => {
     await userHelpers.updateCart(req.body.proId, req.session.user._id).then((response) =>{
-      // res.json({status : true,
-      //   message: "item added to cart"
-      // });
       console.log("this is reponse from add to cart---------------------", response)
 
       res.json(response);
@@ -484,11 +481,9 @@ module.exports = {
 
   cartQuantity : (req, res) =>{
     try {
-      console.log("++++++++++++++++++++++++++");
       console.log(req.body);
       userHelpers.changeProductQuantity(req.body).then(async(response)=>{
         response.total = await userHelpers.getTotalAmount(req.body.user)
-        console.log("@@@@@@@@@", response)
         res.json(response)
       })
     } catch (error) {
@@ -513,8 +508,6 @@ module.exports = {
     let cartCount = await userHelpers.getCartCount(req.session.user._id);
     let total = await userHelpers.getTotalAmount(req.session.user._id);
     // total = total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-
-    
     res.render('users/checkout',{total, user, cartCount, products});
   },
 
@@ -536,7 +529,6 @@ module.exports = {
     await userHelpers.AddressDelete(addressId, req.session.user._id);
     let user = await userHelpers.findUser(req.session.user._id);
     req.session.user = user;
-    // res.redirect('/address');
     res.json({status: true});
     
   },
@@ -607,13 +599,9 @@ module.exports = {
   },
 
   applyCoupon : (req, res) =>{
-    console.log(req.body);
     try {
       adminHelpers.couponApply(req.body.code, req.body.userId).then((response) =>{
-        console.log("this is response from the coupon---", response);
         if(response.status){
-          // const totalAmount = 1000;
-          // const percentage = 20;
           const discountValue = (response.offer / 100) * req.body.price;
           console.log(discountValue);
           res.json({
@@ -633,12 +621,10 @@ module.exports = {
     let user = req.session.user;
     let orders = await orderHelpers.myOrderList(user._id);
     let cartCount = await userHelpers.getCartCount(user._id);
-    console.log("***" , orders)
+
     orders.forEach(order => {
-      const isoDate = order.createdOn;
-      const date = new Date(isoDate);
-      const localDateString = date.toLocaleDateString('es-ES', { timeZone: 'UTC' });
-      order.createdOn = localDateString;
+      order.createdOn = new Date(order.createdOn).toLocaleDateString('es-ES', { timeZone: 'UTC' });
+      order.total = order.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
     });
     res.render('users/order-list', {user, orders, cartCount});
 
@@ -649,6 +635,7 @@ module.exports = {
     let orderDetails = await orderHelpers.getUserOrder(req.params.id);
     let products = await orderHelpers.getOrderedProducts(req.params.id);
     let cartCount = await userHelpers.getCartCount(user._id);
+    orderDetails.createdOn = new Date(orderDetails.createdOn).toLocaleDateString('es-ES', { timeZone: 'UTC' });
     console.log("!!!!!!!",orderDetails);
     res.render('users/order-details', {user, cartCount, products, orderDetails});
   },

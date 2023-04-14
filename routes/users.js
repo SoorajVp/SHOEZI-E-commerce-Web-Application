@@ -5,7 +5,6 @@ var controller = require('../controllers/userController');
 
 
 
-
 router.get('/', controller.homepage);
 
 router.get('/login', controller.login);

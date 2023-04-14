@@ -14,7 +14,7 @@
 
             <div class="card">
               <div class="card-body">
-                <h4 class="mb-4 text-center">ORDERS  LiST</h4>
+                <h4 class="mb-4 text-center">ORDERS  LIST</h4>
 
                 <div class="">
                   <div class="table-responsive">
@@ -47,7 +47,20 @@
                               {{else if (isEqual this.status 'RETURNED')}}
                               <b class="text-secondary font-weight-bold">RETURNED</b>
                               {{else if (isEqual this.status 'CANCELLED')}}
-                              <b class="text-danger font-weight-bold">CANCELLED</b>
+
+                                {{#if (isEqual this.paymentMethod 'RAZORPAY')}}
+                                  <div class="dropdown">
+                                  <button class="btn btn-outline-danger dropdown-toggle" type="button" id="{{this._id}}dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    CANCELLED
+                                  </button>
+                                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" onclick="returnWallet('{{this._id}}','{{this.userId}}','RETURNED')" >REFUND</a>
+                                  </div>
+                                </div>
+                                {{else}}
+                                  <b class="text-danger font-weight-bold">CANCELLED</b>
+                                {{/if}}
+
                               {{else if (isEqual this.status 'SHIPPED')}}
 
                                 <div class="dropdown">
