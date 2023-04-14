@@ -297,10 +297,26 @@ module.exports = {
       coupon.status = false
     }
     console.log(coupon)
-    return new Promise((resolve, reject) =>{
-      db.get().collection(collection.COUPON_COLLECTIONS).insertOne(coupon).then((response) =>{
-        resolve(response)
-      })
+    return new Promise(async(resolve, reject) =>{
+      let flag = 0;
+      let couponData = await db.get().collection(collection.COUPON_COLLECTIONS).find({}, {code: 1, _id: 0}).toArray()
+      console.log(couponData)
+      for(let i=0; i< couponData.length; i++) {
+        if(couponData[i].code == coupon.code) {
+          flag=1;
+        }
+      }
+      if(flag == 1) {
+        console.log("this coupon is already exists----------------", coupon.code)
+        resolve({ status: false , message: "* Coupon code is already exits ..."})
+      }else{
+        console.log("this coupon is already not   exists----------------", coupon.code)
+
+        db.get().collection(collection.COUPON_COLLECTIONS).insertOne(coupon).then(() =>{
+          resolve({status: true})
+        })
+      }
+      
     })
   },
 

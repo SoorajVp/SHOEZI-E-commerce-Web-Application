@@ -10,7 +10,6 @@
             <div class="card">
               <div class="card-body">
                 <h4 class="mb-4 float-left ">SALES REPORTS</h4>
-                {{!-- <a  onclick="salesReport()" class="btn btn-primary float-right" >APPLY</a> --}}
 
                
                 
@@ -27,11 +26,19 @@
                 </div>
                 <button type="submit" class="btn btn-primary">APPLY</button>
                 </form>
+
+
+                <div class="col-xl-3 float-end">
+                    <a class="btn btn-light " data-mdb-ripple-color="dark" id="btn_print"><i
+                        class="fa fa-print text-primary btn_print" ></i> Print</a>
+                    <a class="btn btn-light" onclick="export_data()" data-mdb-ripple-color="dark"><i class="fa  fa-file text-primary"
+                    ></i> Export</a>
+                  </div>
                
 
                 <div class="">
                   <div class="table-responsive pt-4">
-                    <table class="table table-striped" id="salesTable" style="width: 100%; ">
+                    <table class="table table-striped" id="productsTable" style="width: 100%; ">
                       <thead>
                         <tr>
                           <th scope="col">date</th>
@@ -74,6 +81,15 @@
   </div>
 </div>
 
+
+{{!-- <div class="col-xl-3 float-end">
+                                        <a class="btn btn-light " data-mdb-ripple-color="dark"><i
+                                            class="fa fa-print text-primary btn_print" id="btn_print"></i> Print</a>
+                                        <a class="btn btn-light" onclick="export_data()" data-mdb-ripple-color="dark"><i class="fa  fa-file text-primary"
+                                        ></i> Export</a>
+                                      </div> --}}
+
+
 <script>
     function salesReport(){
         let start = document.getElementById('startDate').value;
@@ -93,4 +109,51 @@
         })
 
     }
+
+
+
+
+
+    
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"
+  integrity="sha512-z8oDcdy0YCXeQb0q3AEq8e/vWVZvH/6UuV7x/8zUbwH6wPxx6/EjN7I1MN8WnJGZv+PluU7xJIR6aM8fMhhJ6w=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
+<script>
+  $(document).ready(function ($) {
+    $(document).on("click", ".btn_print", function (event) {
+      event.preventDefault();
+      var element = document.getElementById("productsTable");
+      let randomNumber = Math.floor(Math.random() * (10000000000 - 1)) + 1;
+      var opt = {
+        margin: 0,
+        filename: "SalesReport" + randomNumber + ".pdf",
+        html2canvas: { scale: 10 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      };
+
+      html2pdf().set(opt).from(element).save();
+    });
+  });
+
+  function export_data() {
+    let data = document.getElementById("productsTable");
+    var fp = XLSX.utils.table_to_book(data, { sheet: "vishal" });
+    XLSX.write(fp, {
+      bookType: "xlsx",
+      type: "base64",
+    });
+    XLSX.writeFile(fp, "test.xlsx");
+  }
 </script>

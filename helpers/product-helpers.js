@@ -262,7 +262,7 @@ module.exports = {
 
     searchProducts : (key) =>{
         return new Promise(async(resolve, reject) =>{
-            let result = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
+            let Data = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
                 {
                   '$lookup': {
                     'from': 'category', 
@@ -286,8 +286,8 @@ module.exports = {
                   }
                 }
               ]).toArray();
-            console.log("this is search result ------" , result);
-            resolve(result)
+            console.log("this is search result ------" , Data);
+            resolve(Data)
               
         })
     }

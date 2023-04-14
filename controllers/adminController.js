@@ -177,16 +177,23 @@ module.exports = {
             coupons.created = created.toLocaleDateString('es-ES', { timeZone: 'UTC' });
             coupons.expired = expired.toLocaleDateString('es-ES', { timeZone: 'UTC' });
         });
-        res.render('admin/view-coupons', {admin: true, coupons});
+        res.render('admin/view-coupons', {admin: true, coupons , couponExist: req.session.couponErr});
+        req.session.couponErr = false;
     },
 
     addcoupons : (req, res) =>{
         try {
-            adminHelpers.addCoupons(req.body)
+            adminHelpers.addCoupons(req.body).then((response) =>{
+                console.log(response)
+                if(response.status){
+                    res.redirect('/admin/coupons');
+                }else{
+                    req.session.couponErr = response.message;
+                    res.redirect('/admin/coupons');
+                }
+            })
         } catch (error) {
             console.log(error)
-        } finally{
-            res.redirect('/admin/coupons');
         }
     },
 

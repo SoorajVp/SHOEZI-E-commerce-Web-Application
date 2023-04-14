@@ -290,7 +290,8 @@ module.exports = {
 
   productDetails : async(req, res) =>{
     let product = await productHelpers.getProductDetails(req.params.id);
-    let related = await productHelpers.getShopItems(req.session.category);
+    let related = await productHelpers.getShopItems(req.session.main);
+    
     if(product.offer){
       product.total = product.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
     }
