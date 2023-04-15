@@ -2,6 +2,7 @@
 
 
 
+
 <section class="vh-100" style="background-color: #f0f1f4;">
   <div class="container py-4 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -18,6 +19,9 @@
                   <div class="form-outline mb-2 text-center">
                     <label for="" class="py-2" >Enter your Mobile Number</label>
                     <input type="tel" id="number" class="form-control form-control-lg " name="mobile" />
+
+                    
+
                   </div>
                   <div id="recaptcha-container" class="pl-4"></div>
                   <span id="senderErr" class="justify-content-center text-danger"></span>
@@ -27,6 +31,7 @@
                 </div>
 
                 <div id="verifier" style="display: none;">
+                {{!-- <div id="verifier" > --}}
 
                    <div class="d-flex align-items-center  pb-1">
                     <h3 class=" mx-auto font-weight-bold">Verify OTP</h3>   
@@ -34,12 +39,17 @@
                   <div class="form-outline mb-2 text-center">
                     <label for="" class="py-2" >Enter 6 digit OTP</label>
                     <input type="tel" id="verificationcode" class="form-control form-control-lg" name="otp" />
+
+                    <div class="d-flex text-bold float-right pr-3 py-2" id="timer"></div>
+                    {{!-- <div class="d-flex text-bold float-right pr-3 py-2" id="resentOtp" style="display: none;"> Resend OTP</div> --}}
+
                   </div>
                     {{!-- <p class="text-right text-primary p-1">Resend OTP</p> --}}
                   <div class="form-outline mb-2 text-center">
                     {{!-- <span id="verifySuccess" class="text-success"></span> --}}
                     <span id="verifyErr" class="text-danger"></span>
                   </div>
+
                   <div class="pt-2 ">
                     <button class="btn btn-block" onclick="codeverify()" style="width: 100%;">SUBMIT</button>
                   </div>
@@ -54,6 +64,7 @@
       </div>
     </div>
   </div>
+  
 </section>
 
 
@@ -100,18 +111,38 @@ function phoneAuth() {
         if(response.data.status){
 
           firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
+            console.log("this is confirmation result------", confirmationResult)
             window.confirmationResult = confirmationResult;
             coderesult = confirmationResult;
             document.getElementById('sender').style.display = 'none';
             document.getElementById('verifier').style.display = 'block';
             console.log('OTP Sent');
+
+            var time_limit = 10;
+
+              var time_out = setInterval(() => {
+
+                if(time_limit == 0) {
+                 $('#timer').html('<p class="text-primary"> Resend OTP</p>')
+                  
+                  
+                } else {
+                  if(time_limit < 10) {
+                    time_limit = 0 + '' + time_limit;
+                  }
+                  $('#timer').html('00:' + time_limit);
+                  time_limit -= 1;
+                }
+
+              }, 1000);
+
           }).catch(function (error) {
             // error in sending OTP
             alert(error.message);
           });
 
         }else{
-          document.getElementById('senderErr').innerHTML = "This Number is Not registered yet!"
+          document.getElementById('senderErr').innerHTML = "This Number is not registered yet!"
           //alert("user not found");
         }
       })
@@ -121,15 +152,16 @@ function phoneAuth() {
 function codeverify() {
     var code = document.getElementById('verificationcode').value;
     console.log(code)
-    axios({
-      url: '/otp-user-data',
-      method: 'post'
-    })
+    
     coderesult.confirm(code).then(function () {
        // document.getElementById('verifySuccess').innerHTML = "OTP Verified"
        // document.getElementById('p-conf').style.display = 'block';
        // document.getElementById('n-conf').style.display = 'none';
         console.log('OTP Verified');
+        axios({
+          url: '/otp-user-data',
+          method: 'post'
+        })
         location.href = '/'; 
 
     }).catch(function () {

@@ -231,7 +231,6 @@ module.exports = {
           if (req.session.loggedin) {
             let user = req.session.user; 
             let cartCount = await userHelpers.getCartCount(req.session.user._id);
-          
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
@@ -280,6 +279,7 @@ module.exports = {
         req.session.filteredProducts = products
         res.json({response: true})
       }
+
     } catch (error) {
       console.log(error)
     }
@@ -408,7 +408,7 @@ module.exports = {
     try {
       console.log("this is otp number----", req.body);
       await userHelpers.checkMobile(req.body.mobile).then((response) =>{
-        console.log("This is reponse from find user mobile",response)
+        console.log("This is reponse from find user mobile", response)
         if(response.status){
           req.session.otpMobile = response.user.mobile;
           res.json(response);
@@ -423,6 +423,7 @@ module.exports = {
   },
 
   otpUserData : async(req, res) =>{
+
     try {
       console.log("this is session mobile----", req.session.otpMobile)
       await userHelpers.getUserMobiledetails(req.session.otpMobile).then((response) =>{
@@ -748,12 +749,9 @@ module.exports = {
 
   search : async(req, res) =>{
     
-    console.log("this is search function-------", req.body)
-    let key = req.body.key;
-    let products = await productHelpers.searchProducts(key);
+    let products = await productHelpers.searchProducts(req.body.key);
     req.session.filteredProducts = products;
     res.redirect('/shop/search');
-    // res.json({response: response.length})
 
   }
 

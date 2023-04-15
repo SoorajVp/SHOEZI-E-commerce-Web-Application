@@ -145,7 +145,6 @@ module.exports = {
       Mobile = Number(Mobile);
       let response = {}
       let user = await db.get().collection(collection.USER_COLLECTIONS).findOne({mobile: Mobile});
-      
       response.user = user;
       response.status = true;
       resolve(response);
