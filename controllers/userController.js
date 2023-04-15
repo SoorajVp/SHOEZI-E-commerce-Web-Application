@@ -445,8 +445,24 @@ module.exports = {
   cartDetails : async(req, res) =>{
     let user = req.session.user;
     let cartCount = await userHelpers.getCartCount(req.session.user._id);
+    let products = await userHelpers.getCartproducts(user._id);
+
+      products.forEach(async(values) => {
+        if(values.quantity > values.productDetails.quantity){
+          console.log("cart item is in out of stocck -----")
+          let details = {
+            cart: values._id,
+            product: values.productDetails._id
+          }
+          await userHelpers.removeCart(details)
+          // values.outOfStock = true;
+        }
+      });
+      console.log("this is cart products-----", products);
+      cartCount = await userHelpers.getCartCount(req.session.user._id);
+
     if(cartCount > 0){
-      let products = await userHelpers.getCartproducts(user._id);
+      products = await userHelpers.getCartproducts(user._id);
       let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
       totalValue = totalValue.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
 
@@ -748,7 +764,6 @@ module.exports = {
   },
 
   search : async(req, res) =>{
-    
     let products = await productHelpers.searchProducts(req.body.key);
     req.session.filteredProducts = products;
     res.redirect('/shop/search');

@@ -347,7 +347,6 @@ module.exports = {
                 res.json(response);
             })
         })
-        
     },
 
     getOrderDetails : async(req, res) =>{
@@ -360,7 +359,6 @@ module.exports = {
 
 
     salesReport : async(req, res) =>{
-        
         let orders = await orderHelpers.deliveredOrders();
         orders.forEach(order => {
             const date = new Date(order.createdOn);

@@ -115,7 +115,8 @@ module.exports = {
       {
         $set: {
           head: banner.head,
-          text: banner.text
+          text: banner.text,
+          url: banner.url
         }
       });
     })

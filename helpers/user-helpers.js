@@ -329,16 +329,22 @@ module.exports = {
   },
 
   removeCart : (details) =>{
-    return new Promise((resolve, reject) =>{
-      db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:new ObjectId(details.cart),
-        'products.item':new ObjectId(details.product)},
-        {
-          $pull: {products: {item: new ObjectId(details.product)}}
-        })
-        .then((response) =>{
-          resolve({removeProduct: true})
-        })
-    })
+    console.log("this cart remove detailsss   --------------",details)
+    try {
+      return new Promise((resolve, reject) =>{
+        db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:new ObjectId(details.cart),
+          'products.item':new ObjectId(details.product)},
+          {
+            $pull: {products: {item: new ObjectId(details.product)}}
+          })
+          .then((response) =>{
+            resolve({removeProduct: true})
+          })
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    
   },
 
   getTotalAmount : (userId) =>{
