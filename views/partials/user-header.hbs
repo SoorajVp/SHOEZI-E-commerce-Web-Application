@@ -15,7 +15,6 @@
         </div>
     </div>
 
-
     <div class="header-wrap animated d-flex ">
     	<div class="container-fluid shadow ">        
             <div class="row align-items-center ">
@@ -27,10 +26,10 @@
                     </a>
                 </div>
                 <!--End Desktop Logo-->
+
                 {{#if loginForm}}
+
                 {{else}}
-                
-                
                 <div class="col-2 col-sm-3 col-md-3 col-lg-8">
                 	<div class="d-block d-lg-none">
                         <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
@@ -41,19 +40,14 @@
                 	<!--Desktop Menu-->
                 	<nav class="grid__item" id="AccessibleNav"><!-- for mobile -->
                         <ul id="siteNav" class="site-nav medium center hidearrow">
-                            <li class="lvl1 parent megamenu"><a href="/">Home <i class="anm anm-angle-down-l"></i></a>
-                               
-                            </li>
+
+                            <li class="lvl1 parent megamenu"><a href="/">Home <i class="anm anm-angle-down-l"></i></a></li>
+                            
                             <li class="lvl1 parent dropdown"><a href="/shop/MENS">MENS <i class="anm anm-angle-down-l"></i></a></li>
 
                             <li class="lvl1 parent dropdown"><a href="/shop/WOMENS">WOMENS <i class="anm anm-angle-down-l"></i></a></li>
 
                             <li class="lvl1 parent dropdown"><a href="/shop/KIDS">KIDS <i class="anm anm-angle-down-l"></i></a></li>
-
-                            {{!-- <li class="lvl1 parent dropdown"><a href="/my-orders">My Orders<i class="anm anm-angle-down-l"></i></a></li> --}}
-                        
-                            {{!-- <li class="lvl1"><a href="#"><b>Buy Now!</b> <i class="anm anm-angle-down-l"></i></a></li> --}}
-                        
 
                         {{#if user}}
                         <li class="lvl1 dropdown border font-weight-bold"><a href="#"><b>{{this.user.Username}}</b><i class="anm anm-angle-down-l"></i></a> 
@@ -71,15 +65,7 @@
                             <li><a href="/signup" class="site-nav">Signup</a></li>
                           </ul>
                         </li>
-                        {{/if}}
-                        
-
-                        {{!-- <li class="lvl1 dropdown border font-weight-bold"><a href="#"><b>{{this.user.Username}}</b><i class="anm anm-angle-down-l"></i></a> 
-                          <ul class="dropdown">
-                            <li><a href="#" class="site-nav">Profile</a></li>
-                            <li><a href="#" class="site-nav">Logout</a></li>
-                          </ul>
-                        </li> --}}
+                      {{/if}}
 
                       </ul>
                     </nav>
@@ -95,6 +81,7 @@
                         </a>
                     </div>
                 </div>
+
                 {{#if loginForm}}
                 {{else}}
                 <div class="col-4 col-sm-3 col-md-3 col-lg-2">
@@ -129,55 +116,17 @@
     <!--End Header-->
     <!--Mobile Menu-->
     <div class="mobile-nav-wrapper" role="navigation">
-		<div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i> Close Menu</div>
+		<div class="closemobileMenu"><i class="icon anm anm-times-l pull-right"></i>Close</div>
 
         <ul id="MobileNav" class="mobile-nav">
 
-        <li class="lvl1 parent megamenu"><a href="index.html">Home <i class="anm anm-plus-l"></i></a>
-          <ul>
-            <li><a href="#" class="site-nav">Home Group 1<i class="anm anm-plus-l"></i></a></li>
-            <li><a href="#" class="site-nav">Home Group 2<i class="anm anm-plus-l"></i></a></li> 
-          </ul>
-        </li>
+        <li class="lvl1 parent megamenu"><a href="/shop/MENS">MENS </a></li>
+        <li class="lvl1 parent megamenu"><a href="/shop/WOMENS">WOMENS </a></li>
+        <li class="lvl1 parent megamenu"><a href="/shop/KIDS">KIDS </a></li>
+         
+        
 
-        <li class="lvl1 parent megamenu"><a href="#">Shop now<i class="anm anm-plus-l"></i></a>
-          <ul>
-            <li><a href="#" class="site-nav">Shop Pages<i class="anm anm-plus-l"></i></a>
-              <ul>
-                <li><a href="shop-left-sidebar.html" class="site-nav">Left Sidebar</a></li>
-                <li><a href="shop-right-sidebar.html" class="site-nav">Right Sidebar</a></li>
-                <li><a href="shop-fullwidth.html" class="site-nav">Fullwidth</a></li>
-                <li><a href="shop-grid-3.html" class="site-nav">3 items per row</a></li>
-                <li><a href="shop-grid-4.html" class="site-nav">4 items per row</a></li>
-                <li><a href="shop-grid-5.html" class="site-nav">5 items per row</a></li>
-                <li><a href="shop-grid-6.html" class="site-nav">6 items per row</a></li>
-                <li><a href="shop-grid-7.html" class="site-nav">7 items per row</a></li>
-                <li><a href="shop-listview.html" class="site-nav last">Product Listview</a></li>
-              </ul>
-            </li>
-            <li><a href="#" class="site-nav">Shop Features<i class="anm anm-plus-l"></i></a>
-              <ul>
-                <li><a href="shop-left-sidebar.html" class="site-nav">Product Countdown </a></li>
-                <li><a href="shop-right-sidebar.html" class="site-nav">Infinite Scrolling</a></li>
-
-                <li><a href="shop-grid-3.html" class="site-nav">Pagination - Classic</a></li>
-                <li><a href="shop-grid-6.html" class="site-nav">Pagination - Load More</a></li>
-                <li><a href="product-labels.html" class="site-nav">Dynamic Product Labels</a></li>
-                <li><a href="product-swatches-style.html" class="site-nav">Product Swatches </a></li>
-                <li><a href="product-hover-info.html" class="site-nav">Product Hover Info</a></li>
-                <li><a href="shop-grid-3.html" class="site-nav">Product Reviews</a></li>
-                <li><a href="shop-left-sidebar.html" class="site-nav last">Discount Label </a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-
-        <li class="lvl1 parent megamenu"><a href="">Contact us <i class="anm anm-plus-l"></i></a></li>
-
-        <li class="lvl1 parent megamenu"><a href="">Wishlist <i class="anm anm-plus-l"></i></a></li>
-
-        <li class="lvl1 parent megamenu"><a href="">Cart <i class="anm anm-plus-l"></i></a></li>
-          
+        
         
         {{!-- <li class="lvl1 parent megamenu"><a href="blog-left-sidebar.html">Blog <i class="anm anm-plus-l"></i></a>
           <ul>
@@ -193,16 +142,19 @@
         {{#if user}}
         <li class="lvl1 parent megamenu"><a ><b>{{user.Username}}</b> <i class="anm anm-plus-l"></i></a>
           <ul>
-            <li><a href="/profile" class="site-nav">Profile<i class="anm anm-plus-l"></i></a></li>
-            <li><a href="/logout" class="site-nav">Logout<i class="anm anm-plus-l"></i></a></li> 
+            <li><a href="/profile" class="site-nav">Profile</a></li>
+            <li><a href="/my-orders" class="site-nav">orders</a></li>
+            <li><a href="/my-wallet" class="site-nav">wallet</a></li>
+            <li><a href="/logout" class="site-nav">Logout</a></li> 
              
           </ul>
         </li>
         {{else}}
-        <li class="lvl1 parent megamenu"><a ><b>Account</b> <i class="anm anm-plus-l"></i></a>
+        {{!-- <i class="fa fa-caret-left" aria-hidden="true">  --}}
+        <li class="lvl1 parent megamenu"><a ><b>Account <i class="fa fa-caret-down float-right" aria-hidden="true" style="margin-right: -30px;"></i></b> <i class="anm "> </i></a>
           <ul>
-            <li><a href="/login" class="site-nav">Login<i class="anm anm-plus-l"></i></a></li>
-            <li><a href="/signup" class="site-nav">Create an Account<i class="anm anm-plus-l"></i></a></li>
+            <li><a href="/login" class="site-nav">Login</a></li>
+            <li><a href="/signup" class="site-nav">Create an Account</a></li>
           </ul>
         </li>
         {{/if}}
@@ -215,29 +167,4 @@
   {{/if}}
 
 
-  <script>
-
-    //const input = document.getElementById('searchKey');
-//
-    //  input.addEventListener('keyup', function() {
-    //   // console.log(input)
-    //    axios.get('/search', {
-    //      data: {
-    //        key: input.value
-    //      }
-    //    })
-    //    .then(function(response) {
-    //      // handle response
-    //      console.log("heyyyy",response.data.response)
-    //    })
-    //    .catch(function(error) {
-    //      // handle error
-    //    });
-    //  });
-
-    function search() {
-
-      const key = document.getElementById('search-box').value;
-    }
-      
-  </script>
+ 

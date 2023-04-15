@@ -11,17 +11,6 @@
 
 <div class="pageWrapper">
 	<!--Search Form Drawer-->
-	<div class="search">
-        <div class="search__form">
-            <form class="search-bar__form" action="#">
-                <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
-                <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
-            </form>
-            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
-        </div>
-    </div>
-
-
 
         <div id="page-content">
             <!--MainContent-->
@@ -38,19 +27,34 @@
                     <!--#ProductSection-product-template-->
                     <div class="product-single product-single-1">
                         <div class="row">
-                            
-
-
-
                             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+                                <div class="product-details-img product-single__photos bottom">
+                                    <div class="zoompro-wrap product-zoom-right pl-20">
+                                        <div class="zoompro-span">
+                                            <img class="blur-up lazyload zoompro" data-zoom-image="{{product.image.[0]}}" alt="" src="{{product.image.[0]}}" />               
+                                        </div>
+                                    </div>
+                                    <div class="product-thumb product-thumb-1">
+                                        <div id="gallery" class="product-dec-slider-1 product-tab-left">
+                                            {{#each product.image}}
+                                            <a data-image="{{this}}" data-zoom-image="{{this}}" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
+                                                <img class="blur-up lazyload" src="{{this}}" alt="" />
+                                            </a>
+                                            {{/each}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            {{!-- <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="product-details-img product-single__photos bottom">
                                     
                                     <div class="zoompro-wrap product-zoom-right pl-20">
                                         <div class="zoompro-span">
                                             <img class="blur-up lazyload zoompro" data-zoom-image="{{product.image.[0]}}" alt="" src="{{product.image.[0]}}" />               
                                         </div>
-                                        {{!-- <div class="product-labels"><span class="lbl on-sale">Sale</span><span class="lbl pr-label1">new</span></div> --}}
-                                        
                                     </div>
 
                                     <div class="product-thumb product-thumb-1">
@@ -61,22 +65,13 @@
                                                 <img class="blur-up lazyload" src="{{this}}" alt="" />
                                             </a>
                                             {{/each}}
-
-                                            
                                         </div>
                                     </div>
-
-
-                                    
-        
                                 </div>
-                                <!--Product Feature-->
-                                
-                                <!--End Product Feature-->
-                            </div>
+                            </div> --}}
+
+
                             <hr>
-
-
 
                             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="product-single__meta">
@@ -101,18 +96,13 @@
                                         <span class="visually-hidden">Regular price</span>
                                         <s id="ComparePrice-product-template"><span class="money">{{product.price}}</span></s>
                                         <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
-                                            <span id="ProductPrice-product-template"><span class="money  font-weight-normal">{{product.total}}</span></span>
+                                        <span id="ProductPrice-product-template"><span class="money  font-weight-normal">{{product.total}}</span></span>
                                         </span>
                                         <span class="discount-badge"> <span class="devider">|</span>&nbsp;
-                                            {{!-- <span>You Save</span>
-                                            <span id="SaveAmount-product-template" class="product-single__save-amount">
-                                            <span class="money">$100.00</span>
-                                            </span> --}}
-                                            <span class="off text-primary">(<span>-{{product.offer}}</span>%)</span>
+                                        <span class="off text-primary">(<span>-{{product.offer}}</span>%)</span>
                                         </span>  
                                     </p>
                                     {{else}}
-
                                     <p class="product-single__price product-single__price-product-template">
                                         <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
                                             <span id="ProductPrice-product-template"><span class="money">{{product.price}}</span></span>
@@ -122,7 +112,7 @@
                                 
                                     
 
-                                     <div class="tabs-listing">
+                                    <div class="tabs-listing">
                                     <div class="tab-container">
                                     	<h3 class="acor-ttl active" rel="tab1">Product Details</h3>
                                         <div id="tab1" class="tab-content">
@@ -160,14 +150,7 @@
                                           </div>
                                         </div>
                                     </div>
-
-                                    
-                                    <!-- End Product Action -->
                                 </div>
-
-
-
-                                    <!-- Product Action -->
 
                                     <div class="product-action clearfix pt-3">
                                        {{#if (isEqual product.quantity 0)}}
@@ -183,12 +166,7 @@
                                             </span>
                                         </div>
                                         {{/if}}
-
-                                         {{!-- <div class="shopify-payment-button" data-shopify="payment-button">
-                                                <button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Buy it now</button>
-                                        </div> --}}
                                     </div>
-                                    <!-- End Product Action -->
                               
                                 <div class="display-table shareRow">
                                         <div class="display-table-cell medium-up--one-third">
@@ -198,10 +176,7 @@
                                         </div>
                                         
                                     </div>
-                            </div>
-                            	<!--Product Tabs-->
-                               
-                                <!--End Product Tabs-->
+                                </div>
                         	</div>
                     	</div>
                     <!--End-product-single-->

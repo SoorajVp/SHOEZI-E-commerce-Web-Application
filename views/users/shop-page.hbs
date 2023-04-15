@@ -7,7 +7,9 @@
     <img src="/assets/images/loader.gif" alt="Loading..." />
 </div>
 
-<div class="pageWrapper">
+    
+        
+        
 	
     
     <!--Body Content-->
@@ -68,9 +70,9 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6 text-left">
-                                        <p class="d-flex"><input id="amount1" type="text" value="50" > 
-                                        <input id="amount2" type="text" value="5000"  data-category="{{sessionCategory}}"></p>
-                                        <input id="category" type="text" value="{{sessionCategory}}" hidden>
+                                        <p class="d-flex"><input id="amount1" type="text" value="50" style="width: 60px;" > 
+                                        <input id="amount2" type="text" value="5000"  data-category="{{sessionCategory}}" style="width: 60px;"></p>
+                                        <input id="category" type="text" value="{{sessionCategory}}"  hidden>
                                         
                                     </div>
                                     <div class="col-6 text-right margin-25px-top">
@@ -83,7 +85,7 @@
                         
                         
                         <!--Brand-->
-                        <div class="sidebar_widget filterBox filter-widget">
+                        {{!-- <div class="sidebar_widget filterBox filter-widget">
                             <div class="widget-title"><h2>Brands</h2></div>
                             <ul>
                                 <li>
@@ -104,19 +106,21 @@
                                 </li>
                                 
                             </ul>
-                        </div>
+                        </div> --}}
 
                         
                         <!--End Brand-->
                        
                         <!--Banner-->
-                        <div class="sidebar_widget static-banner">
+                        {{!-- <div class="sidebar_widget static-banner">
                         	<img src="https://i.pinimg.com/originals/63/0b/e3/630be321776c125343dc33fd78011789.jpg" alt="" />
-                        </div>
+                        </div> --}}
                         
                         <!--end Product Tags-->
                     </div>
                 </div>
+
+                
                 <!--End Sidebar-->
                 <!--Main Content-->
                 <div class="col-12 col-sm-12 col-md-9 col-lg-9 main-col">
@@ -160,6 +164,16 @@
                             </div>
                         </div> --}}
                         <!--End Toolbar-->
+                {{#if NotFount}}
+                    <div class="jumbotron text-center" style="background-color: #fff;  padding-top: 0%;">
+                       <div class="justify-content-center" >
+                           <img src="/assets/images/searching.png" alt="" style="width: 150px;">
+                       </div>
+                       <h1 class="text-secondary font-weight-bold " style=" font-size: xxx-large;" >Oops</h1>
+                       <p class="" style="font-size: x-large;">No results found </p>
+                       <hr>
+                   </div>
+                {{/if}}
                         <div class="grid-products grid--view-items">
                             <div class="row">
 
@@ -316,13 +330,14 @@
                         </div>
                     </div>
                     <hr class="clear">
-                    <div class="pagination">
+
+                    {{!-- <div class="pagination">
                       <ul>
                         <li class="active"><a href="#">1</a></li>
                         <li><a href="#">2</a></li>
                         <li class="next"><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i></a></li>
                       </ul>
-                    </div>
+                    </div> --}}
                 </div>
                 <!--End Main Content-->
             </div>

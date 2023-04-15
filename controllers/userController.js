@@ -195,26 +195,28 @@ module.exports = {
             let category = await adminHelpers.getItemCategory(req.session.main);
             let cartCount = await userHelpers.getCartCount(req.session.user._id);
             products = req.session.filteredProducts;
+            let NotFount = products.length == 0 ? true : false
             for(let i=0; i< products.length; i++){
               products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
               if(products[i].offer){
                 products[i].total = products[i].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
               }
             }
-            res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.session.main});
+            res.render("users/shop-page", { products, NotFount, category, logged: true, user, cartCount, sessionCategory: req.session.main});
             req.session.filteredProducts = false;
 
           }else{
 
             let category = await adminHelpers.getItemCategory(req.session.main);
             products = req.session.filteredProducts;
+            let NotFount = products.length == 0 ? true : false
             for(let i=0; i< products.length; i++){
               products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
               if(products[i].offer){
                 products[i].total = products[i].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
               }
             }
-            res.render("users/shop-page", { products, category, sessionCategory: req.session.main});
+            res.render("users/shop-page", { products, NotFount, category, sessionCategory: req.session.main});
             req.session.filteredProducts = false;
 
           }
@@ -475,7 +477,7 @@ module.exports = {
 
       res.render('users/cart-details', {user, products, cartCount, totalValue});
     }else{
-      res.render('users/empty-cart', {user, cartCount})
+      res.render('users/empty-page', { user, cartCount, cart: true })
     }
     
   },
@@ -714,18 +716,20 @@ module.exports = {
     let user = req.session.user;
     let cartCount = await userHelpers.getCartCount(user._id);
     let items = await userHelpers.getWishListItems(user._id);
-    console.log(items)
-
-    items.forEach(item => {
-      console.log(item)
-      // item.result[0].total = item[0].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-      item.result[0].price = item.result[0].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-      if(item.result[0].total){
-        item.result[0].total = item.result[0].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-      }
-    });
-
-    res.render('users/wishlist', {user, cartCount, items});
+    console.log("this is  wishlist items   ------", items)
+    if(items.length > 0) {
+      items.forEach(item => {
+        item.result[0].price = item.result[0].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+        if(item.result[0].total){
+          item.result[0].total = item.result[0].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+        }
+      });
+      res.render('users/wishlist', {user, cartCount, items});
+    }else{
+      console.log("wishlist empty ------  ");
+      res.render('users/empty-page', { user, cartCount, wishlist: true });
+    }
+    
   },
 
   wishListPost : (req, res) =>{

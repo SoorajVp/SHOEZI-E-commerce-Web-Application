@@ -249,8 +249,8 @@ module.exports = {
                 }
                },
                {
-                $match:{
-                   total:{$lte:high,$gte:low}
+                $match: {
+                   total:{ $lte: high, $gte: low }
                 }
                }
             ]).toArray();
