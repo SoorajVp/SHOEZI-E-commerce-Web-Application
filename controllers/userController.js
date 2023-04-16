@@ -68,16 +68,25 @@ module.exports = {
     if (req.session.loggedin) {
       res.redirect("/");
     } else {
-      res.render("users/user-signup", { loginForm: true});
+      res.render("users/user-signup", { loginForm: true , Err: req.session.signupErr});
+      req.session.signupErr = false;
     }
   },
   postSignup: (req, res) => {
     try {
       userHelpers.doSignup(req.body).then((response) => {
-        req.session.loggedin = true;
-        req.session.user = response;
-        console.log(req.session);
-        res.redirect("/");
+        console.log("this is response ----", response);
+        if(response.status){
+          req.session.loggedin = true;
+          req.session.user = response;
+          console.log(req.session);
+          res.redirect("/");
+        }else{
+          console.log("this is  last function ----", response.message);
+          req.session.signupErr = response.message;
+          res.redirect("/signup");
+        }
+        
       });
     } catch (error) {
       console.log(error)
