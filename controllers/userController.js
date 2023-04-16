@@ -15,12 +15,14 @@ const slug = require('slugify');
 module.exports = {
   homepage: async(req, res) => {
      let banners = await adminHelpers.getAllBanners();
+     let products = await productHelpers.getHomeProducts(6);
+     console.log("this is home page products-----", products);
       if (req.session.loggedin) {
         let cartCount = await userHelpers.getCartCount(req.session.user._id);
         let user = req.session.user;
-        res.render("users/home-page", { logged: true, user ,banners, cartCount});
+        res.render("users/home-page", { logged: true, user ,banners, cartCount, products});
       } else {
-        res.render("users/home-page", {banners});
+        res.render("users/home-page", {banners, products});
       }
   },
 
@@ -291,20 +293,25 @@ module.exports = {
  
 
   productDetails : async(req, res) =>{
-    let product = await productHelpers.getProductDetails(req.params.id);
-    let related = await productHelpers.getShopItems(req.session.main);
+
+    try {
+      let product = await productHelpers.getProductDetails(req.params.id);
+      let related = await productHelpers.getShopItems(req.session.main);
+      if(product.offer){
+        product.total = product.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      }
+      product.price = product.price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+      if(req.session.loggedin){
+        let user = req.session.user; 
+        let cartCount = await userHelpers.getCartCount(req.session.user._id);
+        res.render('users/product-details', {product, logged: true, user, cartCount, related});
+      }else{
+        res.render('users/product-details', {product, related})
+      }
+    } catch (error) {
+      console.log(error)
+    }
     
-    if(product.offer){
-      product.total = product.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-    }
-    product.price = product.price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
-    if(req.session.loggedin){
-      let user = req.session.user; 
-      let cartCount = await userHelpers.getCartCount(req.session.user._id);
-      res.render('users/product-details', {product, logged: true, user, cartCount, related});
-    }else{
-      res.render('users/product-details', {product, related})
-    }
   },
 
   userProfile : async(req, res) =>{

@@ -10,6 +10,8 @@ var db = require("../config/connection");
 
 module.exports = {
 
+  
+
   getUserData: () => {
     return new Promise(async (resolve, reject) => {
       let users = await db.get().collection(collection.USER_COLLECTIONS).find().toArray();

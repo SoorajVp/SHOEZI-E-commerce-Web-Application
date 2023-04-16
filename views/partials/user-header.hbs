@@ -3,7 +3,18 @@
 {{#if errorPage}}
 {{else}}
 
-  <div class="search">
+    <div class="search">
+        <div class="search__form">
+            <form class="search-bar__form" action="/search" method="post">
+                <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
+                <input class="search__input" id="searchKey" type="search" name="key" value="" placeholder="Search " aria-label="Search" autocomplete="off">
+                <button type="submit" hidden></button>
+            </form>
+            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
+        </div>
+    </div>
+
+    {{!-- <div class="search">
         <div class="search__form">
             <form class="search-bar__form" action="/search" method="post">
                 <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
@@ -13,7 +24,7 @@
             </form>
             <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
         </div>
-    </div>
+    </div> --}}
 
     <div class="header-wrap animated d-flex ">
     	<div class="container-fluid shadow ">        
@@ -73,8 +84,8 @@
                 </div>
                 {{/if}}
                 
-                <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
-                	<div class="logo">
+                <div class="col-4 col-sm-6 col-md-6 col-lg-2 d-lg-none ">
+                	<div class="logo" style="width: 70px;  margin-top: 10px;">
                         <a href="/">
                           <h1 style="font-weight: 300; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"> SHOE<span class="text-primary">ZI</span></h1>
                             {{!-- <img src="assets/images/logo.svg" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" /> --}}
@@ -84,8 +95,12 @@
 
                 {{#if loginForm}}
                 {{else}}
-                <div class="col-4 col-sm-3 col-md-3 col-lg-2">
-                	<div class="site-cart">
+                <div class="col-4 col-sm-2 col-md-3 col-lg-2" style="display: contents;">
+                	<div class="site-cart" style="margin-left: 7%;">
+
+                    <div class="site-header__search" style="font-size: 23px; text-decoration: none; float: left;">
+                    	  <button type="button" class="search-trigger" style="border: white;"><i class="icon anm anm-search-l"></i></button>
+                    </div>
 
                       <a href="/wishList" class=" ml-3"  style="font-size: 23px; text-decoration: none;">
                         <i class="icon anm anm-heart-l"></i>
@@ -99,9 +114,7 @@
                         {{/if}}
                       </a>
 
-                      <div class="site-header__search" style="font-size: 23px; text-decoration: none; float: left;">
-                    	  <button type="button" class="search-trigger" style="border: white;"><i class="icon anm anm-search-l"></i></button>
-                    </div>
+                      
                         
 
                         

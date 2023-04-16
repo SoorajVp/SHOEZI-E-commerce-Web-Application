@@ -6,37 +6,55 @@
 
 <div class="template-collection belle">
 <div id="pre-loader">
-    <img src="/assets/images/loader.gif" alt="Loading..." />
+    <img src="//assets/images/loader.gif" alt="Loading..." />
 </div>
 
 <div class="pageWrapper">
 	<!--Search Form Drawer-->
 
         <div id="page-content">
-            <!--MainContent-->
-            <div id="MainContent" class="main-content" role="main">
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div id="MainContent" class="main-content" role="main">
                 <!--Breadcrumb-->
                 <div class="bredcrumbWrap">
                     <div class="container breadcrumbs">
-                        <a href="/shop" title="Back to the home page">Home</a><span aria-hidden="true">›</span><span>Product details</span>
-                    </div>
+                        <a href="index.html" title="Back to the home page">Home</a><span aria-hidden="true">›</span><span>Product With Right Thumbs</span>
+                   	</div>
                 </div>
                 <!--End Breadcrumb-->
                 
-                <div id="ProductSection-product-template" class="product-template__container prstyle2 container">
-                    <!--#ProductSection-product-template-->
-                    <div class="product-single product-single-1">
+                <div id="ProductSection-product-template" class="product-template__container prstyle1 container product-right-sidebar">
+                    <!--product-single-->
+                    <div class="product-single">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="col-lg-10 col-md-9 col-sm-12 col-12">
+                                <div class="product-details-img">
 
-                                <div class="product-details-img product-single__photos bottom">
                                     <div class="zoompro-wrap product-zoom-right pl-20">
                                         <div class="zoompro-span">
-                                            <img class="blur-up lazyload zoompro" data-zoom-image="{{product.image.[0]}}" alt="" src="{{product.image.[0]}}" />               
+                                            <img class="zoompro blur-up lazyload" data-zoom-image="{{product.image.[0]}}" alt="" src="{{product.image.[0]}}" />
                                         </div>
                                     </div>
-                                    <div class="product-thumb product-thumb-1">
-                                        <div id="gallery" class="product-dec-slider-1 product-tab-left">
+
+                                    <div class="lightboximages">
+                                        {{#each product.image}}
+                                        <a href="{{this}}" data-size="1462x2048"></a>
+                                        {{/each}}
+                                    </div>
+        							 <div class="product-thumb">
+                                        <div id="gallery" class="product-dec-slider-2 product-tab-left">
                                             {{#each product.image}}
                                             <a data-image="{{this}}" data-zoom-image="{{this}}" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
                                                 <img class="blur-up lazyload" src="{{this}}" alt="" />
@@ -45,51 +63,22 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            
-                            {{!-- <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                <div class="product-details-img product-single__photos bottom">
-                                    
-                                    <div class="zoompro-wrap product-zoom-right pl-20">
-                                        <div class="zoompro-span">
-                                            <img class="blur-up lazyload zoompro" data-zoom-image="{{product.image.[0]}}" alt="" src="{{product.image.[0]}}" />               
-                                        </div>
-                                    </div>
+                                <div class="product-information">
 
-                                    <div class="product-thumb product-thumb-1">
-                                        <div id="gallery" class="product-dec-slider-1 product-tab-left">
-
-                                            {{#each product.image}}
-                                            <a data-image="{{this}}" data-zoom-image="{{this}}" class="slick-slide slick-cloned" data-slick-index="-4" aria-hidden="true" tabindex="-1">
-                                                <img class="blur-up lazyload" src="{{this}}" alt="" />
-                                            </a>
-                                            {{/each}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
-
-
-                            <hr>
-
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                <div class="product-single__meta">
+                                <div class="product-single__meta text-center">
                                     <h1 class="product-single__title">{{product.name}}</h1>
                                     <div class="product-nav clearfix">					
                                         <a href="#" class="next" title="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                     </div>
-
                                     {{#if (isEqual product.quantity 0)}}
                                         <div class="product-stock"> <span class="instock text-danger mt-3 h3">OUT STOCK</span></div>
                                     {{else}}
                                         <div class="product-stock"> <span class="instock text-success  h3">IN STOCK</span></div>
                                     {{/if}}
-
                                     <div class="product-single__description py-2">
                                       <p>Category : <b> {{product.category}}</b></p>
                                     </div>
-
                                     {{#if product.offer}}
 
                                     <p class="product-single__price product-single__price-product-template pt-2">
@@ -110,8 +99,6 @@
                                     </p>
                                     {{/if}}
                                 
-                                    
-
                                     <div class="tabs-listing">
                                     <div class="tab-container">
                                     	<h3 class="acor-ttl active" rel="tab1">Product Details</h3>
@@ -121,7 +108,7 @@
                                             </div>
                                         </div>                                     
                                     </div>
-                                </div>
+                                    </div>
 
                                  <div accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown mt-3"  >
                                     
@@ -153,32 +140,57 @@
                                 </div>
 
                                     <div class="product-action clearfix pt-3">
+                                    {{#if user}}
                                        {{#if (isEqual product.quantity 0)}}
                                        <div class="product-form__item--submit pb-2" >
-                                            <span  id="cart-count" class="btn">
+                                            <span  id="cart-count" class="btn" aria-disabled="false" style=" border-radius: 20px; padding-top: 9px;">
                                                 <span>Add to cart</span>
                                             </span>
                                         </div>
                                        {{else}}
                                         <div class="product-form__item--submit pb-2">
-                                            <span onclick="addToCart('{{product._id}}')"  id="cart-count" class="btn">
+                                            <span onclick="addToCart('{{product._id}}')"  id="cart-count" class="btn" style=" border-radius: 20px; padding-top: 9px;">
                                                 <span>Add to cart</span>
                                             </span>
                                         </div>
                                         {{/if}}
+                                    {{else}}
+                                        <div class="product-form__item--submit pb-2" >
+                                            <a href="/login"  id="cart-count" class="btn" aria-disabled="false" style=" border-radius: 20px; padding-top: 9px;">
+                                                <span>Add to cart</span>
+                                            </a>
+                                        </div>
+                                    {{/if}}
                                     </div>
                               
-                                <div class="display-table shareRow">
+                                    <div class="display-table shareRow ">
                                         <div class="display-table-cell medium-up--one-third">
                                             <div class="wishlist-btn" >
                                                 <a class="wishlist add-to-wishlist" onclick="WishList('{{product._id}}','{{user._id}}')"  title="Add to Wishlist"><i class="icon anm anm-heart-l" aria-hidden="true"></i> <span>Add to Wishlist</span></a>
                                             </div>
                                         </div>
-                                        
                                     </div>
+                                    
                                 </div>
                         	</div>
+
+                            </div>
+                            
                     	</div>
+                    </div>
+                    </div>
+            </div>
+            
+            
+            <!--MainContent-->
+            <div id="MainContent" class="main-content" role="main">
+                <!--Breadcrumb-->
+                <hr>
+                <!--End Breadcrumb-->
+                
+                <div id="ProductSection-product-template" class="product-template__container prstyle2 container">
+                    <!--#ProductSection-product-template-->
+                    
                     <!--End-product-single-->
                     
                     <!--Related Product Slider-->
@@ -188,7 +200,6 @@
                             <p class="sub-heading">You can stop autoplay, increase/decrease aniamtion speed and number of grid to show and products from store admin.</p>
                         </header>
                         <div class="productPageSlider">
-                           
                          {{#each related}}
                           <div class="col-12 item">
                                 <!-- start product image -->
@@ -204,10 +215,6 @@
                                             {{#if this.offer}}
                                             <div class="product-labels"><span class="lbl pr-label3">- {{this.offer}}% </span></div>
                                             {{/if}}
-                                            <!-- End product label -->
-                                        
-                                        <!-- end product image -->
-
                                         <!-- Start product button -->
                                         <span class="variants add" >
                                             <button class="btn" onclick="addToCart('{{this._id}}')" >Add to cart</button>
@@ -253,22 +260,13 @@
                                 </div>
                                 {{/each}}
                             
-                              
-                                          
                         </div>
-                        </div>
-                    <!--End Related Product Slider-->
-                    
-                    <!--Recently Product Slider-->
-                    
-                    <!--End Recently Product Slider-->
-                    
                     </div>
+                    
                 	<!--#ProductSection-product-template-->
             	</div>
             <!--MainContent-->
         </div>
-
     </div>
 </div>
 

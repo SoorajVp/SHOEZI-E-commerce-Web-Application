@@ -162,7 +162,7 @@ function WishListRemove(proId, userid){
         },1700)
         Toast.fire({
             icon: 'error',
-            title: 'wishlist Item removed !'
+            title: 'Item will be removed !'
           })
       })
       .catch(function (error) {

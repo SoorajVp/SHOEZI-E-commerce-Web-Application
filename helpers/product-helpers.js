@@ -6,6 +6,13 @@ const { ObjectId } = require('mongodb-legacy');
 
 module.exports = {
 
+    getHomeProducts : (count) =>{
+        return new Promise(async(resolve, reject) =>{
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).find().limit(count).toArray();
+            resolve(products);
+        })
+      },
+
     addProducts : (products, callback) =>{
         console.log(products.url);
         products.category = new ObjectId(products.category);
@@ -32,7 +39,6 @@ module.exports = {
   
     getAllProducts : () =>{
         return new Promise(async(resolve, reject) =>{
-
             let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
                 $lookup:{
                     from: collection.CATEGORY_COLLECTIONS,
@@ -155,7 +161,6 @@ module.exports = {
         product.offer = Number(product.discount);
         product.discount = (product.discount / 100) * product.price;
         product.total = product.price - product.discount;
-        console.log(product.url)
 
         return new Promise( async(resolve, reject)=>{
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id: new ObjectId(prodId)},{
@@ -190,13 +195,11 @@ module.exports = {
                     category: new ObjectId(categoryId)
                 }
             }]).toArray();
-            console.log(products);
             resolve(products);
         })
     },
 
     decrementQuantity : (products) =>{
-        console.log("this is products from decrement quuantity  foreach ----------", products.item)
         return new Promise((resolve, reject) =>{
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne(
                 { _id: products.item },
@@ -208,7 +211,6 @@ module.exports = {
     filterProductsMain : (low, high, category) =>{
         low = Number(low)
         high = Number(high)
-        console.log("this is console from filter -----", low, high, category);
         return new Promise(async(resolve, reject) =>{
             let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([{
                 $lookup:{
@@ -231,8 +233,6 @@ module.exports = {
                     }
                 }
             ]).toArray();
-        console.log("this is console from filter -----", products);
-
             resolve(products)
         })
     },
@@ -254,8 +254,6 @@ module.exports = {
                 }
                }
             ]).toArray();
-            console.log("this is products from filtered page-----------------------", products);
-
             resolve(products);
         })
     },
