@@ -14,15 +14,12 @@
                 <div class="card">
                   <div class="card-body ">
 
-                    <form
-                      action="/admin/edit-banner/{{banner._id}}"
-                      method="post"
-                      enctype="multipart/form-data">
+                    <form action="/admin/edit-banner/{{banner._id}}"  method="post"  enctype="multipart/form-data" id="BannerForm">
                     
                       <div class="rows">
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                          <h4 class="text-primary">Add Banners</h4>
+                          <h4 class="text-primary">Edit Banners</h4>
                         </div>
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -31,8 +28,8 @@
                             <input
                               type="file"
                               class="form-control"
-                              id="fullName"
-                              name="image"
+                              id="image"
+                              name="image" 
                             />
                           </div>
                         </div>
@@ -45,7 +42,7 @@
                               class="form-control"
                               id="head"
                               name="head"
-                              value="{{banner.head}}"
+                              value="{{banner.head}}" required
                             />
                           </div>
                         </div>
@@ -58,7 +55,7 @@
                               class="form-control"
                               id="text"
                               name="text"
-                              value="{{banner.text}}"
+                              value="{{banner.text}}" required
                             />
                           </div>
                         </div>
@@ -66,7 +63,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                           <div class="form-group">
                             <label for="eMail">Bannner URL</label>
-                            <input  type="http://localhost:1000/admin/"  class="form-control"  id="url"  name="url" value="{{banner.url}}"/>
+                            <input  type="http://localhost:1000/admin/"  class="form-control"  id="url"  name="url" value="{{banner.url}}" required/>
                           </div>
                         </div>
 
@@ -74,10 +71,7 @@
                           <div class="text-right mt-3">
 
                             {{! <button type="submit" id="submit" class="btn-primary p-2">Update</button> }}
-                            <button
-                              type="submit"
-                              class="btn btn-primary btn-block"
-                            >Update</button>
+                            <button  type="submit"  class="btn btn-primary btn-block" >Update</button>
                           </div>
                         </div>
 
@@ -97,3 +91,6 @@
   </div>
 </div>
 <!-- [ Main Content ] end -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/javascripts/validations.js"></script>

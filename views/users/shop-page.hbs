@@ -271,9 +271,7 @@
                                         <!-- end product image -->
 
                                         <!-- Start product button -->
-                                        <span class="variants add" >
-                                            <button class="btn" onclick="addToCart('{{this._id}}')" >Add to cart</button>
-                                        </span>
+                                        
                                         {{#if ../user}}
                                         
                                         <span class="variants add" >
@@ -287,6 +285,10 @@
                                                 </a>
                                             </div>
                                         </div>
+                                        {{else}}
+                                            <span class="variants add" ><a href="/product-details/{{this.url}}">
+                                            <button class="btn"  >View Details</button></a>
+                                        </span>
                                         {{/if}}
                                         <!-- end product button -->
                                     </div>

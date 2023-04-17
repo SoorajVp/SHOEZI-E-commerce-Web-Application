@@ -1,5 +1,6 @@
 
 
+
 <div id="page-content">
     	<!--Page Title-->
     	<div class="page section-header text-center">
@@ -199,7 +200,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/add-delivery-address/{{user._id}}" method="post" id="addressForm">
+      <form action="/add-delivery-address/{{user._id}}" method="post" id="addressValidate">
       <div class="modal-body container">
 
 
@@ -207,24 +208,24 @@
                 {{!-- <h2 class="login-title mb-3">Billing details</h2> --}}
                 <div class="row">
                     <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
-                        <input name="name"  id="input-firstname" type="text" placeholder="Full Name">
+                        <input id="name" name="name" type="text"  placeholder="Full Name" required>
                     </div>
 
                 </div>
                 <div class="row">
                     
                     <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="mobile"  id="input-telephone" type="tel" placeholder="Mobile ">
+                        <input name="mobile"  id="mobile" type="tel" placeholder="Mobile" required>
                     </div>
                     <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="city" value="" id="input-city" type="text" placeholder="City">
+                        <input name="city"  id="city" type="text" placeholder="City" required>
                     </div>
                 </div>
            
                 <div class="row">
 
                     <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
-                        <input name="address" value="" id="input-address-1" type="text" placeholder="Address">
+                        <input name="address" id="address" type="text" placeholder="Address" required>
                     </div>
                 </div>
                 <div class="row">
@@ -232,10 +233,10 @@
                     
 
                     <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="pincode" value="" id="input-postcode" type="text" placeholder="Pincode">
+                        <input name="pincode" id="pincode" type="text" placeholder="Pincode">
                     </div>
                     <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <select name="district" id="input-country">
+                        <select name="district" id="district" >
                             <option value=""> --- District --- </option>
                             <option >Kasarkod</option>
                             <option >Kannur</option>
@@ -298,6 +299,10 @@ async function applyCoupon(total, user){
             console.log(discount, subTotal);
             let grand = Number(subTotal-discount);
             document.getElementById("grand-total").innerHTML = subTotal-discount;
+             Toast.fire({
+                icon: 'primary',
+                title: 'Coupon added succesfully !'
+              })
         }else{
             document.getElementById("coupon-err").innerHTML = response.data.message;
         }

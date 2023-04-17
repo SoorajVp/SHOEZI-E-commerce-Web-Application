@@ -8,7 +8,7 @@ module.exports = {
 
     getHomeProducts : (count) =>{
         return new Promise(async(resolve, reject) =>{
-            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).find().limit(count).toArray();
+            let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).find().limit(count).sort({_id: -1}).toArray();
             resolve(products);
         })
       },

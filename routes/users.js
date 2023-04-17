@@ -17,6 +17,8 @@ router.get('/signup', controller.signup);
 
 router.post('/signup', controller.postSignup);
 
+router.post('/search', controller.search);
+
 router.get('/shop/:id', controller.shop);
 
 router.post('/shop/filter', controller.shopFilter);
@@ -87,6 +89,5 @@ router.post('/remove-wishlist', userAuth.varifyLogin, controller.removeWishlist)
 
 router.get('/my-wallet', userAuth.varifyLogin, controller.myWallet)
 
-router.post('/search', controller.search)
 
 module.exports = router;

@@ -9,9 +9,13 @@ jQuery('#loginForm').validate({
     },
     messages:{
         emailId:{
-            email:"* Please Enter a Valid Email"
+            email:"* Please enter a valid Email"
         }
-    }
+    },
+    submitHandler: function(form) {
+        // do something here
+        form.submit();
+      }
 })
 
 
@@ -28,30 +32,106 @@ jQuery('#formValidate').validate({
     },
     messages:{
         password1: {
-            required : '* Please enter your new Password',
-            //minlength : '* Enter atleast 8 characters',
+            required : '* Please enter your new Password'
         },
         password2: {
             required : '* Please repeat that Password',
             equalTo : '* Password not Matching ...'
         }
-    }
-})
-
-
-
-jQuery('#addressValidate').validate({
-    rules:{
-        name: required,
-        mobile: number,
-        address: required,
-        city: required,
-        district: required,
-        pincode: required
     },
-    messages:{
-        name: "enter your name"
+    submitHandler: function(form) {
+        // do something here
+        form.submit();
     }
 })
+
+
+
+$().ready(() =>{
+    $('#addressValidate').validate({
+        rules :{
+            mobile:{
+                required: true,
+                number: true,
+                noSpace: true,
+                minlength: 10,
+                maxlength: 10
+            },
+            district: {
+                required: true,
+                notEqualTo: '--- District ---'
+            },
+            pincode: {
+                required: true,
+                number: true,
+                minlength: 6,
+                maxlength: 6
+            }
+        },
+        messages: {
+            mobile: "Enter a valid mobile number.",
+            pincode: "Enter a valid pincode.",
+            district: "Choose your district."
+        },
+        submitHandler: function(form) {
+            // do something here
+          form.submit();
+        }
+    });
+})
+
+
+
+jQuery('#ProductFormValidate').validate({
+    rules: {
+      discount: {
+        required: true,
+        range: [0, 100]
+      },
+      quantity: {
+        required: true,
+        range: [0, 1000]
+      },
+    },
+    submitHandler: function(form) {
+      // do something here
+      form.submit();
+    }
+  });
+
+
+  jQuery('#CategoryForm').validate({
+    submitHandler: function(form) {
+        // do something here
+        form.submit();
+      }
+  })
+
+  jQuery('#CategoryEditForm').validate({
+    submitHandler: function(form) {
+        // do something here
+        form.submit();
+      }
+  })
+
+  jQuery('#BannerForm').validate({
+    submitHandler: function(form) {
+        // do something here
+        form.submit();
+      }
+  })
+
+  jQuery('#CouponForm').validate({
+    rules: {
+        discount : {
+            required: true,
+            range: [0, 100]
+        }
+    },
+    submitHandler: function(form) {
+        // do something here
+        form.submit();
+      }
+  })
 
 

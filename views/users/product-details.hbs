@@ -137,25 +137,35 @@
                                           </div>
                                         </div>
                                     </div>
+                                    
                                 </div>
 
                                     <div class="product-action clearfix pt-3">
                                     {{#if user}}
                                        {{#if (isEqual product.quantity 0)}}
-                                       <div class="product-form__item--submit pb-2" >
+                                       <div class="product-form__item--submit pb-2 d-flex" >
+                                         <a  onclick="WishList('{{product._id}}','{{user._id}}')"  class="pr-2"  style="font-size: 28px; text-decoration: none;">
+                                              <i class="icon anm anm-heart-l"></i>
+                                            </a>
                                             <span  id="cart-count" class="btn" aria-disabled="false" style=" border-radius: 20px; padding-top: 9px;">
                                                 <span>Add to cart</span>
                                             </span>
                                         </div>
                                        {{else}}
-                                        <div class="product-form__item--submit pb-2">
+                                        <div class="product-form__item--submit pb-2 d-flex">
+                                             <a  onclick="WishList('{{product._id}}','{{user._id}}')"  class="pr-2"  style="font-size: 28px; text-decoration: none;">
+                                              <i class="icon anm anm-heart-l"></i>
+                                            </a>
                                             <span onclick="addToCart('{{product._id}}')"  id="cart-count" class="btn" style=" border-radius: 20px; padding-top: 9px;">
                                                 <span>Add to cart</span>
                                             </span>
                                         </div>
                                         {{/if}}
                                     {{else}}
-                                        <div class="product-form__item--submit pb-2" >
+                                        <div class="product-form__item--submit pb-2 d-flex"  >
+                                             <a    class="pr-2"  style="font-size: 28px; text-decoration: none;">
+                                              <i class="icon anm anm-heart-l"></i>
+                                            </a>
                                             <a href="/login"  id="cart-count" class="btn" aria-disabled="false" style=" border-radius: 20px; padding-top: 9px;">
                                                 <span>Add to cart</span>
                                             </a>
@@ -163,14 +173,6 @@
                                     {{/if}}
                                     </div>
                               
-                                    <div class="display-table shareRow ">
-                                        <div class="display-table-cell medium-up--one-third">
-                                            <div class="wishlist-btn" >
-                                                <a class="wishlist add-to-wishlist" onclick="WishList('{{product._id}}','{{user._id}}')"  title="Add to Wishlist"><i class="icon anm anm-heart-l" aria-hidden="true"></i> <span>Add to Wishlist</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
                                 </div>
                         	</div>
 

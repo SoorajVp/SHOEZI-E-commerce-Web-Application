@@ -70,16 +70,12 @@
                     <form
                       action="/admin/add-products"
                       method="post"
-                      enctype="multipart/form-data"
+                      enctype="multipart/form-data" id="ProductFormValidate"
                     >
                       <div class="form-group">
                         <label>Product Name</label>
-                        <input type="text" class="form-control" name="name" />
+                        <input type="text" class="form-control" name="name" id="name" required />
                       </div>
-
-                       
-                          
-
 
                   <div class="dropdown">
                   <button class="btn border btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -135,24 +131,19 @@
                         <label
                           for="exampleFormControlTextarea1"
                         >Description</label>
-                        <textarea
-                          class="form-control"
-                          name="description"
-                          id="exampleFormControlTextarea1"
-                          rows="3"
-                        ></textarea>
+                        <textarea  class="form-control"   name="description"  id="description"   rows="3" required></textarea>
                       </div>
                       <div class="col-6 float-left">
                         <label>Quantity</label>
-                        <input type="number" class="form-control" name="quantity" />
+                        <input type="number" class="form-control" name="quantity" id="quantity" required/>
                       </div>
                       <div class="form-group col-6 float-left">
                         <label>Discount ( % )</label>
-                        <input type="number" class="form-control" value="0" name="discount" />
+                        <input type="number" class="form-control" value="0" name="discount" id="discount" required/>
                       </div>
                       <div class="form-group">
                         <label>Price</label>
-                        <input type="tel" class="form-control" name="price" />
+                        <input type="tel" class="form-control" name="price" id="price" required/>
                       </div>
                       
                       <div class="form-group">
@@ -160,8 +151,8 @@
                         <input
                           type="file"
                           class="form-control"
-                          name="image"
-                          multiple="required" />
+                          name="image" id="image"
+                          multiple="required" required/>
                       </div>
                       <button
                         type="submit"
@@ -182,3 +173,9 @@
   </div>
 </div>
 <!-- [ Main Content ] end -->
+
+ {{!-- jQuery formValidate --}}
+
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/javascripts/validations.js"></script>

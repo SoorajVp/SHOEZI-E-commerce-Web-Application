@@ -23,8 +23,6 @@ module.exports = {
       let mobile = await db.get().collection(collection.USER_COLLECTIONS).aggregate([
         { $match: {  mobile: { $eq: userData.mobile }  }}
       ]).toArray();
-      console.log("this is reponse form email  checked ------", email, email.length)
-      console.log("this is reponse form mobile  checked ------", mobile, mobile.length)
       
       if(email.length > 0){
         resolve({status: false, message: "This is email is already taken !"})
@@ -34,7 +32,6 @@ module.exports = {
         if(mobile.length > 0){
           resolve({status: false, message: "This is Mobile is already registered !"})
         }else{
-          
           userData.password1 = await bcrypt.hash(userData.password1, 10);
           db.get().collection(collection.USER_COLLECTIONS).insertOne(userData).then((data) => {
             console.log(data.insertedId);

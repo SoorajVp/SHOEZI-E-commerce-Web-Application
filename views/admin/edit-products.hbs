@@ -72,7 +72,7 @@
                     <form
                       action="/admin/edit-products/{{product._id}}"
                       method="post"
-                      enctype="multipart/form-data"
+                      enctype="multipart/form-data" id="ProductFormValidate"
                     >
                       <div class="form-group">
                         <label>Product Name</label>
@@ -80,8 +80,7 @@
                           type="text"
                           class="form-control"
                           name="name"
-                          value="{{product.name}}"
-                        />
+                          value="{{product.name}}" required />
                       </div>
 
 
@@ -89,7 +88,7 @@
                   <button class="btn border btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{product.category}}
                   </button>
-                  <input type="radio" name="category" value="{{product.category}}" checked hidden >
+                  <input type="radio" name="category" id="category" value="{{product.category}}" checked hidden >
                   {{#each category}}
                   <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                       
@@ -146,19 +145,19 @@
                         <textarea
                           class="form-control"
                           name="description"
-                          id="exampleFormControlTextarea1"
-                          rows="3"
+                          id="description"
+                          rows="3" required
                         >{{product.description}}</textarea>
                       </div>
 
                       <div class="col-6 float-left">
                         <label>Quantity</label>
-                        <input type="tel" class="form-control" value="{{product.quantity}}" name="quantity" />
+                        <input type="tel" class="form-control" value="{{product.quantity}}" name="quantity" id="quantity" required/>
                       </div>
 
                       <div class="form-group col-6 float-left">
                         <label>Discount ( % )</label>
-                        <input type="tel" class="form-control" value="{{product.offer}}" name="discount" />
+                        <input type="tel" class="form-control" value="{{product.offer}}" name="discount" id="discount" required/>
                       </div>
 
                       <div class="form-group">
@@ -166,8 +165,8 @@
                         <input
                           type="tel"
                           class="form-control"
-                          name="price"
-                          value="{{product.price}}"
+                          name="price" id="price"
+                          value="{{product.price}}" required
                         />
                       </div>
                      <div class="form-group">
@@ -175,8 +174,8 @@
                         <input
                           type="file"
                           class="form-control"
-                          name="image"
-                          multiple="required"
+                          name="image" id="image"
+                          multiple="required" 
                           onchange="viewImage(event)"
                         />
                         <div class="d-flex">
@@ -203,12 +202,15 @@
 <!-- [ Main Content ] end -->
 
 
-<script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/javascripts/validations.js"></script>
 
-let viewImage = (event) =>{
-  for(let i=0; i < files.length; i++){
-    document.getElementById('imgView').src = URL.createObjectURL(event.target.files[i]); 
+
+<script>
+  let viewImage = (event) =>{
+    for(let i=0; i < files.length; i++){
+      document.getElementById('imgView').src = URL.createObjectURL(event.target.files[i]); 
+    }
   }
-}
 
 </script>

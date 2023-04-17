@@ -3,6 +3,12 @@
   <head>
     <title>documents</title>
     {{!-- <link rel="stylesheet" href="/assets/css/errorPage.css"> --}}
+    <style>
+      label.error {
+        color: rgb(210, 67, 67);
+        font-size: 12px;
+      }
+    </style>
 
     {{#if admin}}
      {{!-- Admin Side Template --}}
@@ -14,8 +20,6 @@
     <meta name="keywords"
         content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, Flash Able, Flash Able bootstrap admin template">
     <meta name="author" content="Codedthemes" />
-
-    
 
     <!-- Favicon icon -->
     <link rel="icon" href="/admin-assets/images/favicon.ico" type="image/x-icon">
@@ -30,13 +34,13 @@
 
     {{!-- Data tables links admin side --}}
     
-    {{!-- <script src="/assets/js/vendor/jquery-3.3.1.min.js"></script> --}}
+    <script src="/assets/js/vendor/jquery-3.3.1.min.js"></script>
     
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
   
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     
-
+    
     {{!-- Axios cndn link  --}}
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 
@@ -84,11 +88,15 @@
 
      <style>
       .colored-toast.swal2-icon-success {
-        background-color: #a5dc86 !important;
+        background-color: #a0dc7d !important;
         color:#fff;
       }
       .colored-toast.swal2-icon-error {
-        background-color: #f27474 !important;
+        background-color: #f17676 !important;
+        color:#fff;
+      }
+      .colored-toast.swal2-icon-primary {
+        background-color: #52338c !important;
         color:#fff;
       }
      </style>
@@ -117,6 +125,9 @@
     {{/if}}
     {{/if}}
 
+
+
+
     {{#if admin}}
     {{!-- AdminSide Template --}}
     
@@ -130,7 +141,11 @@
     <script src="/admin-assets/plugins/chart-morris/js/morris.min.js"></script>
     <script src="/admin-assets/js/pages/chart-morris-custom.js"></script>
 
+
+
     <script src="/javascripts/cart-script.js"></script>
+
+    
 
   {{!-- dataTable --}}
     
@@ -158,6 +173,9 @@
         $('#orderTable').DataTable();
       });
     </script>
+    
+
+   
     
     {{else}}
 

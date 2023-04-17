@@ -1,6 +1,8 @@
 <!-- [ Main Content ] start -->
 
 
+
+
 <div class="pcoded-main-container">
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
@@ -17,7 +19,7 @@
 
                     {{!-- <h6 class="p-2">ADD CATEGORY</h6> --}}
 
-                    <form action="/admin/category" method="post">
+                    <form action="/admin/category" method="post" id="CategoryForm">
                     {{!-- <div class="input-group mb-3">
                       
                     </div> --}}
@@ -120,12 +122,12 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    <form action="/admin/edit-category/{{this._id}}" method="post">
+    <form action="/admin/edit-category/{{this._id}}" method="post" id="CategoryEditForm">
       <div class="modal-body">
         <div class="form-group col-md-12 ">
             <label for="exampleFormControlSelect1">CATEGORY</label>
             <select class="form-control " name="main" id="exampleFormControlSelect1">
-              <option value="{{this.main}}">{{this.main}}</option>
+              <option value="{{this.main}}" >{{this.main}}</option>
               <option value="MENS">MENS</option>
               <option value="WOMEN">WOMEN</option>
               <option value="KIDS">KIDS</option>
@@ -136,24 +138,21 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
            <div class="form-group">
              <label for="" >Category Name</label>
-             <input
-               type="text"
-               class="form-control "
-               name="sub"
-               value="{{this.sub}}"
-             />
+             <input type="text" class="form-control " name="sub" id="sub" value="{{this.sub}}" required/>
            </div>
          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>  
         
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-info">Submit</button>
       </div>
       </form>
     </div>
   </div>
 </div>
+
+
 {{/each}}
 <!-- [ Main Content ] end -->
 
@@ -206,7 +205,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/admin/sub-category" method="post">
+      <form action="/admin/sub-category" method="post" id="CategoryForm">
       <div class="modal-body">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
            <div class="form-group">
@@ -214,7 +213,7 @@
              <input type="text"  class="form-control " name="name" />
             
            </div>
-            <input type="text"  class="form-control " name="category" value="{{this._id}}" />
+            <input type="text" class="form-control " name="category" value="{{this._id}}" required />
          </div>
       </div>
       <div class="modal-footer">
@@ -229,3 +228,7 @@
   </div>
 </div>
 {{/each}}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/javascripts/validations.js"></script>
+
