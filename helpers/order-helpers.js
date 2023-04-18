@@ -396,6 +396,42 @@ module.exports = {
             resolve();
           })
         })
+      },
+
+      deliverGraph : () =>{
+        return new Promise(async(resolve, reject) =>{
+          let result = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+            {
+              $match: {
+                status: 'DELIVERED'
+              }
+            },{
+              $group: {
+                _id: { $month: "$createdOn" },
+                count: { $sum: 1 }
+              }
+            }
+          ]).toArray();
+          console.log("this is graph details ------", result);
+          resolve(result);
+        })
+      },
+
+      ordersGraph : () =>{
+        return new Promise(async(resolve, reject) =>{
+          let result = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+            {
+              $group: {
+                _id: "$status",
+                count: { $sum: 1 }
+              }
+            },
+            { $sort: { _id: 1 } }
+          ]).toArray();
+          console.log("this is pie chart details  ------", result);
+          resolve(result);
+        })
+
       }
     
 

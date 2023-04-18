@@ -79,6 +79,8 @@ router.get('/sales-report', adminAuth.varifyLogin, controller.salesReport);
 
 router.post('/filtered-sales-report', adminAuth.varifyLogin, controller.salesFilter);
 
+router.get('/chart-details', adminAuth.varifyLogin, controller.chartDetails);
+
 // router.get('/total-money', adminAuth.varifyLogin, controller.totalMoney);
 
 module.exports = router;
