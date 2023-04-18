@@ -23,6 +23,8 @@ router.get('/shop/:id', controller.shop);
 
 router.post('/shop/filter', controller.shopFilter);
 
+router.get('/pagination', controller.pagination);
+
 router.get('/product-details/:id', controller.productDetails);
 
 router.get('/profile', userAuth.varifyLogin, controller.userProfile);

@@ -104,15 +104,23 @@ module.exports = {
   shop: async(req, res) => {
     console.log("param by search function ---------------", req.params.id);
 
+    if(typeof(req.params.id) === 1 || -1 ){
+      console.log("this is number ");
+    }else{
+      console.log("this is not number");
+    }
+
     try {
       let value = req.params.id
-      if(value === value.toUpperCase()){
-          console.log("Filter from Main category---------")
+      if(/^[A-Z]+$/.test(value)){
+          console.log("this is page number  ---------", req.session.page)
           req.session.main = value; 
           req.session.sub = false;
-        
+
           let category = await adminHelpers.getItemCategory(req.session.main);
-          let products = await productHelpers.getShopItems(req.session.main);
+          let count = await productHelpers.getProductsCount(req.session.main);
+          let products = await productHelpers.getShopItems(req.session.main, 0, 6);
+          
         
           for(let i=0; i< products.length; i++){
             products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
@@ -126,29 +134,33 @@ module.exports = {
 
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
-              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.session.main});
+              res.render("users/shop-page", { products, count, page: req.session.page, category, logged: true, user, cartCount, sessionCategory: req.session.main});
               req.session.filteredProducts = false
             }else{
-              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.session.main});
+              res.render("users/shop-page", { products, count, page: req.session.page, category, logged: true, user, cartCount, sessionCategory: req.session.main});
             }
           
           } else {
 
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
-              res.render('users/shop-page',{ products, category, sessionCategory: req.session.main });
+              res.render('users/shop-page',{ products, count, page: req.session.page, category, sessionCategory: req.session.main });
               req.session.filteredProducts = false
             }else{
-              res.render('users/shop-page',{ products, category, sessionCategory: req.session.main });
+              res.render('users/shop-page',{ products, count, page: req.session.page, category, sessionCategory: req.session.main });
             }
           }
       
-      }else if(req.params.id == 'low-to-high'){
-      
+      }else if(req.params.id == 1 || req.params.id == -1 ){
+        console.log("this is sorting function ---------------")
+        let sort = req.params.id == 1 ? 1 : -1;
           let category = await adminHelpers.getItemCategory(req.session.main);
-          let products = await productHelpers.getProductsLowToHigh(req.session.main);
+          let products = await productHelpers.getProductsSort(req.session.main, sort);
           for(let i=0; i< products.length; i++ ){
             products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            if(products[i].offer){
+              products[i].total = products[i].total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
+            }
           }
         
           if (req.session.loggedin) {
@@ -165,35 +177,6 @@ module.exports = {
           
           } else {
           
-            if(req.session.filteredProducts){
-              products=req.session.filteredProducts;
-              res.render('users/shop-page',{ products, category, sessionCategory: req.params.id });
-              req.session.filteredProducts = false
-            }else{
-              res.render('users/shop-page',{ products, category, sessionCategory: req.params.id });
-            }
-          }
-      
-      }else if(req.params.id == 'high-to-low'){
-        
-          let category = await adminHelpers.getItemCategory(req.session.main);
-          let products = await productHelpers.getProductsHighToLow(req.session.main);
-          for(let i=0; i< products.length; i++){
-            products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-          }
-          if (req.session.loggedin) {
-            let user = req.session.user; 
-            let cartCount = await userHelpers.getCartCount(req.session.user._id);
-          
-            if(req.session.filteredProducts){
-              products=req.session.filteredProducts;
-              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
-              req.session.filteredProducts = false
-            }else{
-              res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
-            }
-          
-          } else {
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
               res.render('users/shop-page',{ products, category, sessionCategory: req.params.id });
@@ -218,7 +201,7 @@ module.exports = {
               }
             }
             res.render("users/shop-page", { products, NotFount, category, logged: true, user, cartCount, sessionCategory: req.session.main});
-            req.session.filteredProducts = false;
+            // req.session.filteredProducts = false;
 
           }else{
 
@@ -232,7 +215,7 @@ module.exports = {
               }
             }
             res.render("users/shop-page", { products, NotFount, category, sessionCategory: req.session.main});
-            req.session.filteredProducts = false;
+            // req.session.filteredProducts = false;
 
           }
 
@@ -276,8 +259,12 @@ module.exports = {
     }
   },
 
+  search : async(req, res) =>{
+    let products = await productHelpers.searchProducts(req.body.key);
+    req.session.filteredProducts = products;
+    res.redirect('/shop/search');
 
-
+  },
 
 
   shopFilter : async(req, res) =>{
@@ -297,20 +284,29 @@ module.exports = {
         req.session.filteredProducts = products
         res.json({response: true})
       }
-
     } catch (error) {
       console.log(error)
     }
-    
+  },
+
+  pagination : async(req, res) => {
+    console.log("this is query", req.query)
+    let limit = 6;
+    req.session.page = req.query.page;
+    let skip = limit * (req.session.page - 1);
+    let products = await productHelpers.getShopItems(req.session.main, skip, limit);
+    console.log("thiis is pagination products ----", products);
+    req.session.filteredProducts = products
+    res.redirect(`/shop/${req.query.category}`);
   },
 
  
 
   productDetails : async(req, res) =>{
-
+    console.log("this  is prodetails-------------");
     try {
       let product = await productHelpers.getProductDetails(req.params.id);
-      let related = await productHelpers.getShopItems(req.session.main);
+      let related = await productHelpers.getShopItems(req.session.main, 0, 6);
       if(product.offer){
         product.total = product.total.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
       }
