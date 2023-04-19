@@ -2,7 +2,6 @@ const db = require('../config/connection');
 const collection = require('../config/collection');
 const { ObjectId } = require('mongodb-legacy');
 // const async = require('hbs/lib/async');
-// const { response } = require('express');
 
 module.exports = {
 
