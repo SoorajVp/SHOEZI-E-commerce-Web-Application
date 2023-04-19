@@ -398,7 +398,6 @@ module.exports = {
     chartDetails : async(req, res) =>{
         let delivers = await orderHelpers.deliverGraph();
         let orderStatus = await orderHelpers.ordersGraph();
-        console.log(delivers , orderStatus )
         res.json({delivers, orderStatus});
     }
 

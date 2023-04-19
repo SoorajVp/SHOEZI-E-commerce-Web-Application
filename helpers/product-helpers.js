@@ -108,12 +108,14 @@ module.exports = {
         })
     },
 
-    getShopItemsSub : (catId) => {
+    getShopItemsSub : (catId, skipValue, limitValue) => {
         return new Promise(async(resolve, reject) =>{
             let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
                {
                 $match: { category: new ObjectId(catId) }
-               }
+               }, 
+               { $skip: skipValue },
+               { $limit: limitValue }
             ]).toArray();
             resolve(products);
         })
@@ -236,8 +238,6 @@ module.exports = {
 
     incrementQuantity : (products) =>{
         return new Promise((resolve, reject) =>{
-            console.log("this is products quantity -----", products.quantity)
-            console.log("this is products item -----", products.item)
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne(
                 { _id: products.item },
                 { $inc: { quantity : products.quantity } }

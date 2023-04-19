@@ -202,5 +202,12 @@ async function  subCategory(mainItem, subItem) {
   
 }
 
+function inventery(){
+  Toast.fire({
+    icon: 'error',
+    title: 'Cart item is Out of stock !'
+  })
+}
+
 
 

@@ -293,7 +293,6 @@ module.exports = {
             }
           ]).toArray()
           if(orders[0]){
-            console.log(orders[0].total);
             resolve(orders[0].total);
           }else{
             resolve(0);
@@ -319,7 +318,6 @@ module.exports = {
                   }
             }
           ]).toArray()
-          console.log("price",money[0].total);
           resolve(money[0].total);
         })
     },
@@ -327,7 +325,6 @@ module.exports = {
       getTotalUsers: () =>{
         return new Promise(async(resolve, reject) =>{
           const count = await db.get().collection(collection.USER_COLLECTIONS).countDocuments();
-          console.log("users",count);
           resolve(count);
         })
       },
@@ -335,7 +332,6 @@ module.exports = {
       getTotalOrders: () =>{
         return new Promise(async(resolve, reject) =>{
           const count = await db.get().collection(collection.ORDER_COLLECTIONS).countDocuments();
-          console.log("orders",count);
           resolve(count);
         })
       },
@@ -343,7 +339,6 @@ module.exports = {
       deliveredOrders : () =>{
         return new Promise(async(resolve,  reject) =>{
           let orders = await db.get().collection(collection.ORDER_COLLECTIONS).find({status: 'DELIVERED'}).sort({ createdOn: -1 }).toArray()
-          console.log("delivered products----",orders)
           for(let i=0; i<orders.length; i++){
             orders[i].items = orders[i].products.length;
           }
@@ -374,7 +369,6 @@ module.exports = {
             }
           ]).sort({ createdOn: -1 }).toArray()
     
-          console.log("this is filtered order ---", orders);
           resolve(orders)
         })
       },
@@ -406,7 +400,7 @@ module.exports = {
         })
       },
 
-      deliverGraph : () =>{
+      deliverGraph : () =>{ 
         return new Promise(async(resolve, reject) =>{
           let result = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
             {
@@ -420,7 +414,6 @@ module.exports = {
               }
             }
           ]).toArray();
-          console.log("this is graph details ------", result);
           resolve(result);
         })
       },
@@ -434,9 +427,8 @@ module.exports = {
                 count: { $sum: 1 }
               }
             },
-            { $sort: { _id: 1 } }
+            { $sort: { _id: 1 } } 
           ]).toArray();
-          console.log("this is pie chart details  ------", result);
           resolve(result);
         })
 

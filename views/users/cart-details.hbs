@@ -35,6 +35,48 @@
 
                             {{#each products}}
 
+                                {{#if this.outOfStock}}
+
+                                <tr class="cart__row border-bottom line1 cart-flex border-top" style="opacity: 0.4;">
+                                    
+                                    <td class="cart__image-wrapper cart-flex-item">
+                                        <a href="#"><img class="cart__image" src="{{this.productDetails.image.[0]}}" alt="Elastic Waist Dress - Navy / Small"></a>
+                                    </td>
+                                    <td class="cart__meta small--text-left cart-flex-item">
+                                        <div class="list-view-item__title">
+                                            <a href="/product-details/{{this.productDetails.url}}" >{{this.productDetails.name}}</a>
+                                        </div>
+                                        
+                                        <div class="cart__meta-text ">
+                                            <h6 class="text-secondary">SIZE: 7 fshojcsnoics</h6><br>
+                                            <h6 class="text-danger">Out of stock </h>
+
+                                        </div>
+                                    </td>
+                                    <td class="cart__price-wrapper cart-flex-item">
+                                        <span class="money" id="{{this.productDetails._id}}price">{{this.productDetails.total}}</span>
+                                    </td>
+                                   
+                                    <td class="cart__update-wrapper cart-flex-item text-right">
+                                        <div class="cart__qty text-center">
+                                            <div class="qtyField">
+                                                <button class="qtyBtn minus" style="background-color: rgb(221, 221, 221);"><i class="icon icon-minus"></i></button>
+                                                <span id="{{this.productDetails._id}}" class=" qty" >{{this.quantity}}</span>
+                                                <button class="qtyBtn plus" style="background-color: rgb(221, 221, 221);"><i class="icon icon-plus" ></i></button>
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-right small--hide cart-price">
+                                        <div><span class="money" id="{{this.productDetails._id}}subtotal" >{{this.productDetails.subTotal}}</span></div>
+                                    </td>
+                                    {{!-- <td class="text-center small--hide"><a href="#" class="btn btn--secondary cart__remove" title="Remove tem"><i class="icon icon anm anm-times-l"></i></a></td> --}}
+                                    <td><button class="qtyBtn plus" style="background-color: rgb(221, 221, 221);" onclick="removeCartproduct('{{this._id}}','{{this.productDetails._id}}')"><i class="icon anm anm-times-l" ></i></button></td>
+                                </tr>
+
+                                {{else}}
+
                                 <tr class="cart__row border-bottom line1 cart-flex border-top">
                                     
                                     <td class="cart__image-wrapper cart-flex-item">
@@ -70,6 +112,7 @@
                                     {{!-- <td class="text-center small--hide"><a href="#" class="btn btn--secondary cart__remove" title="Remove tem"><i class="icon icon anm anm-times-l"></i></a></td> --}}
                                     <td><button class="qtyBtn plus" style="background-color: rgb(221, 221, 221);" onclick="removeCartproduct('{{this._id}}','{{this.productDetails._id}}')"><i class="icon anm anm-times-l" ></i></button></td>
                                 </tr>
+                                {{/if}}
                             {{/each}}
 
                                 
@@ -78,7 +121,7 @@
                     		<tfoot>
                                 <tr>
                                     <td colspan="3" class="text-left"><a href="/shop" class="btn--link cart-continue"><i class="icon icon-arrow-circle-left"></i> Continue shopping</a></td>
-                                    <td colspan="3" class="text-right"><button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button></td>
+                                    {{!-- <td colspan="3" class="text-right"><button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button></td> --}}
                                 </tr>
                             </tfoot>
                     </table>
@@ -111,8 +154,14 @@
                           <input type="checkbox" name="tearm" id="cartTearm" class="checkbox" value="tearm" required="">
                            I agree with the terms and conditions</label>
                       </p>
-                      <a href="/check-out" class="">
-                      <input  name="checkout" id="cartCheckout" class="btn btn--small-wide checkout" value="Checkout" disabled="disabled"></a>
+
+                      {{#if outOfStock}}
+                      <a  onclick="inventery()"><input name="checkout" id="cartCheckout" class="btn btn--small-wide checkout" value="Checkout" disabled="disabled"></a>
+                      {{else}}
+                      <a href="/check-out" ><input name="checkout" id="cartCheckout" class="btn btn--small-wide checkout" value="Checkout" disabled="disabled"></a>
+                      {{/if}}
+
+                      
                       {{!-- <div class="paymnet-img"><img src="/assets/images/payment-img.jpg" alt="Payment"></div> --}}
                     </div>
 

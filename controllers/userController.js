@@ -102,19 +102,15 @@ module.exports = {
 
 
   shop: async(req, res) => {
-    console.log("param by search function ---------------", req.params.id);
-
-    if(typeof(req.params.id) === 1 || -1 ){
-      console.log("this is number ");
-    }else{
-      console.log("this is not number");
-    }
 
     try {
       let value = req.params.id
+
       if(/^[A-Z]+$/.test(value)){
+
           console.log("this is page number  ---------", req.session.page)
-          req.session.main = value; 
+          req.session.main = req.params.id; 
+          // req.session.category = req.params.id;
           req.session.sub = false;
 
           let category = await adminHelpers.getItemCategory(req.session.main);
@@ -144,18 +140,22 @@ module.exports = {
 
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
-              res.render('users/shop-page',{ products, count, page: req.session.page, category, sessionCategory: req.session.main });
+              res.render('users/shop-page',{ products, count, page: req.session.page, category, sessionCategory: req.params.id });
               req.session.filteredProducts = false
             }else{
-              res.render('users/shop-page',{ products, count, page: req.session.page, category, sessionCategory: req.session.main });
+              res.render('users/shop-page',{ products, count, page: req.session.page, category, sessionCategory: req.params.id });
             }
           }
       
       }else if(req.params.id == 1 || req.params.id == -1 ){
-        console.log("this is sorting function ---------------")
-        let sort = req.params.id == 1 ? 1 : -1;
+          req.session.category = req.params.id;
+          req.session.sortValue = req.params.id
+
+          console.log("this is sorting function ---------------")
+          let sort = req.params.id == 1 ? 1 : -1;
           let category = await adminHelpers.getItemCategory(req.session.main);
           let products = await productHelpers.getProductsSort(req.session.main, sort);
+
           for(let i=0; i< products.length; i++ ){
             products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
             if(products[i].offer){
@@ -170,7 +170,7 @@ module.exports = {
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
-              req.session.filteredProducts = false
+              // req.session.filteredProducts = false
             }else{
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
             }
@@ -216,14 +216,14 @@ module.exports = {
             }
             res.render("users/shop-page", { products, NotFount, category, sessionCategory: req.session.main});
             // req.session.filteredProducts = false;
-
           }
 
       }else{
-      
+          req.session.category = req.params.id;
           req.session.sub = req.params.id;
+          req.session.main = false;
           let category = await adminHelpers.getItemCategory(req.session.main);
-          let products = await productHelpers.getShopItemsSub(req.params.id);
+          let products = await productHelpers.getShopItemsSub(req.params.id, 0, 6);
           for(let i=0; i< products.length; i++){
             products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
             if(products[i].offer){
@@ -237,7 +237,7 @@ module.exports = {
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
-              req.session.filteredProducts = false
+              // req.session.filteredProducts = false
             }else{
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
             }
@@ -247,11 +247,10 @@ module.exports = {
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
               res.render('users/shop-page',{ products, category , sessionCategory: req.params.id});
-              req.session.filteredProducts = false
+              // req.session.filteredProducts = false
             }else{
               res.render('users/shop-page',{ products, category , sessionCategory: req.params.id});
             }
-
           }
       }
     } catch (error) {
@@ -263,7 +262,6 @@ module.exports = {
     let products = await productHelpers.searchProducts(req.body.key);
     req.session.filteredProducts = products;
     res.redirect('/shop/search');
-
   },
 
 
@@ -290,14 +288,27 @@ module.exports = {
   },
 
   pagination : async(req, res) => {
+    console.log("this is pagination function ------")
+    console.log("this is pagination category ------",req.session.category)
     console.log("this is query", req.query)
     let limit = 6;
     req.session.page = req.query.page;
     let skip = limit * (req.session.page - 1);
-    let products = await productHelpers.getShopItems(req.session.main, skip, limit);
-    console.log("thiis is pagination products ----", products);
-    req.session.filteredProducts = products
-    res.redirect(`/shop/${req.query.category}`);
+
+    if(req.session.sub){
+      let products = await productHelpers.getShopItemsSub(req.session.category, skip, limit);
+      req.session.filteredProducts = products;
+      res.redirect(`/shop/${req.query.category}`);
+    }else if(req.session.main){
+      let products = await productHelpers.getShopItems(req.session.main, skip, limit);
+      console.log("thiis is pagination products ----", products);
+      req.session.filteredProducts = products
+      res.redirect(`/shop/${req.query.category}`);
+    }else{
+      let products = await productHelpers.getProductsSort(req.session.main, sort);
+      req.session.filteredProducts = products
+    }
+    
   },
 
  
@@ -466,20 +477,18 @@ module.exports = {
     let cartCount = await userHelpers.getCartCount(req.session.user._id);
     let products = await userHelpers.getCartproducts(user._id);
 
-      products.forEach(async(values) => {
-        if(values.quantity > values.productDetails.quantity){
-          console.log("cart item is in out of stocck -----")
-          let details = {
-            cart: values._id,
-            product: values.productDetails._id
-          }
-          await userHelpers.removeCart(details)
-        }
-      });
-      cartCount = await userHelpers.getCartCount(req.session.user._id);
+      
+      // console.log("this is pproducts in cart - - - - - -  ", products);
+      // cartCount = await userHelpers.getCartCount(req.session.user._id);
 
     if(cartCount > 0){
-      products = await userHelpers.getCartproducts(user._id);
+      // products = await userHelpers.getCartproducts(user._id);
+      products.forEach(async(values) => {
+        if(values.quantity > values.productDetails.quantity){
+          values.outOfStock = true;
+          req.session.outOfStock = true;
+        }
+      });
       let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
       totalValue = totalValue.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
       if(user.walletAmount){
@@ -488,7 +497,8 @@ module.exports = {
         user.walletAmount = 0;
         user.walletAmount = user.walletAmount.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
       }
-      res.render('users/cart-details', {user, products, cartCount, totalValue});
+      res.render('users/cart-details', {user, products, outOfStock: req.session.outOfStock, cartCount, totalValue});
+      req.session.outOfStock = false;
     }else{
       res.render('users/empty-page', { user, cartCount, cart: true })
     }
@@ -581,7 +591,6 @@ module.exports = {
   placeOrderPost : async(req, res) =>{
 
     try {
-
       let products = await orderHelpers.getOrderCartProducts(req.body.userId);
       console.log("'this is ordereed prooductss------", products)
       orderHelpers.placeOrder(req.body, products).then((response) => {

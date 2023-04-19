@@ -145,6 +145,7 @@
             console.log("this is response ------ ", response.data)
             let result = response.data.delivers;
             let MonthlyData = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
             result.forEach((item) =>{
                 MonthlyData[item._id-1] = item.count;
             })
@@ -171,7 +172,6 @@
 
 
         const pie = document.getElementById('pieChart');
-        
 
         let status = response.data.orderStatus;
         console.log("this is status---", status)
@@ -183,9 +183,9 @@
             orderStatus.push(item._id)
             statusCount.push(item.count)
         })
+
         console.log("this is last  status---", status)
         //console.log("this is status---", status)
-
 
         new Chart(pie, {
         type: 'doughnut',
@@ -198,46 +198,11 @@
               hoverOffset: 4
              }]
             }
-
-    });
-
-
-
-
-
-        })
-
-
-    
-
-        
+        });
+     })
     })();
 
-    //(async() =>{
-    //    const ctx = document.getElementById('pieChart');
-//
-    //     new Chart(ctx, {
-    //        type: 'doughnut',
-    //        data: {
-    //            labels: [
-    //              'Red',
-    //              'Blue',
-    //              'Yellow'
-    //            ],
-    //            datasets: [{
-    //              label: 'My First Dataset',
-    //              data: [300, 50, 100],
-    //              backgroundColor: [
-    //                'rgb(255, 99, 132)',
-    //                'rgb(54, 162, 235)',
-    //                'rgb(255, 205, 86)'
-    //              ],
-    //              hoverOffset: 4
-    //            }
-    //        }
-    //    });
-    //})
-
+   
     
   
 </script>
