@@ -583,10 +583,8 @@ module.exports = {
     try {
 
       let products = await orderHelpers.getOrderCartProducts(req.body.userId);
-      console.log("this is prooducts from the cart side----" , products)
-
+      console.log("'this is ordereed prooductss------", products)
       orderHelpers.placeOrder(req.body, products).then((response) => {
-        console.log("+++++++++++++++++++++++++++", response)
         
         response.insertedId = ""+response.insertedId
         console.log(response);
@@ -679,8 +677,15 @@ module.exports = {
   myOrderStatus : async(req, res) =>{
     try {
       console.log(req.body.userId , req.body.status);
+      if(req.body.status == 'CANCELLED'){
+        let products = await orderHelpers.getOrderedItems(req.body.userId);
+        products.forEach(function(values) {
+          productHelpers.incrementQuantity(values)
+        })
+      }
+      
       await orderHelpers.changeOrderStatus(req.body.userId, req.body.status).then((response) =>{
-        console.log("@@", response);
+        console.log("@@@", response);
         response.status = true;
         res.json(response)
       })
@@ -769,7 +774,7 @@ module.exports = {
     
   },
 
-  myWallet : async(req, res) =>{
+  myWallet : async(req, res) => {
     let user = req.session.user;
     let cartCount = await userHelpers.getCartCount(user._id);
     if(user.walletAmount){

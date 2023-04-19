@@ -99,6 +99,14 @@ module.exports = {
     })
   },
 
+  getOrderedItems : (orderId) =>{
+    return new Promise(async(resolve, reject) =>{
+      let order = await db.get().collection(collection.ORDER_COLLECTIONS).findOne({_id: new ObjectId(orderId)});
+      console.log("this is last log --------", order)
+      resolve(order.products);
+    })
+  },
+
   
   generateRazorpay : (orderId, total) =>{
     total = parseInt(total);

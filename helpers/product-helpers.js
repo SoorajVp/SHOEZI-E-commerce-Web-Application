@@ -234,6 +234,17 @@ module.exports = {
         })
     },
 
+    incrementQuantity : (products) =>{
+        return new Promise((resolve, reject) =>{
+            console.log("this is products quantity -----", products.quantity)
+            console.log("this is products item -----", products.item)
+            db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne(
+                { _id: products.item },
+                { $inc: { quantity : products.quantity } }
+            )
+        })
+    },
+
     filterProductsMain : (low, high, category) =>{
         low = Number(low)
         high = Number(high)

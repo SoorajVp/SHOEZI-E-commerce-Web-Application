@@ -340,8 +340,14 @@ module.exports = {
         }
     },
 
-    returnWallet : (req, res) =>{
-        console.log("this is return wallet -------", req.body);
+    returnWallet : async(req, res) =>{
+        console.log("this is return data ----------------------", req.body);
+        let products = await orderHelpers.getOrderedItems(req.body.orderId);
+        console.log("this is return products ----------------------", products);
+
+        products.forEach(function(values) {
+            productHelpers.incrementQuantity(values)
+          })
         orderHelpers.addReturnWallet(req.body.userId, req.body.orderId).then((response) =>{
             orderHelpers.changeOrderStatus(req.body.orderId, req.body.status).then((resp)=>{
                 res.json(response);
