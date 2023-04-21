@@ -223,7 +223,6 @@ module.exports = {
   getItemCategory : (category) =>{
     return new Promise(async(resolve, reject) =>{
       let catList1 = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({main: category}).toArray();
-      console.log(catList1);
       resolve(catList1);
     })
   },
@@ -233,7 +232,6 @@ module.exports = {
 
   getAllCategory : () =>{
     return new Promise(async(resolve, reject) =>{
-
       let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).find().toArray();
       console.log(category)
       resolve(category)

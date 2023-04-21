@@ -29,25 +29,27 @@ router.get('/product-details/:id', controller.productDetails);
 
 router.get('/profile', userAuth.varifyLogin, controller.userProfile);
 
-router.post('/personal-datas/:id', controller.editUserData);
+router.post('/personal-datas/:id',userAuth.varifyLogin, controller.editUserData);
 
 router.get('/address', userAuth.varifyLogin, controller.getAddress);
 
 router.get('/add-address', userAuth.varifyLogin, controller.addAddress);
 
-router.post('/add-address/:id', controller.addAddressPost);
+router.post('/add-address/:id',userAuth.varifyLogin, controller.addAddressPost);
+
+router.post('/edit-address/:id',userAuth.varifyLogin, controller.editAddressPost);
 
 router.post('/add-delivery-address/:id', controller.addDeliveryAddress);
 
-router.get('/remove-address/:id', controller.removeAddress);
+router.get('/remove-address/:id',userAuth.varifyLogin, controller.removeAddress);
 
 router.get('/change-password', userAuth.varifyLogin, controller.changePassword);
 
-router.post('/change-password/:id', controller.changePasswordPost);
+router.post('/change-password/:id',userAuth.varifyLogin, controller.changePasswordPost);
 
 router.get('/new-password', userAuth.varifyLogin, controller.newPassword);
 
-router.post('/new-password/:id', controller.newPasswordPost);
+router.post('/new-password/:id',userAuth.varifyLogin, controller.newPasswordPost);
 
 router.get('/otp-login', controller.otpLogin);
 

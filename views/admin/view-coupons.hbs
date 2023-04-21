@@ -115,11 +115,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    <form action="/admin/edit-coupon/{{this._id}}" method="post" id="CouponForm">
+    <form action="/admin/edit-coupon/{{this._id}}" method="post" id="CouponForm" >
       <div class="modal-body">
         <div class="form-group col-md-12 ">
           <label for="exampleFormControlSelect1">Edit Coupon</label>
-            <input type="text" class="form-control" value="{{this.code}}" name="code" id="code" required/>
+            <input type="text" class="form-control" value="{{this.code}}" name="code" id="code" disabled />
           </div> 
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
            <div class="form-group">
@@ -144,12 +144,6 @@
   </div>
 </div>
 {{/each}}
-
-
-
-
-
-
 
 
 

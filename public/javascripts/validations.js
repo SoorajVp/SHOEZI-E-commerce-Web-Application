@@ -53,7 +53,6 @@ $().ready(() =>{
             mobile:{
                 required: true,
                 number: true,
-                noSpace: true,
                 minlength: 10,
                 maxlength: 10
             },

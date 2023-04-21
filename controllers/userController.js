@@ -36,7 +36,7 @@ module.exports = {
     req.session.loggedin = false;
     res.redirect("/");
   },
-
+ 
   login: (req, res) => {
     if (req.session.loggedin) {
       res.redirect("/");
@@ -92,7 +92,6 @@ module.exports = {
           req.session.signupErr = response.message;
           res.redirect("/signup");
         }
-        
       });
     } catch (error) {
       console.log(error)
@@ -186,7 +185,7 @@ module.exports = {
             }
           }
       
-      }else if(req.params.id == 'search'){
+      }else if(req.params.id == 'search' || req.params.id == 'filter'){
 
           if(req.session.loggedin) {
             let user = req.session.user; 
@@ -217,13 +216,15 @@ module.exports = {
             res.render("users/shop-page", { products, NotFount, category, sessionCategory: req.session.main});
             // req.session.filteredProducts = false;
           }
+        
 
       }else{
+          console.log("This is sub category functionss----")
           req.session.category = req.params.id;
           req.session.sub = req.params.id;
-          req.session.main = false;
           let category = await adminHelpers.getItemCategory(req.session.main);
           let products = await productHelpers.getShopItemsSub(req.params.id, 0, 6);
+          console.log("This is sub category functionss----", products)
           for(let i=0; i< products.length; i++){
             products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
             if(products[i].offer){
@@ -235,19 +236,23 @@ module.exports = {
             let user = req.session.user; 
             let cartCount = await userHelpers.getCartCount(req.session.user._id);
             if(req.session.filteredProducts){
+              console.log("Fitered products inside sub categoryy")
+              console.log("Fitered products inside sub categoryy", req.session.filteredProducts)
               products=req.session.filteredProducts;
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
-              // req.session.filteredProducts = false
+              req.session.filteredProducts = false
             }else{
+              console.log("true")
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
             }
           
           } else {
           
             if(req.session.filteredProducts){
+              console.log("Fitered products inside sub categoryy")
               products=req.session.filteredProducts;
               res.render('users/shop-page',{ products, category , sessionCategory: req.params.id});
-              // req.session.filteredProducts = false
+              req.session.filteredProducts = false
             }else{
               res.render('users/shop-page',{ products, category , sessionCategory: req.params.id});
             }
@@ -288,30 +293,33 @@ module.exports = {
   },
 
   pagination : async(req, res) => {
-    console.log("this is pagination function ------")
     console.log("this is pagination category ------",req.session.category)
     console.log("this is query", req.query)
-    let limit = 6;
-    req.session.page = req.query.page;
-    let skip = limit * (req.session.page - 1);
 
-    if(req.session.sub){
-      let products = await productHelpers.getShopItemsSub(req.session.category, skip, limit);
-      req.session.filteredProducts = products;
-      res.redirect(`/shop/${req.query.category}`);
-    }else if(req.session.main){
-      let products = await productHelpers.getShopItems(req.session.main, skip, limit);
-      console.log("thiis is pagination products ----", products);
-      req.session.filteredProducts = products
-      res.redirect(`/shop/${req.query.category}`);
-    }else{
-      let products = await productHelpers.getProductsSort(req.session.main, sort);
-      req.session.filteredProducts = products
+    try {
+      let limit = 6;
+      req.session.page = req.query.page;
+      let skip = limit * (req.session.page - 1);
+  
+      if(req.session.sub){
+        let products = await productHelpers.getShopItemsSub(req.session.category, skip, limit);
+        req.session.filteredProducts = products;
+        res.redirect(`/shop/${req.query.category}`);
+      }else if(req.session.main){
+        let products = await productHelpers.getShopItems(req.session.main, skip, limit);
+        console.log("thiis is pagination products ----", products);
+        req.session.filteredProducts = products
+        res.redirect(`/shop/${req.query.category}`);
+      }else{
+        let products = await productHelpers.getProductsSort(req.session.main, sort);
+        req.session.filteredProducts = products
+      }
+    } catch (error) {
+      console.log(error)
     }
     
   },
 
- 
 
   productDetails : async(req, res) =>{
     console.log("this  is prodetails-------------");
@@ -368,6 +376,18 @@ module.exports = {
       res.redirect('/address');
     } catch (error) {
       console.log(error)
+    }
+  },
+
+  editAddressPost : (req, res) =>{
+    console.log("this edit address function --------");
+    console.log( req.body, req.params.id, req.session.user._id)
+    try {
+      let user = req.session.user;
+      userHelpers.editAddress(req.body, req.params.id, req.session.user._id);
+      res.redirect('/address');
+    } catch (error) {
+      
     }
   },
 
@@ -477,12 +497,7 @@ module.exports = {
     let cartCount = await userHelpers.getCartCount(req.session.user._id);
     let products = await userHelpers.getCartproducts(user._id);
 
-      
-      // console.log("this is pproducts in cart - - - - - -  ", products);
-      // cartCount = await userHelpers.getCartCount(req.session.user._id);
-
     if(cartCount > 0){
-      // products = await userHelpers.getCartproducts(user._id);
       products.forEach(async(values) => {
         if(values.quantity > values.productDetails.quantity){
           values.outOfStock = true;

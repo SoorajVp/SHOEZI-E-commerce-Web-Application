@@ -96,8 +96,8 @@
                         	<div class="filters-toolbar-wrapper">
                             	<div class="row">
                                 	
-                                    <div class="col-12 col-md-12 col-lg-12 border filters-toolbar__item filters-toolbar__item--count d-flex ml-3  align-items-center">
-                                    	<span class="filters-toolbar__product-count">Showing: {{count.[0].count}}</span>
+                                    <div class="col-12 col-md-12 col-lg-12  filters-toolbar__item filters-toolbar__item--count d-flex ml-3  ">
+                                    	<span class="filters-toolbar__product-count ">Showing: {{count.[0].count}} results</span>
                                         <input type="text"  id="totalCount" value="{{count.[0].count}}" hidden>
                                         <input type="text"  id="currentPage" value="{{page}}" hidden>
                                     </div>
@@ -328,7 +328,7 @@
             console.log(response);
             var category = document.querySelector("#amount2").dataset.category
             console.log(category)
-            location.href = `/shop/${category}`
+            location.href = `/shop/filter`
         })
         .catch((err)=>{
             console.log(err);

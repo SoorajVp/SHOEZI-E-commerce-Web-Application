@@ -111,6 +111,31 @@ module.exports = {
     })
   },
 
+  editAddress : (addressData, addressId, userId) =>{
+    console.log("thiss is edit address dataaa .....");
+    console.log("thiss is edit address dataaa .....", addressData, addressId, userId);
+    return new Promise(async(resolve, reject) =>{
+      await db.get().collection(collection.USER_COLLECTIONS).updateOne({
+        _id:new ObjectId(userId),
+        address: {$elemMatch:{_id: new ObjectId(addressId)}}
+          },
+          {
+              $set:{
+                  'address.$.name' : addressData.name,
+                  'address.$.email' : addressData.email,
+                  'address.$.address' : addressData.address,
+                  'address.$.district' : addressData.district,
+                  'address.$.city' : addressData.city,
+                  'address.$.pincode' : addressData.pincode,
+                  'address.$.mobile' : addressData.mobile
+              }
+          }).then((response)=>{
+              resolve(response);
+          })
+
+    })
+  },
+
   varifyPassword : (userId, userData) =>{
     return new Promise(async(resolve, reject) =>{
       let response ={};
