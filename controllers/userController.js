@@ -450,7 +450,7 @@ module.exports = {
   },
 
   otpLogin : (req, res) =>{ 
-    res.render('users/otp-login');
+    res.render('users/otp-login', {loginForm: true});
     req.session.logErr = false;   
   },
 
