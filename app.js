@@ -44,6 +44,7 @@ app.use(session({
 }))
 
 db.connect((err) => {
+  console.log("Mongodb Connecting---")
   if(err) console.log('Connection Failed'+err);
   else console.log('Database Connected');
 })
