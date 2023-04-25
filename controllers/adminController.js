@@ -24,12 +24,12 @@ module.exports = {
 
     dashboard : async(req, res) =>{
         const today = new Date();
-         let totalAmount = await orderHelpers.getTotalMoney();
+        let totalAmount = await orderHelpers.getTotalMoney();
         // let users = await adminHelpers.getTotalUsers();
         // let orders = await adminHelpers.getTotalOrders();
         let dailyOrders = await orderHelpers.dailySales(today)
-        let weeklyOrders= await orderHelpers.weeklySales(today)
-        let monthlyOrders= await orderHelpers.monthlySales(today)
+        let weeklyOrders = await orderHelpers.weeklySales(today)
+        let monthlyOrders = await orderHelpers.monthlySales(today)
 
         totalAmount = totalAmount.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
         dailyOrders = dailyOrders.toLocaleString('en-in', { style: 'currency', currency: 'INR' });

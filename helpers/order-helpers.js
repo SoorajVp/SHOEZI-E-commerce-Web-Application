@@ -319,7 +319,12 @@ module.exports = {
                   }
             }
           ]).toArray()
-          resolve(money[0].total);
+          if(money[0]){
+            resolve(money[0].total);
+          }else{
+            resolve(0);
+          }
+          
         })
     },
     
