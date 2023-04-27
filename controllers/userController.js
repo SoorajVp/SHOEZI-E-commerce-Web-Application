@@ -92,7 +92,7 @@ module.exports = {
   shop: async(req, res) => {
 
     try {
-      let value = req.params.id
+      let value = req.params.id;
 
       if(/^[A-Z]+$/.test(value)){
 
@@ -101,7 +101,6 @@ module.exports = {
           let category = await adminHelpers.getItemCategory(req.session.main);
           let count = await productHelpers.getProductsCount(req.session.main);
           let products = await productHelpers.getShopItems(req.session.main, 0, 6);
-          
         
           for(let i=0; i< products.length; i++){
             products[i].price = products[i].price.toLocaleString('en-in', { style: 'currency', currency: 'INR' });
