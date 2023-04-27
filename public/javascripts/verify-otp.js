@@ -16,10 +16,21 @@ const firebaseConfig = {
   
   // render recaptcha verifier
   render();
-  function render() {
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+  
+  // function render() {
+  //   window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+  //   recaptchaVerifier.render();
+  // }
+
+  function render(){
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container',{
+        'size':'invisible',
+        'callback':(response)=>{
+            onSignInSubmit()
+        }
+    })
     recaptchaVerifier.render();
-  }
+}
   
   // function for send OTP
   function phoneAuth() {
@@ -51,7 +62,6 @@ const firebaseConfig = {
   
                 if(time_limit == 0) {
                  $('#timer').html('<p class="text-primary"> Resend OTP</p>')
-                  
                   
                 } else {
                   if(time_limit < 10) {
