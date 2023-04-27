@@ -13,6 +13,7 @@ module.exports = {
             }else{
                 user = false;
                 req.session.loggedin = false;
+                req.session.user = false;
                 req.session.logErr = "This Account is Blocked";
                 res.redirect("/login");
             }

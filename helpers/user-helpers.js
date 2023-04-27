@@ -5,9 +5,7 @@ const { ObjectId, Db } = require("mongodb-legacy");
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const productHelpers = require("./product-helpers");
-// const { resolve } = require("path");
-// const async = require("hbs/lib/async");
-// const { default: items } = require("razorpay/dist/types/items");
+
 
 
 
@@ -112,8 +110,6 @@ module.exports = {
   },
 
   editAddress : (addressData, addressId, userId) =>{
-    console.log("thiss is edit address dataaa .....");
-    console.log("thiss is edit address dataaa .....", addressData, addressId, userId);
     return new Promise(async(resolve, reject) =>{
       await db.get().collection(collection.USER_COLLECTIONS).updateOne({
         _id:new ObjectId(userId),

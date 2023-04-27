@@ -1,4 +1,13 @@
-<!--Header-->
+
+<style>
+
+/* Style the active class, and buttons on mouse-over */
+.active {
+  background-color: #eff0f0d5;
+  
+} 
+</style>
+
 
 {{#if errorPage}}
 {{else}}
@@ -40,18 +49,18 @@
                     </div>
                 	<!--Desktop Menu-->
                 	<nav class="grid__item" id="AccessibleNav"><!-- for mobile -->
-                        <ul id="siteNav" class="site-nav medium center hidearrow">
+                        <ul id="siteNav" class="site-nav medium center hidearrow myDIV">
 
-                            <li class="lvl1 parent megamenu "><a href="/">Home <i class="anm anm-angle-down-l"></i></a></li>
+                            <li class="lvl1  "><a href="/">Home <i class="anm anm-angle-down-l"></i></a></li>
                             
-                            <li class="lvl1 parent dropdown"><a href="/shop/MENS">MENS <i class="anm anm-angle-down-l"></i></a></li>
+                            <li class="lvl1 "><a href="/shop/MENS">MENS <i class="anm anm-angle-down-l"></i></a></li>
 
-                            <li class="lvl1 parent dropdown"><a href="/shop/WOMENS">WOMENS <i class="anm anm-angle-down-l"></i></a></li>
+                            <li class="lvl1 "><a href="/shop/WOMENS">WOMENS <i class="anm anm-angle-down-l"></i></a></li>
 
-                            <li class="lvl1 parent dropdown"><a href="/shop/KIDS">KIDS <i class="anm anm-angle-down-l"></i></a></li>
+                            <li class="lvl1 "><a href="/shop/KIDS">KIDS <i class="anm anm-angle-down-l"></i></a></li>
 
                         {{#if user}}
-                        <li class="lvl1 dropdown border font-weight-bold"><a href="#"><b>{{this.user.Username}}</b><i class="anm anm-angle-down-l"></i></a> 
+                        <li class="lvl1 dropdown  font-weight-bold"><a href="#"><b>{{this.user.Username}}</b><i class="anm anm-angle-down-l"></i></a> 
                           <ul class="dropdown">
                             <li><a href="/my-orders" class="site-nav">My Orders</a></li>
                             <li><a href="/my-wallet" class="site-nav">My Wallet</a></li>
@@ -60,7 +69,7 @@
                           </ul>
                         </li>
                         {{else}}
-                         <li class="lvl1 dropdown border font-weight-bold"><a href="#"><b>Account</b><i class="anm anm-angle-down-l"></i></a>
+                         <li class="lvl1 dropdown  font-weight-bold"><a href="#"><b>Account</b><i class="anm anm-angle-down-l"></i></a>
                          <ul class="dropdown">
                             <li><a href="/login" class="site-nav">Login</a></li>
                             <li><a href="/signup" class="site-nav">Signup</a></li>
@@ -124,9 +133,6 @@
         <li class="lvl1 parent megamenu"><a href="/shop/KIDS">KIDS </a></li>
          
         
-
-        
-        
         {{!-- <li class="lvl1 parent megamenu"><a href="blog-left-sidebar.html">Blog <i class="anm anm-plus-l"></i></a>
           <ul>
             <li><a href="blog-left-sidebar.html" class="site-nav">Left Sidebar</a></li>
@@ -139,18 +145,18 @@
         
         {{!-- <li class="lvl1"><a href="#"><b>Buy Now!</b></a></li> --}}
         {{#if user}}
-        <li class="lvl1 parent megamenu"><a ><b>{{user.Username}}</b> <i class="anm anm-plus-l"></i></a>
+        <li class="lvl1 parent megamenu"><a ><b>{{user.Username}}<i class="fa fa-caret-down float-right" aria-hidden="true" style="margin-right: -30px;"></i></b> <i class="anm"> </i></a>
           <ul>
             <li><a href="/profile" class="site-nav">Profile</a></li>
-            <li><a href="/my-orders" class="site-nav">orders</a></li>
-            <li><a href="/my-wallet" class="site-nav">wallet</a></li>
+            <li><a href="/my-orders" class="site-nav">My orders</a></li>
+            <li><a href="/my-wallet" class="site-nav">My wallet</a></li>
             <li><a href="/logout" class="site-nav">Logout</a></li> 
              
           </ul>
         </li>
         {{else}}
         {{!-- <i class="fa fa-caret-left" aria-hidden="true">  --}}
-        <li class="lvl1 parent megamenu"><a ><b>Account <i class="fa fa-caret-down float-right" aria-hidden="true" style="margin-right: -30px;"></i></b> <i class="anm "> </i></a>
+        <li class="lvl1 parent megamenu"><a ><b>Account <i class="fa fa-caret-down float-right" aria-hidden="true" style="margin-right: -30px;"></i></b> <i class="anm"> </i></a>
           <ul>
             <li><a href="/login" class="site-nav">Login</a></li>
             <li><a href="/signup" class="site-nav">Create an Account</a></li>
@@ -163,7 +169,18 @@
 	</div>
 	<!--End Mobile Menu-->
 
-  {{/if}}
+{{/if}}
 
 
- 
+ <script>
+// Add active class to the current button (highlight it)
+var header = document.getElementById("myDIV");
+var btns = header.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+  var current = document.getElementsByClassName("active");
+  current[0].className = current[0].className.replace(" active", "");
+  this.className += " active";
+  });
+}
+</script>

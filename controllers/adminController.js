@@ -8,8 +8,7 @@ const cloudinary = require('../utils/cloudinary');
 const slugify = require('slugify');
 const path = require('path');
 const { ObjectId } = require('mongodb-legacy');
-const { response } = require('express');
-const objectId = require('mongodb-legacy').ObjectId;
+
 
 module.exports = {
 
@@ -44,7 +43,7 @@ module.exports = {
             let admin = await db.get().collection(collection.CREDENTIALS).findOne({email:req.body.email});
             if(admin){
                 if(admin.password == req.body.password){
-                    req.session.admin = req.body.email;
+                    // req.session.admin = req.body.email;
                     req.session.adminloggedin = true;
                     res.redirect('/admin');
                 }else{

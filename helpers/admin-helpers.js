@@ -1,16 +1,8 @@
 const { ObjectId } = require("mongodb-legacy");
 var collection = require("../config/collection");
 var db = require("../config/connection");
-// const { response } = require("express");
-// const async = require("hbs/lib/async");
-// const { reject } = require("bcrypt/promises");
-// const async = require("hbs/lib/async");
-// const userAuth = require("../middlewares/userAuth");
-// const { objectId } = require("mongodb-legacy").ObjectId;
 
 module.exports = {
-
-  
 
   getUserData: () => {
     return new Promise(async (resolve, reject) => {
@@ -64,21 +56,12 @@ module.exports = {
     return new Promise((resolve, reject) =>{
       banner.status = true;
       db.get().collection(collection.BANNER_COLLECTIONS).insertOne(banner).then((data) =>{
-          console.log("Banner   idddddd................",data.insertedId);
           callback(data.insertedId);
       })
     })
   },
 
-  // addBannerImg : (banId, bannerUrl) =>{
-  //   console.log("!@#$%^&*()_)(*&^%",banId, bannerUrl);
-  //   return new Promise((resolve, reject) => {
-  //     db.get().collection(collection.BANNER_COLLECTIONS).updateOne({_id: banId},{
-  //       $set: {image: bannerUrl}
-  //     })
-  //   })
-  // },
-
+ 
   getBanners : () =>{
     return new Promise(async(resolve, reject) =>{
       let banners = await db.get().collection(collection.BANNER_COLLECTIONS).find().toArray();
@@ -112,7 +95,6 @@ module.exports = {
 
   updateBanner : (banId, banner) =>{
     return new Promise((resolve, reject) =>{
-      console.log("helpers banners update id.....", banId);
       db.get().collection(collection.BANNER_COLLECTIONS).updateOne({_id: new ObjectId(banId)},
       {
         $set: {
@@ -308,11 +290,8 @@ module.exports = {
         }
       }
       if(flag == 1) {
-        console.log("this coupon is already exists----------------", coupon.code)
         resolve({ status: false , message: "* Coupon code is already exits ..."})
       }else{
-        console.log("this coupon is already not   exists----------------", coupon.code)
-
         db.get().collection(collection.COUPON_COLLECTIONS).insertOne(coupon).then(() =>{
           resolve({status: true})
         })
@@ -378,7 +357,6 @@ module.exports = {
       if(coupon){
         if(coupon.expired > date){
           let user = await db.get().collection(collection.COUPON_COLLECTIONS).findOne({code: couponCode, users: { $in: [new ObjectId(userId)] } });
-          console.log("this is coupon data from userId----", user);
           if(user){
             console.log("user already exists --------------");
             resolve({
@@ -387,8 +365,6 @@ module.exports = {
             });
           }else{
             
-            // db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: couponCode}, { $push: { users: userId } });
-            console.log("valid coupon----",coupon.discount);
             resolve({
               status: true,
               offer: coupon.discount
@@ -417,7 +393,6 @@ module.exports = {
     console.log(couponCode, userId)
     return new promises(async(resolve, reject) =>{
       db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: couponCode}, { $push: { users: new ObjectId(userId) } }).then((response)=>{
-        console.log("this is response from order status", )
         resolve()
       })
       

@@ -35,6 +35,7 @@ const firebaseConfig = {
       .then((response) =>{
         console.log(response);
         if(response.data.status){
+          console.log("this is reposne");
   
           firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
             console.log("this is confirmation result------", confirmationResult)
@@ -42,7 +43,7 @@ const firebaseConfig = {
             coderesult = confirmationResult;
             document.getElementById('sender').style.display = 'none';
             document.getElementById('verifier').style.display = 'block';
-            console.log('OTP Sent');
+            console.log('OTP Sent ......');
   
             var time_limit = 30;
   

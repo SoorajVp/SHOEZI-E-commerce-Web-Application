@@ -2,27 +2,23 @@
 
 
 <div id="page-content">
-    	<!--Page Title-->
     	<div class="page section-header text-center">
 			<div class="page-title">
         		<div class="wrapper"><h1 class="page-width">Checkout</h1></div>
       		</div>
 		</div>
-        <!--End Page Title-->
         
         <div class="container">
         	<div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-3">
                     <div class="customer-box returning-customer">
                         <h3><i class="icon anm anm-user-al"></i> Where you want to Deliver This order</h3>
-                        
                     </div>
                 </div>
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-3">
                     <div class="cart-note">
                     	<div class="solid-border">
-							{{!-- <h5><label for="CartSpecialInstructions" class="cart-note__label small--text-center">Do you have any COUPONs</label></h5> --}}
 							<div class="input-group mb-3">
                               <input type="text" id="couponCode" class="form-control" placeholder="ENTER COUPON CODE" aria-label="Recipient's username" aria-describedby="basic-addon2">
                               <div class="input-group-append">
@@ -34,7 +30,6 @@
                     </div>
                 </div>
             </div>
-        {{!-- <form action="/post-order" method="post" id="checkout-form"> --}}
         <form  id="checkout-form">
             <div class="row billing-fields">
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
@@ -47,8 +42,6 @@
 		                    </div>
                             </a>
 
-                            {{!-- <input type="text" name="userId" value="{{user._id}}" hidden> --}}
-                            
                             {{#each user.address}}
                             
                             <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border " >
@@ -65,22 +58,16 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 
-                    
-
-
                     <div class="your-order-payment">
                         
                         <div class="your-order">
-                            
                             <h2 class="order-title mb-3">Your Order</h2>
-
                             <div class="table-responsive-sm order-table"> 
                                 <table class="bg-white table table-bordered table-hover text-center">
                                     <thead>
                                         <tr>
                                             <th class="text-left">Product Name</th>
                                             <th>Price</th>
-                                            {{!-- <th>Size</th> --}}
                                             <th>Qty</th>
                                             <th>Total</th>
                                         </tr>
@@ -90,9 +77,7 @@
                                         <tr>
                                             <td class="text-left">{{this.productDetails.name}}</td>
                                             <td>{{this.productDetails.total}}</td>
-                                            {{!-- <td>S</td> --}}
                                             <td>{{this.quantity}}</td>
-
                                             <td>{{this.productDetails.subTotal}}</td>
                                         </tr>
                                         {{/each}}
@@ -127,18 +112,15 @@
                                     <div id="">
                                         {{#if (greaterThan user.walletAmount total )}}
                                         <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2">
-                                            <input type="radio" name="paymentType" value="WALLET" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
+                                            <input type="radio" onclick="orderButton()" name="paymentType" value="WALLET" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                             <a class="pt-4" ><h3> WALLET AMOUNT </h3></a>
                                          </label>
                                          {{/if}}
 
                                         <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2">
-                                            <input type="radio" name="paymentType" value="COD" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
+                                            <input type="radio" onclick="orderButton()" name="paymentType" value="COD" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                             <a class="pt-4" ><h3> CASH ON DELIVERY </h3></a>
                                          </label>
-                                          
-                                         
-                                        
 
                                         <div class="card margin-15px-bottom border-radius-none">
 
@@ -149,23 +131,14 @@
                                             <div id="collapseThree" class="collapse" data-parent="#accordion">
 
                                                 <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2  mb-2 pt-2">
-                                                  <input type="radio" name="paymentType" value="PAYPAL" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
+                                                  <input type="radio" onclick="orderButton()" name="paymentType" value="PAYPAL" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                                   <a class="pt-4" ><h3> PAYPAL</h3></a>
                                                 </label>
-                                                {{!-- <hr> --}}
                                                 <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border-top mb-2 pt-2">
-                                                  <input type="radio" name="paymentType" value="RAZORPAY" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
+                                                  <input type="radio" onclick="orderButton()" name="paymentType" value="RAZORPAY" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                                   <a class="pt-4" ><h3>Razorpay </h3></a>
                                                 </label>
 
-                                                {{!-- <label class="card-body" style="height: 40px;">
-                                                    <h3 class="no-margin font-15">PAYPAL.<input type="radio" name="payment-method" value="PAYPAL" class=" float-right  pr-1" style="accent-color: black ; width: 15px; height: 15px;" required></h3>
-                                                </label>
-                                                <hr>
-                                                <label class="card-body" style="height: 40px; height: 33px; padding-top: 0px;">
-                                                    <h3 class="no-margin font-15 ">Razorpay.<input type="radio" name="payment-method" value="RAZORPAY" class=" float-right  pr-1" style="accent-color: black ; width: 15px; height: 15px;" required></h3>
-                                                </label> --}}
-                                                
                                             </div>
                                         </div>
                                         
@@ -174,8 +147,7 @@
                                 </div>
 
                                 <div class="order-button-payment ">
-                                    {{!-- <button class="btn" value="Place order" type="submit">Place order</button> --}}
-                                    <button class="btn" onclick="placeOrder()" value="Place order" type="button">Place order</button>
+                                    <button class="btn" onclick="placeOrder()" id="placedButton" value="Place order" type="button" style="display: none;">Place order</button>
                                 </div>
                             </div>
                         </div>
@@ -195,7 +167,6 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content" style="border-radius: 10px; background:rgb(247 247 247) ;">
       <div class="modal-header ">
-        {{!-- <h5 class="modal-title " id="exampleModalLongTitle" >ADD ADDRESS</h5> --}}
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -205,12 +176,10 @@
 
 
             <fieldset class="p-2">
-                {{!-- <h2 class="login-title mb-3">Billing details</h2> --}}
                 <div class="row">
                     <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
                         <input id="name" name="name" type="text"  placeholder="Full Name" required>
                     </div>
-
                 </div>
                 <div class="row">
                     
@@ -229,9 +198,6 @@
                     </div>
                 </div>
                 <div class="row">
-
-                    
-
                     <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
                         <input name="pincode" id="pincode" type="text" placeholder="Pincode">
                     </div>
@@ -246,6 +212,7 @@
                             <option >Palakkad</option>
                             <option >Thrissur</option>
                             <option >Ernamkulam</option>
+                            <option >Idukki</option>
                             <option >Kottayam</option>
                             <option >Alappuzha</option>
                             <option >PathanamThitta</option>
@@ -259,8 +226,6 @@
       </div>
 
       <div class="modal-footer">
-        {{!-- <button type="button" class="btn btn-secondary  " data-dismiss="modal">Cancel</button>   --}}
-        
         <button type="submit" class=" btn-primary p-2 pl-4 pr-4">Submit</button>
       </div>
       </form>
@@ -294,7 +259,6 @@ async function applyCoupon(total, user){
         if(response.data.status == true){
             discount = Number(response.data.discount);
             document.getElementById("discount").innerHTML = discount;
-            // let subTotal = document.getElementById("subTotal").value;
             let subTotal = Number(total);
             console.log(discount, subTotal);
             let grand = Number(subTotal-discount);
@@ -310,6 +274,10 @@ async function applyCoupon(total, user){
 }
 
 
+function orderButton(){
+    document.getElementById('placedButton').style.display = 'block';
+}
+
 
 function placeOrder(){
 
@@ -320,9 +288,14 @@ function placeOrder(){
  let couponCode = document.querySelector("#couponCode").value;
 
  let addressId = document.querySelector('input[name="addressId"]:checked').value;
+ 
  let payment = document.querySelector('input[name="paymentType"]:checked').value;
+ console.log(payment)
 
-console.log("This is offer data---", userId ,subtotal, discount, total, addressId, payment, couponCode);
+ if(payment == null){
+    console.log("heyyyy")
+ } 
+ console.log("This is offer data---", userId ,subtotal, discount, total, addressId, payment, couponCode);
 
     axios({
         url:'/post-order',

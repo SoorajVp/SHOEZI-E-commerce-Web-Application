@@ -1,8 +1,4 @@
-<!-- [ Pre-loader ] End -->
-<!-- [ navigation menu ] start -->
 
-<!-- [ Header ] end -->
-<!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
@@ -10,7 +6,6 @@
         <div class="main-body">
           <div class="page-wrapper">
 
-            <!-- [ breadcrumb ] start -->
 
             <div class="card">
               <div class="card-body">
@@ -39,7 +34,6 @@
                             <td>{{this.createdOn}}</td>
                             <td>{{this.total}}</td>
                             <td class="text-center">{{this.paymentMethod}}</td>
-                            {{!-- <td><b class="text-success font-weight-bold">{{this.status}}</b></td> --}}
                             <td class="text-center">
 
                               {{#if (isEqual this.status 'DELIVERED')}}
@@ -102,7 +96,6 @@
                                     {{this.status}}
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    {{!-- <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','SHIPPED')" >SHIPPED</a> --}}
                                     <a class="dropdown-item" onclick="changeOrderStatus('{{this._id}}','CANCELLED')" >CANCEL</a>
                                   </div>
                                 </div>
@@ -122,14 +115,12 @@
               </div>
             </div>
 
-            <!-- [ Main Content ] end -->
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- [ Main Content ] end -->
    
 
 {{!-- Swal sweet alert 2 --}}
@@ -140,7 +131,6 @@
 
  function changeOrderStatus(userId, status){
 
-  console.log("oooooooooo777777777777777777777oooooooo", status);
   console.log(userId, status);
     axios({
        method: 'post',
@@ -168,9 +158,7 @@
       }else{
         console.log("error On Axios change status");
       }
-
     })
-  
   }
 
 
@@ -180,11 +168,11 @@ function returnWallet(orderId, userId, status){
 
   swal({
      title: "Are you sure?",
-     text: "You will not be able to recover this imaginary file!",
+     text: "It will refund that order price to that user !",
      type: "warning",
      showCancelButton: true,
      confirmButtonColor: "#DD6B55",
-     confirmButtonText: "Yes, delete it!",
+     confirmButtonText: "Yes, Refund it!",
      closeOnConfirm: false
    },
    function(){
@@ -201,12 +189,10 @@ function returnWallet(orderId, userId, status){
         location.reload()
       }, 2000);
 
-      swal("Deleted!", "Your imaginary file has been deleted.", "success");
+      swal("Sucess!", "This Ordered price has been refunded.", "success");
         
-     })
-   });
-
- 
+      })
+  });
 }
   
 </script>
