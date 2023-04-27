@@ -24,7 +24,7 @@ const firebaseConfig = {
   // function for send OTP
 
   function phoneAuth() {
-    var number = "+91"+document.getElementById('number').value;
+    var number = "+91 "+document.getElementById('number').value;
     console.log(number)
     axios({
       url:'/otp-verify',
@@ -36,7 +36,7 @@ const firebaseConfig = {
       .then((response) =>{
         console.log(response);
         if(response.data.status){
-          console.log("this is reposne");
+          console.log("user fond--------");
   
           firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
             console.log("this is confirmation result------")
@@ -63,10 +63,12 @@ const firebaseConfig = {
   
           }).catch(function (error) {
             // error in sending OTP
+            console.log("this is otp error-----")
             alert(error.message);
           });
   
         }else{
+          console.log("user not fount --------")
           document.getElementById('senderErr').innerHTML = "This Number is not registered yet!"
           //alert("user not found");
         }
