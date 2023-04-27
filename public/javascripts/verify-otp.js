@@ -16,23 +16,13 @@ const firebaseConfig = {
   
   // render recaptcha verifier
   render();
-  
-  // function render() {
-  //   window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-  //   recaptchaVerifier.render();
-  // }
-
-  function render(){
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container',{
-        'size':'invisible',
-        'callback':(response)=>{
-            onSignInSubmit()
-        }
-    })
+  function render() {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
     recaptchaVerifier.render();
-}
+  }
   
   // function for send OTP
+
   function phoneAuth() {
     var number = "+91"+document.getElementById('number').value;
     console.log(number)
@@ -49,7 +39,7 @@ const firebaseConfig = {
           console.log("this is reposne");
   
           firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
-            console.log("this is confirmation result------", confirmationResult)
+            console.log("this is confirmation result------")
             window.confirmationResult = confirmationResult;
             coderesult = confirmationResult;
             document.getElementById('sender').style.display = 'none';
@@ -57,21 +47,19 @@ const firebaseConfig = {
             console.log('OTP Sent ......');
   
             var time_limit = 30;
+            var time_out = setInterval(() => {
   
-              var time_out = setInterval(() => {
-  
-                if(time_limit == 0) {
-                 $('#timer').html('<p class="text-primary"> Resend OTP</p>')
-                  
-                } else {
-                  if(time_limit < 10) {
-                    time_limit = 0 + '' + time_limit;
-                  }
-                  $('#timer').html('00:' + time_limit);
-                  time_limit -= 1;
+              if(time_limit == 0) {
+               $('#timer').html('<p class="text-primary"> Resend OTP</p>')
+              } else {
+                if(time_limit < 10) {
+                  time_limit = 0 + '' + time_limit;
                 }
+                $('#timer').html('00:' + time_limit);
+                time_limit -= 1;
+              }
   
-              }, 1000);
+            }, 1000);
   
           }).catch(function (error) {
             // error in sending OTP
