@@ -605,6 +605,7 @@ module.exports = {
           res.json(response);
 
         }else if(response.status == 'RAZORPAY'){
+          
           orderHelpers.generateRazorpay(response.insertedId, req.body.total).then((response) =>{
             response.method = 'RAZORPAY' 
             res.json(response);

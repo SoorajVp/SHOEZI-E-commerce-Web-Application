@@ -134,7 +134,7 @@
                                                   <input type="radio" onclick="orderButton()" name="paymentType" value="PAYPAL" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                                   <a class="pt-4" ><h3> PAYPAL</h3></a>
                                                 </label> --}}
-                                                
+
                                                 <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border-top mb-2 pt-2">
                                                   <input type="radio" onclick="orderButton()" name="paymentType" value="RAZORPAY" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                                   <a class="pt-4" ><h3>Razorpay </h3></a>
@@ -244,7 +244,6 @@
 
 async function applyCoupon(total, user){
     const code = document.getElementById("couponCode").value;
-    console.log("ghgdhahghhiljhvj")
     console.log( code, user, total);
     await axios({
         url: '/apply-coupon',
@@ -317,11 +316,8 @@ function placeOrder(){
         if(response.data.method == 'COD'){
             // alert("Order PLACED")
             location.href = '/order-success'; 
-        }else if(response.data.method == 'RAZORPAY'){
-            // alert("Razorpay")
-            razorPayment(response.data);
         }else{
-            alert("PAYPAL")
+            razorPayment(response.data);
         }
     })
 }
