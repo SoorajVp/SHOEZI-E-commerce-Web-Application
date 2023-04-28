@@ -25,7 +25,10 @@
                   <div style=" text-align: -webkit-center;">
                   <div id="recaptcha-container" ></div>
                   </div>
+
+                  <div class="text-center pt-1">
                   <span id="senderErr" class="justify-content-center text-danger"></span>
+                  </div>
                   <div class="pt-3 ">
                    <button  type="button" onclick="phoneAuth()" class="btn btn-block" style="width: 100%;">SEND OTP</button>
                   </div>   
@@ -43,10 +46,9 @@
 
                     <div class="d-flex text-bold float-right pr-3 py-2" id="timer"></div>
                     {{!-- <div class="d-flex text-bold float-right pr-3 py-2" id="resentOtp" style="display: none;"> Resend OTP</div> --}}
-
-                  </div>
+                  </div><br>
                     {{!-- <p class="text-right text-primary p-1">Resend OTP</p> --}}
-                  <div class="form-outline mb-2 text-center">
+                  <div class=" my-2 text-center">
                     {{!-- <span id="verifySuccess" class="text-success"></span> --}}
                     <span id="verifyErr" class="text-danger"></span>
                   </div>
@@ -99,7 +101,11 @@ const firebaseConfig = {
   // function for send OTP
 
   function phoneAuth() {
-    var number = "+91 "+document.getElementById('number').value;
+    let mobile = document.getElementById('number').value;
+    if(mobile.length != 10){
+      document.getElementById('senderErr').innerHTML = "Enter a valid Number !"
+    }else{
+      var number = "+91"+ mobile
     console.log(number)
     axios({
       url:'/otp-verify',
@@ -144,10 +150,12 @@ const firebaseConfig = {
   
         }else{
           console.log("user not fount --------")
-          document.getElementById('senderErr').innerHTML = "This Number is not registered yet!"
+          document.getElementById('senderErr').innerHTML = "Number is not registered !"
           //alert("user not found");
         }
       })
+    }
+    
   }
   
   // function for OTP verify
