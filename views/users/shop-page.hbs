@@ -91,21 +91,9 @@
                 	
                     {{!-- <hr> --}}
                 	<div class="productList">
-
-                        <div class="toolbar">
-                        	<div class="filters-toolbar-wrapper">
-                            	<div class="row">
-                                	
-                                    <div class="col-12 col-md-12 col-lg-12  filters-toolbar__item filters-toolbar__item--count d-flex ml-3  ">
-                                    	<span class="filters-toolbar__product-count ">Showing: {{count.[0].count}} results</span>
-                                        <input type="text"  id="totalCount" value="{{count.[0].count}}" hidden>
-                                        <input type="text"  id="currentPage" value="{{page}}" hidden>
-                                    </div>
-                                    
-
-                                </div>
-                            </div>
-                        </div>
+                        <input type="text"  id="totalCount" value="{{count.[0].count}}" hidden>
+                        <input type="text"  id="currentPage" value="{{page}}" hidden>
+                        
                     	<!--Toolbar-->
                         <button type="button" class="btn btn-filter d-block d-md-none d-lg-none"> Product Filters</button>
                     	

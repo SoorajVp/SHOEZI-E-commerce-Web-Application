@@ -197,6 +197,7 @@ module.exports = {
     },
 
     editCoupons : (req, res) =>{
+        console.log("this is edited couponnnn ----", req.body);
         try {
             adminHelpers.updateCoupon(req.body, req.params.id)
         } catch (error) {

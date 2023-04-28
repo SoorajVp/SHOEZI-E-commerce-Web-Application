@@ -80,13 +80,10 @@ module.exports = {
 
   updateUserData : (userId, userData) =>{
     return new Promise((resolve, reject) =>{
-      userData.mobile = Number(userData.mobile);
       db.get().collection(collection.USER_COLLECTIONS).updateOne({_id: new ObjectId(userId)},
       {
         $set: {
           Username: userData.Username,
-          email: userData.email,
-          mobile: userData.mobile,
           gender: userData.gender
         }
       }).then((response) =>{

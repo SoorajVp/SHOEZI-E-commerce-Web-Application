@@ -129,7 +129,7 @@ function validateMobile(){
 
 function validatePassword1(){
   var password1 = document.getElementById('password1').value;
-  var passChecker = /^[A-Za-z]\w{7,14}$/;
+  var passChecker = /^[a-zA-Z0-9!@#$%^&*]{8,16}$/;
   if(password1.length==0){
       password1Error.innerHTML = 'Password is required';
       return false;
