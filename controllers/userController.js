@@ -134,8 +134,6 @@ module.exports = {
       }else if(req.params.id == 1 || req.params.id == -1 ){
           req.session.category = req.params.id;
           req.session.sortValue = req.params.id
-
-          console.log("this is sorting function ---------------")
           let sort = req.params.id == 1 ? 1 : -1;
           let category = await adminHelpers.getItemCategory(req.session.main);
           let products = await productHelpers.getProductsSort(req.session.main, sort);
@@ -154,7 +152,7 @@ module.exports = {
             if(req.session.filteredProducts){
               products=req.session.filteredProducts;
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
-              // req.session.filteredProducts = false
+              req.session.filteredProducts = false
             }else{
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
             }
@@ -185,7 +183,7 @@ module.exports = {
               }
             }
             res.render("users/shop-page", { products, NotFount, category, logged: true, user, cartCount, sessionCategory: req.session.main});
-            // req.session.filteredProducts = false;
+            req.session.filteredProducts = false;
 
           }else{
 
@@ -199,17 +197,15 @@ module.exports = {
               }
             }
             res.render("users/shop-page", { products, NotFount, category, sessionCategory: req.session.main});
-            // req.session.filteredProducts = false;
+            req.session.filteredProducts = false;
           }
         
 
       }else{
-          console.log("This is sub category functionss----")
           req.session.category = req.params.id;
           req.session.sub = req.params.id;
           let category = await adminHelpers.getItemCategory(req.session.main);
           let products = await productHelpers.getShopItemsSub(req.params.id, 0, 6);
-          console.log("This is sub category functionss----", products)
           for(let i=0; i< products.length; i++){
             products[i].price = products[i].price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
             if(products[i].offer){
@@ -221,20 +217,16 @@ module.exports = {
             let user = req.session.user; 
             let cartCount = await userHelpers.getCartCount(req.session.user._id);
             if(req.session.filteredProducts){
-              console.log("Fitered products inside sub categoryy")
-              console.log("Fitered products inside sub categoryy", req.session.filteredProducts)
               products=req.session.filteredProducts;
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
               req.session.filteredProducts = false
             }else{
-              console.log("true")
               res.render("users/shop-page", { products, category, logged: true, user, cartCount, sessionCategory: req.params.id});
             }
           
           } else {
           
             if(req.session.filteredProducts){
-              console.log("Fitered products inside sub categoryy")
               products=req.session.filteredProducts;
               res.render('users/shop-page',{ products, category , sessionCategory: req.params.id});
               req.session.filteredProducts = false
@@ -430,7 +422,6 @@ module.exports = {
 
   otpVerify : async(req, res) =>{
     try {
-      console.log("this is otp Mobile number----", req.body);
       await userHelpers.checkMobile(req.body.mobile).then((response) =>{
         if(response.status){
           req.session.otpMobile = response.user.mobile;
@@ -449,7 +440,6 @@ module.exports = {
 
     try {
       await userHelpers.getUserMobiledetails(req.session.otpMobile).then((response) =>{
-        console.log(response);
         if(response.status){
           req.session.loggedin = true;
           req.session.user = response.user;
@@ -508,7 +498,6 @@ module.exports = {
 
   cartQuantity : (req, res) =>{
     try {
-      console.log(req.body);
       userHelpers.changeProductQuantity(req.body).then(async(response)=>{
         response.total = await userHelpers.getTotalAmount(req.body.user)
         res.json(response)
@@ -550,7 +539,6 @@ module.exports = {
   },
 
   removeAddress : async(req, res) =>{
-    console.log(req.params.id)
     let addressId = req.params.id;
     await userHelpers.AddressDelete(addressId, req.session.user._id);
     let user = await userHelpers.findUser(req.session.user._id);
@@ -576,12 +564,8 @@ module.exports = {
 
     try {
       let products = await orderHelpers.getOrderCartProducts(req.body.userId);
-      console.log("'this is ordereed prooductss------", products)
-
       orderHelpers.placeOrder(req.body, products).then((response) => {
-        
         response.insertedId = ""+response.insertedId
-        console.log(response);
 
         if(response.status == 'COD'){
 
@@ -626,7 +610,6 @@ module.exports = {
       adminHelpers.couponApply(req.body.code, req.body.userId).then((response) =>{
         if(response.status){
           const discountValue = (response.offer / 100) * req.body.price;
-          console.log(discountValue);
           res.json({
             status: true,
             discount: discountValue
@@ -663,13 +646,11 @@ module.exports = {
     let products = await orderHelpers.getOrderedProducts(req.params.id);
     let cartCount = await userHelpers.getCartCount(user._id);
     orderDetails.createdOn = new Date(orderDetails.createdOn).toLocaleDateString('es-ES', { timeZone: 'UTC' });
-    console.log("!!!!!!!",orderDetails);
     res.render('users/order-details', {user, cartCount, products, orderDetails});
   },
 
   myOrderStatus : async(req, res) =>{
     try {
-      console.log(req.body.userId , req.body.status);
       if(req.body.status == 'CANCELLED'){
         let products = await orderHelpers.getOrderedItems(req.body.userId);
         products.forEach(function(values) {
@@ -678,7 +659,6 @@ module.exports = {
       }
       
       await orderHelpers.changeOrderStatus(req.body.userId, req.body.status).then((response) =>{
-        console.log("@@@", response);
         response.status = true;
         res.json(response)
       })
@@ -692,12 +672,7 @@ module.exports = {
     try {
 
       let products = await orderHelpers.getOrderCartProducts(req.session.user._id);
-      
-      console.log("this is prooducts from the cart side----" , products)
-
-      console.log("this is the last log", req.body);
       orderHelpers.verifyOrderPayment(req.body).then(async() =>{
-        console.log("condition truewwwww");
 
         products.forEach(function(values) {
           productHelpers.decrementQuantity(values)
@@ -706,13 +681,10 @@ module.exports = {
         orderHelpers.EmptyCart(req.session.user._id);
 
         let orderStatus = 'PLACED'
-        console.log('this is the last console and the order id is',req.body['order[receipt]']);
         await orderHelpers.changeOrderStatus(req.body['order[receipt]'], orderStatus).then(() =>{
-          console.log("payment successfull");
           res.json({status: true});
         })
       }).catch((err) =>{
-        console.log("condition falseeee");
         res.json({status: false})
       })
     } catch (error) {
@@ -748,7 +720,6 @@ module.exports = {
 
   wishListPost : (req, res) =>{
     try {
-      console.log(req.body);
       userHelpers.addWishList(req.body.proId, req.body.userId).then((response) =>{
         res.json(response);
       })
@@ -787,11 +758,6 @@ module.exports = {
     res.redirect('/shop/search');
 
   }
-
-  
-  
-
-  
 
 
 

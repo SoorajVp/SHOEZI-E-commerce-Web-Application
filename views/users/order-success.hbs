@@ -1,48 +1,71 @@
-
 <div class="template-collection belle">
-<div id="pre-loader">
+  <div id="pre-loader">
     <img src="/assets/images/loader.gif" alt="Loading..." />
-</div>
+  </div>
 
-<div class="pageWrapper">
-	<!--Search Form Drawer-->
-	<div class="search">
-        <div class="search__form">
-            <form class="search-bar__form" action="#">
-                <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
-                <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
-            </form>
-            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
+  <div class="pageWrapper">
+    <!--Search Form Drawer-->
+    <div class="search">
+      <div class="search__form">
+        <form class="search-bar__form" action="#">
+          <button class="go-btn search__button" type="submit"><i
+              class="icon anm anm-search-l"
+            ></i></button>
+          <input
+            class="search__input"
+            type="search"
+            name="q"
+            value=""
+            placeholder="Search entire store..."
+            aria-label="Search"
+            autocomplete="off"
+          />
+        </form>
+        <button type="button" class="search-trigger close-btn"><i
+            class="icon anm anm-times-l"
+          ></i></button>
+      </div>
+    </div>
+
+    <div class="jumbotron text-center" style="background-color: #fff">
+      <div class="justify-content-center pb-3">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxEuyAddI0aLBLS99tgwxFZK5_8r-qUn78017NR8Lnbg&s"
+          alt=""
+          style="width: 150px;"
+        />
+      </div>
+      <h1 class="text-success" style=" font-size: 30px;">Order Confirmed !</h1>
+      <p class="lead"><strong>We received your purchase request;</strong>
+        we'll be in touch shortly!</p>
+      <hr />
+      <div class="row text-center">
+        <div class="col-lg-4 col-md-4 col-xl-4 col-sm-12">
+          {{! <a href="/my-orders" class="btn "style="width: 50%;" id="specialButton"> Order Details</a> }}
         </div>
-    </div>
 
-<div class="jumbotron text-center" style="background-color: #fff">
-    <div class="justify-content-center pb-3" >
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxEuyAddI0aLBLS99tgwxFZK5_8r-qUn78017NR8Lnbg&s" alt="" style="width: 150px;">
-    </div>
-  <h1 class="text-success" style=" font-size: 30px;">Order Confirmed !</h1>
-  <p class="lead"><strong>We received your purchase request;</strong> we'll be in touch shortly!</p>
-  <hr>
-  <div class="row text-center">
-    <div class="col-lg-4 col-md-4 col-xl-4 col-sm-12  ">
-       {{!-- <a href="/my-orders" class="btn "style="width: 50%;" id="specialButton"> Order Details</a> --}}
-    </div>
+        <div class="col-lg-4 col-md-4 col-xl-4 col-sm-12 d-flex">
+          <a
+            href="/my-orders"
+            class="btn mr-2"
+            style="width: 50%;"
+            id="specialButton"
+          > Order Details</a>
+          <a href="/" class="btn" style="width: 50%;" id="specialButton">
+            Back to Shop</a>
+        </div>
 
-    <div class="col-lg-4 col-md-4 col-xl-4 col-sm-12 d-flex ">
-       <a href="/my-orders" class="btn  mr-2"style="width: 50%;" id="specialButton"> Order Details</a>
-        <a href="/" class="btn " style="width: 50%;" id="specialButton" > Back to Shop</a>
-    </div>
-
-    <div class="col-lg-4 col-md-4 col-xl-3  col-sm-12  ">
+        <div class="col-lg-4 col-md-4 col-xl-3 col-sm-12">
+        </div>
+      </div>
+      <p class="p-2">
+        Having trouble?
+        <a href="">Contact us</a>
+      </p>
+      <p class="lead">
+        {{! <a class="btn btn-primary btn-sm" href="/shop" role="button">Continue to shopping</a> }}
+        {{! <a href="/"><button class="btn-info">Continue to shopping</button></a> }}
+      </p>
     </div>
   </div>
-  <p class="p-2">
-    Having trouble? <a href="">Contact us</a>
-  </p>
-  <p class="lead">
-    {{!-- <a class="btn btn-primary btn-sm" href="/shop" role="button">Continue to shopping</a> --}}
-    {{!-- <a href="/"><button class="btn-info">Continue to shopping</button></a> --}}
-  </p>
-</div>
-</div>
 </div>

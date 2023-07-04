@@ -13,11 +13,9 @@ module.exports = {
 
   blockUser: (userId) => {
     return new Promise(async (resolve, reject) => {
-        console.log(userId);
       db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:new ObjectId(userId)},{ $set: { status: false } })
         .then((response) => {
           resolve(response);
-          console.log(response);
         });
     });
   },
@@ -123,7 +121,6 @@ module.exports = {
 
   addCatergory : (category) =>{
     return new Promise(async(resolve, reject) => {
-      console.log("))))))", category.main, category.sub)
       category.sub = category.sub.toUpperCase()
       category.listed = true;
       if(category.main == "MAIN CATEGORY"){
@@ -162,14 +159,12 @@ module.exports = {
           }
         }
       ])
-      console.log("this is categoory console ----",category)
       resolve(category);
     })
   },
 
   updateCategory : (catgoryId, category) =>{
     return new Promise((resolve, reject) =>{
-      console.log("this is edit category items", category)
       db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({_id: new ObjectId(catgoryId)}, 
       {$set: {
         url: category.url,
@@ -196,12 +191,6 @@ module.exports = {
     })
   },
 
- 
-
-
-
- 
-
   getItemCategory : (category) =>{
     return new Promise(async(resolve, reject) =>{
       let catList1 = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({main: category}).toArray();
@@ -209,13 +198,9 @@ module.exports = {
     })
   },
 
-
-  
-
   getAllCategory : () =>{
     return new Promise(async(resolve, reject) =>{
       let category = await db.get().collection(collection.CATEGORY_COLLECTIONS).find().toArray();
-      console.log(category)
       resolve(category)
     })
   },
@@ -258,7 +243,6 @@ module.exports = {
           }
         }
       ]).toArray()
-      console.log("this is sales report----", orders)
       resolve(orders);
     })
   },
@@ -279,11 +263,9 @@ module.exports = {
     }else{
       coupon.status = false
     }
-    console.log(coupon)
     return new Promise(async(resolve, reject) =>{
       let flag = 0;
       let couponData = await db.get().collection(collection.COUPON_COLLECTIONS).find({}, {code: 1, _id: 0}).toArray()
-      console.log(couponData)
       for(let i=0; i< couponData.length; i++) {
         if(couponData[i].code == coupon.code) {
           flag=1;
@@ -301,7 +283,6 @@ module.exports = {
   },
 
   updateCoupon : (coupon , couponId) =>{
-    console.log(coupon , couponId)
     let date = new Date();
     return new Promise((resolve, reject) =>{
       if(coupon.expired > date){
@@ -344,7 +325,6 @@ module.exports = {
           db.get().collection(collection.COUPON_COLLECTIONS).updateOne({_id: new ObjectId(coupons[i].Id)},{$set: {status: coupons[i].status}}).then(()=>{})
         }
       }
-      // console.log(coupons);
       resolve(coupons);
     })
   },
@@ -352,13 +332,11 @@ module.exports = {
   couponApply : (couponCode, userId) =>{
     return new Promise(async(resolve, reject) =>{
       let date = new Date();
-      console.log(couponCode);
       let coupon = await db.get().collection(collection.COUPON_COLLECTIONS).findOne({code: couponCode});
       if(coupon){
         if(coupon.expired > date){
           let user = await db.get().collection(collection.COUPON_COLLECTIONS).findOne({code: couponCode, users: { $in: [new ObjectId(userId)] } });
           if(user){
-            console.log("user already exists --------------");
             resolve({
               status: false,
               message:"This Coupon Already used !"
@@ -372,7 +350,6 @@ module.exports = {
           }
   
         }else{
-          console.log("coupon expired --------------");
           resolve({
             status: false,
             message:"This Coupon is Expired !"
@@ -380,7 +357,6 @@ module.exports = {
         }
 
       }else{
-        console.log("invalid coupon code --------------");
         resolve({
           status: false,
           message:"Invalid Coupon code !"
@@ -390,7 +366,6 @@ module.exports = {
   },
 
   usedCoupon : (couponCode, userId) =>{
-    console.log(couponCode, userId)
     return new promises(async(resolve, reject) =>{
       db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: couponCode}, { $push: { users: new ObjectId(userId) } }).then((response)=>{
         resolve()

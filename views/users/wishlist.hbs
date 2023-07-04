@@ -5,7 +5,6 @@
     <img src="/assets/images/loader.gif" alt="Loading..." />
 </div>
     <div id="MainContent" class="main-content " role="main">
-                <!--Breadcrumb-->
                 <div class="bredcrumbWrap">
                     <div class="container breadcrumbs " style="padding-left: 10%;">
                         <a href="/" title="Back to the home page">Home</a><span aria-hidden="true">›</span><span>Wishlist</span>
@@ -16,7 +15,6 @@
     
         <h2 class="text-center text-secondary pb-4">WishList</h2>
 
-        <!--Body Content-->
         <div id="page-content">
              
                         <div class="grid-products grid--view-items">
@@ -28,15 +26,12 @@
 
                                     <div class="border">
                                     <div class="product-image border">
-                                        <!-- start product image -->
                                             <a href="/product-details/{{this.result.[0].url}}">
-                                            <!-- image --> 
                                             <img class="grid-view-item__image  lazyload" src="{{this.result.[0].image.[0]}}"  alt="image" title="product" /> 
 
                                             <span class="sold-out"><span class="py-1 text-danger h4 border border-danger ">out of stock</span></span>
 
                                             </a>
-                                            <!-- product label -->
                                             {{#if this.result.[0].offer}}
                                             <div class="product-labels"><span class="lbl pr-label3">- {{this.result.[0].offer}}% </span></div>
                                             {{/if}}
@@ -83,9 +78,7 @@
                                     <div class="product-image border">
 
                                             <a href="/product-details/{{this.result.[0]._id}}">
-                                            <!-- image --> 
                                             <img class="lazyload" src="{{this.result.[0].image.[0]}}"  alt="image" title="product" />
-                                            <!-- End image -->
                                             </a>
 
                                             {{#if this.result.[0].offer}}

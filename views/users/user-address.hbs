@@ -1,187 +1,269 @@
+{{! <link rel="stylesheet" href="/public/assets/profile_styles/#style.css"> }}
 
-{{!-- <link rel="stylesheet" href="/public/assets/profile_styles/#style.css"> --}}
+<div class="container mt-4 border py-3" style="background-color: #e7e8eb;">
+  <div class="row gutters">
+    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="account-settings" style="text-align: center;">
+            <div class="user-profile">
+              <div class="user-avatar">
+                {{#if user.profile}}
+                  <img
+                    src="{{user.profile}}"
+                    alt="Maxwell Admin"
+                    width="80px"
+                    style="border-radius: 50px; "
+                  />
+                {{else}}
+                  <img
+                    src="https://www.seekpng.com/png/detail/72-729756_how-to-add-a-new-user-to-your.png"
+                    alt="Maxwell Admin"
+                    width="80px"
+                    style="border-radius: 50px; "
+                  />
+                {{/if}}
+                <div class="text-center">
+                  <h6 class="user-name pt-2">{{user.Username}}</h6>
+                </div>
+              </div>
 
-
-<div class="container mt-4 border py-3 " style="background-color: #e7e8eb;">
-<div class="row gutters">
-<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-<div class="card h-100">
-	<div class="card-body" >
-		<div class="account-settings" style="text-align: center;">
-			<div class="user-profile ">
-				<div class="user-avatar">
-					{{#if user.profile}}
-					<img src="{{user.profile}}" alt="Maxwell Admin" width="80px" style="border-radius: 50px; ">
-					{{else}}
-					<img src="https://www.seekpng.com/png/detail/72-729756_how-to-add-a-new-user-to-your.png" alt="Maxwell Admin" width="80px" style="border-radius: 50px; ">
-					{{/if}}
-					<div class="text-center">
-						 <h6 class="user-name pt-2 ">{{user.Username}}</h6>
-					</div>
-				</div>
-				
-			</div>
-
-			<hr>
-
-			<div class="about">
-				<h6 class="text-secondary">ACCOUNT SETTINGS</h6>				
-			</div>
-			
-
-			<a href="/profile" style="text-decoration: none;">
-            <div class="border mt-2 ">
-                <h4 class="pt-2">Personal Informations</h4>
             </div>
+
+            <hr />
+
+            <div class="about">
+              <h6 class="text-secondary">ACCOUNT SETTINGS</h6>
+            </div>
+
+            <a href="/profile" style="text-decoration: none;">
+              <div class="border mt-2">
+                <h4 class="pt-2">Personal Informations</h4>
+              </div>
             </a>
 
             <a href="/address" style="text-decoration: none;">
-            <div class="border mt-2 bg-light">
-                <h4 class="pt-2 ">Manage Address</h4>
-            </div>
+              <div class="border mt-2 bg-light">
+                <h4 class="pt-2">Manage Address</h4>
+              </div>
             </a>
 
-			<hr>
+            <hr />
 
-			<div class="about">
-				<h6 class="text-secondary">MY STUFFS</h6>				
-			</div>
+            <div class="about">
+              <h6 class="text-secondary">MY STUFFS</h6>
+            </div>
 
-			 <a href="/my-orders" style="text-decoration: none;">
-            <div class="border mt-2">
+            <a href="/my-orders" style="text-decoration: none;">
+              <div class="border mt-2">
                 <h4 class="pt-2">My Orders</h4>
-            </div>
+              </div>
             </a>
-            
+
             <a href="/wishList" style="text-decoration: none;">
-            <div class="border mt-2">
+              <div class="border mt-2">
                 <h4 class="pt-2">Wishlist</h4>
-            </div>
+              </div>
             </a>
 
             <a href="/cart-products" style="text-decoration: none;">
-            <div class="border mt-1 text-info">
-                <h4 class=" pt-2 ">Cart items</h4>
-            </div>
-            </a>     
+              <div class="border mt-1 text-info">
+                <h4 class="pt-2">Cart items</h4>
+              </div>
+            </a>
 
-		</div>
-	</div>
-    <a href="/change-password" style="text-decoration: none; margin-top: 30px;">
-        <p class="text-primary text-center mb-2"> Change Password</p>
-    </a>
-
-    <a href="/logout" style="text-decoration: none;">
-        <div class="border bottom-align-text text-center ">
-            <h3 class="pt-2 text-secondary ">Logout</h3>
+          </div>
         </div>
-     </a>
+        <a
+          href="/change-password"
+          style="text-decoration: none; margin-top: 30px;"
+        >
+          <p class="text-primary text-center mb-2"> Change Password</p>
+        </a>
 
+        <a href="/logout" style="text-decoration: none;">
+          <div class="border bottom-align-text text-center">
+            <h3 class="pt-2 text-secondary">Logout</h3>
+          </div>
+        </a>
 
-</div>
-</div>
-<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-<div class="card h-100">
-	<div class="card-body container">
-        <a href="/add-address" style="text-decoration: none;">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border bg-primary">
-				<h3 class="m-3 text-white text-center">+  ADD NEW ADDRESS</h3>
-		</div>
-        </a>		
-
-        {{#each user.address}}
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border" style="background-color: rgba(245, 242, 245, 0.487);">
-			<div class="py-3 pl-1">
-                <p> <b> {{this.name}} </b>  <b class="pl-4 font-weight-normal">{{this.mobile}}  </b> <a type="button"  onclick="addressRemove('{{this._id}}')" class="text-danger p-1 float-right" style="font-size: 11px;">DELETE</a></p>
-                <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}}  <a type="button"  class="text-primary pl-2 pr-2 p-1 float-right" data-toggle="modal" data-target="#editAddress{{this._id}}" style="font-size: 11px;"> EDIT</a></p>
-
+      </div>
+    </div>
+    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+      <div class="card h-100">
+        <div class="card-body container">
+          <a href="/add-address" style="text-decoration: none;">
+            <div
+              class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border bg-primary"
+            >
+              <h3 class="m-3 text-white text-center">+ ADD NEW ADDRESS</h3>
             </div>
-		</div>
-        {{/each}}
-        		
-	</div>
-	
-</div>
-</div>
-</div>
-</div>
+          </a>
 
+          {{#each user.address}}
+            <div
+              class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border"
+              style="background-color: rgba(245, 242, 245, 0.487);"
+            >
+              <div class="py-3 pl-1">
+                <p>
+                  <b> {{this.name}} </b>
+                  <b class="pl-4 font-weight-normal">{{this.mobile}} </b>
+                  <a
+                    type="button"
+                    onclick="addressRemove('{{this._id}}')"
+                    class="text-danger p-1 float-right"
+                    style="font-size: 11px;"
+                  >DELETE</a></p>
+                <p>{{this.address}}
+                  ,
+                  {{this.city}}
+                  ,
+                  {{this.district}}
+                  ,
+                  {{this.pincode}}
+                  <a
+                    type="button"
+                    class="text-primary pl-2 pr-2 p-1 float-right"
+                    data-toggle="modal"
+                    data-target="#editAddress{{this._id}}"
+                    style="font-size: 11px;"
+                  > EDIT</a></p>
 
+              </div>
+            </div>
+          {{/each}}
 
+        </div>
 
-
-{{#each user.address}}
-<div class="modal fade" id="editAddress{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content" style="border-radius: 10px; background:rgb(247 247 247) ;">
-      <div class="modal-header ">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
-      <form action="/edit-address/{{this._id}}" method="post" id="addressValidate">
-        <div class="modal-body container">
-
-            <fieldset class="p-2">
-                <div class="row">
-                    <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
-                        <input id="name" name="name" type="text" value="{{this.name}}"  placeholder="Full Name" required>
-                    </div>
-
-                </div>
-                <div class="row">
-                    
-                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="mobile"  id="mobile" type="tel" value="{{this.mobile}}" placeholder="Mobile" required>
-                    </div>
-                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="city"  id="city" type="text" value="{{this.city}}" placeholder="City" required>
-                    </div>
-                </div>
-           
-                <div class="row">
-
-                    <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
-                        <input name="address" id="address" type="text" value="{{this.address}}" placeholder="Address" required>
-                    </div>
-                </div>
-                <div class="row">
-
-                    
-
-                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="pincode" id="pincode" type="text" value="{{this.pincode}}" placeholder="Pincode">
-                    </div>
-                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <select name="district" id="district" >
-                            <option >{{this.district}} </option>
-                            <option >Kasarkod</option>
-                            <option >Kannur</option>
-                            <option >Calicut</option>
-                            <option >Vayanad</option>
-                            <option >Malappuaram</option>
-                            <option >Palakkad</option>
-                            <option >Thrissur</option>
-                            <option >Ernamkulam</option>
-                            <option >Kottayam</option>
-                            <option >Alappuzha</option>
-                            <option >PathanamThitta</option>
-                            <option >Kollam</option>
-                            <option >Trivandram</option>
-
-                        </select>
-                    </div>
-                </div>
-            </fieldset>
-      </div>
-
-      <div class="modal-footer">
-        <button type="submit" class=" btn-info p-2 pl-4 pr-4">Submit</button>
-      </div>
-      </form>
     </div>
   </div>
 </div>
+
+{{#each user.address}}
+  <div
+    class="modal fade"
+    id="editAddress{{this._id}}"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div
+        class="modal-content"
+        style="border-radius: 10px; background:rgb(247 247 247) ;"
+      >
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form
+          action="/edit-address/{{this._id}}"
+          method="post"
+          id="addressValidate"
+        >
+          <div class="modal-body container">
+
+            <fieldset class="p-2">
+              <div class="row">
+                <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value="{{this.name}}"
+                    placeholder="Full Name"
+                    required
+                  />
+                </div>
+
+              </div>
+              <div class="row">
+
+                <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                  <input
+                    name="mobile"
+                    id="mobile"
+                    type="tel"
+                    value="{{this.mobile}}"
+                    placeholder="Mobile"
+                    required
+                  />
+                </div>
+                <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                  <input
+                    name="city"
+                    id="city"
+                    type="text"
+                    value="{{this.city}}"
+                    placeholder="City"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+
+                <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
+                  <input
+                    name="address"
+                    id="address"
+                    type="text"
+                    value="{{this.address}}"
+                    placeholder="Address"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="row">
+
+                <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                  <input
+                    name="pincode"
+                    id="pincode"
+                    type="text"
+                    value="{{this.pincode}}"
+                    placeholder="Pincode"
+                  />
+                </div>
+                <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                  <select name="district" id="district">
+                    <option>{{this.district}} </option>
+                    <option>Kasarkod</option>
+                    <option>Kannur</option>
+                    <option>Calicut</option>
+                    <option>Vayanad</option>
+                    <option>Malappuaram</option>
+                    <option>Palakkad</option>
+                    <option>Thrissur</option>
+                    <option>Ernamkulam</option>
+                    <option>Kottayam</option>
+                    <option>Alappuzha</option>
+                    <option>PathanamThitta</option>
+                    <option>Kollam</option>
+                    <option>Trivandram</option>
+
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn-info p-2 pl-4 pr-4">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 {{/each}}
 
 
@@ -209,17 +291,10 @@
                 method: 'get',
             })
             .then((response) =>{
-                console.log(response);
                 location.reload()
             })
           }
         })
         
     }
-
-
-
-
-
-
 </script>

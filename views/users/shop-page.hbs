@@ -79,8 +79,6 @@
                             {{!-- </form> --}}
                         </div>
                         
-                        
-                      
                     </div>
                 </div>
 
@@ -109,8 +107,6 @@
                 {{/if}}
                         <div class="grid-products grid--view-items">
                             <div class="row">
-
-                                
 
                                  {{#each products}}
                                  {{#if this.listed}}
@@ -265,15 +261,6 @@
 	          	    	</div>
 	        	    </div>
                     </div>
-                    
-                    
-                    
-
-                    
-
-                {{!-- pagination --}}
-	    		
-				{{!-- pagination ends --}}
 
                 </div>
                 <!--End Main Content-->
@@ -281,13 +268,6 @@
     </div>
     <span id="site-scroll" class="mr-1 mb-2"><i class="icon anm anm-angle-up-r"></i></span>
         
-    
-    
-    <!--End Scoll Top-->
-    
-    <!--Quick View popup-->
-    
-    
     
 </div>
 
@@ -299,10 +279,6 @@
         let amount2 = document.querySelector("#amount2").value;
         let category = document.querySelector("#category").value;
 
-        //location.assign(`/shop/?low=${amount1}&high=${amount2}`)
-
-        console.log(amount1, amount2);
-
         axios({
             url: `/shop/filter`,
             method: 'post',
@@ -313,9 +289,7 @@
             }
         })
         .then((response)=>{
-            console.log(response);
             var category = document.querySelector("#amount2").dataset.category
-            console.log(category)
             location.href = `/shop/filter`
         })
         .catch((err)=>{

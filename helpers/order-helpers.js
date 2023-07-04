@@ -16,7 +16,6 @@ module.exports = {
     return new Promise(async(resolve, reject) => {
       
       if(order.couponCode){
-        console.log("coupon exists ")
          db.get().collection(collection.COUPON_COLLECTIONS).updateOne({code: order.couponCode}, 
           { 
             $push: {
@@ -69,14 +68,10 @@ module.exports = {
         total: Number(order.total),
         createdOn: new Date()
       }
-      
-
-      console.log("this order Object--------", orderObj)
 
       await db.get().collection(collection.ORDER_COLLECTIONS).insertOne(orderObj)
       .then((response) => {
         response.status = orderObj.paymentMethod;
-        console.log("this is inserted id from placed products----", response.insertedId);
          
         resolve(response);
           
@@ -102,7 +97,6 @@ module.exports = {
   getOrderedItems : (orderId) =>{
     return new Promise(async(resolve, reject) =>{
       let order = await db.get().collection(collection.ORDER_COLLECTIONS).findOne({_id: new ObjectId(orderId)});
-      console.log("this is last log --------", order)
       resolve(order.products);
     })
   },
@@ -121,7 +115,6 @@ module.exports = {
         }
       };
       instance.orders.create(options, function(err, order) {
-        console.log("NEW order",order);
         resolve(order)
       });
     })
@@ -130,17 +123,12 @@ module.exports = {
   
    verifyOrderPayment : (details) =>{
     return new Promise((resolve, reject) =>{
-      console.log("this function is reached--------------------");
-      let hmac = crypto.createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH') //createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH');
+      let hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET) //createHmac('sha256', 'TjTh7QEfolm1HOt4AG4hjemH');
       hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
       hmac = hmac.digest('hex');
-      console.log(hmac)
-      console.log(details['payment[razorpay_signature]'])
       if(hmac === details['payment[razorpay_signature]']){
-        console.log("condition truewwwww");
         resolve();
       }else{
-        console.log("condition falseeee");
         reject()
       }
     })
@@ -172,10 +160,8 @@ module.exports = {
 
   changeOrderStatus : (orderId, orderStatus) =>{
     return new Promise((resolve, reject) =>{
-      console.log("this is order status changing", orderId, orderStatus)
       db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id: new ObjectId(orderId)},{$set: {status: orderStatus}})
       .then((response) =>{
-        console.log("changed status-----",response)
         resolve(response);
       })
     })
@@ -237,7 +223,6 @@ module.exports = {
           ]).toArray()
 
           if(orders[0]){
-            console.log(orders[0].total);
             resolve(orders[0].total);
           }else{
             resolve(0);
@@ -265,7 +250,6 @@ module.exports = {
             }
           ]).toArray()
           if(orders[0]){
-            console.log(orders[0].total);
             resolve(orders[0].total);
           }else{
             resolve(0);
@@ -357,7 +341,6 @@ module.exports = {
         return new Promise(async(resolve, reject) =>{
           const startDate = new Date(start);
           const endDate = new Date(end);
-          console.log(startDate, endDate)
     
           let orders = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
             {
@@ -380,11 +363,8 @@ module.exports = {
 
 
       addReturnWallet : (userId, orderId) => {
-        console.log("this is wallet function-----------")
-
          return new Promise(async(resolve, reject) =>{
           let order = await db.get().collection(collection.ORDER_COLLECTIONS).findOne({_id: new ObjectId(orderId)})
-          console.log("this is order details from wallet page------", order);
           db.get().collection(collection.USER_COLLECTIONS).updateOne({_id: new ObjectId(userId)},
           {
                $inc: { walletAmount: order.total } 

@@ -1,238 +1,385 @@
-
-
-
 <div id="page-content">
-    	<div class="page section-header text-center">
-			<div class="page-title">
-        		<div class="wrapper"><h1 class="page-width">Checkout</h1></div>
-      		</div>
-		</div>
-        
-        <div class="container">
-        	<div class="row">
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-3">
-                    <div class="customer-box returning-customer">
-                        <h3><i class="icon anm anm-user-al"></i> Where you want to Deliver This order</h3>
-                    </div>
-                </div>
+  <div class="page section-header text-center">
+    <div class="page-title">
+      <div class="wrapper"><h1 class="page-width">Checkout</h1></div>
+    </div>
+  </div>
 
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-3">
-                    <div class="cart-note">
-                    	<div class="solid-border">
-							<div class="input-group mb-3">
-                              <input type="text" id="couponCode" class="form-control" placeholder="ENTER COUPON CODE" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                              <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" onclick="applyCoupon('{{total}}','{{user._id}}')" type="button">APPLY COUPON</button>
-                              </div>
-                            </div>
-                            <p id="coupon-err" class="text-center text-danger pb-3"></p>
-						</div>
-                    </div>
-                </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-3">
+        <div class="customer-box returning-customer">
+          <h3><i class="icon anm anm-user-al"></i>
+            Where you want to Deliver This order</h3>
+        </div>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-3">
+        <div class="cart-note">
+          <div class="solid-border">
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                id="couponCode"
+                class="form-control"
+                placeholder="ENTER COUPON CODE"
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary"
+                  onclick="applyCoupon('{{total}}','{{user._id}}')"
+                  type="button"
+                >APPLY COUPON</button>
+              </div>
             </div>
-        <form  id="checkout-form">
-            <div class="row billing-fields">
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
-                    <div class="create-ac-content bg-light-gray padding-20px-all">
-                        <h2 class="login-title mb-3">Delivery details</h2>
-                       
-                            <a href="" style="text-decoration: none;" data-toggle="modal" data-target="#address{{user._id}}">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border bg-secondary">
-		                    		<h3 class="m-3 text-white text-center">+ NEW ADDRESS</h3>
-		                    </div>
-                            </a>
+            <p id="coupon-err" class="text-center text-danger pb-3"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form id="checkout-form">
+      <div class="row billing-fields">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 sm-margin-30px-bottom">
+          <div class="create-ac-content bg-light-gray padding-20px-all">
+            <h2 class="login-title mb-3">Delivery details</h2>
 
-                            {{#each user.address}}
-                            
-                            <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border " >
-		                    	<div class="p-3">
-                                    <p> <b> {{this.name}} </b><b class="pl-4 h3"> {{this.mobile}} </b><input type="radio" id="addressId" name="addressId"  value="{{this._id}}" class="float-right" style="accent-color: black ; width: 15px; height: 15px;" checked required></p>
-                                    <p>{{this.address}} , {{this.city}} , {{this.district}} , {{this.pincode}} </p>
-                                </div>
-		                    </label>
-                           
-                            {{/each}}
+            <a
+              href=""
+              style="text-decoration: none;"
+              data-toggle="modal"
+              data-target="#address{{user._id}}"
+            >
+              <div
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border bg-secondary"
+              >
+                <h3 class="m-3 text-white text-center">+ NEW ADDRESS</h3>
+              </div>
+            </a>
 
-                    </div>
+            {{#each user.address}}
+
+              <label
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border"
+              >
+                <div class="p-3">
+                  <p>
+                    <b> {{this.name}} </b><b class="pl-4 h3">
+                      {{this.mobile}}
+                    </b><input
+                      type="radio"
+                      id="addressId"
+                      name="addressId"
+                      value="{{this._id}}"
+                      class="float-right"
+                      style="accent-color: black ; width: 15px; height: 15px;"
+                      checked
+                      required
+                    /></p>
+                  <p>{{this.address}}
+                    ,
+                    {{this.city}}
+                    ,
+                    {{this.district}}
+                    ,
+                    {{this.pincode}}
+                  </p>
                 </div>
+              </label>
 
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+            {{/each}}
 
-                    <div class="your-order-payment">
-                        
-                        <div class="your-order">
-                            <h2 class="order-title mb-3">Your Order</h2>
-                            <div class="table-responsive-sm order-table"> 
-                                <table class="bg-white table table-bordered table-hover text-center">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left">Product Name</th>
-                                            <th>Price</th>
-                                            <th>Qty</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{#each products}}
-                                        <tr>
-                                            <td class="text-left">{{this.productDetails.name}}</td>
-                                            <td>{{this.productDetails.total}}</td>
-                                            <td>{{this.quantity}}</td>
-                                            <td>{{this.productDetails.subTotal}}</td>
-                                        </tr>
-                                        {{/each}}
-                                        
-                                    </tbody>
-                                    <tfoot class="font-weight-400">
-                                        <tr>
-                                            <td colspan="3" class="text-right">Sub Total </td>
-                                            <td id="subTotal">{{total}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3"  class="text-right">Discount </td>
-                                            <td class="text-danger" id="discount">0</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="text-right font-weight-bold h2">Grand Total</td>
-                                            <input type="tel" name="total" value="{{total}}" hidden>
-                                            <input type="tel" name="userId" id="userId" value="{{user._id}}" hidden>
-                                            <td ><b id="grand-total" class="text-success h3">{{total}}</b></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <hr />
+          </div>
+        </div>
 
-                        <div class="your-payment">
-                            <h2 class="payment-title mb-3">payment method</h2>
-                            <div class="payment-method">
-                                <div class="payment-accordion">
-                                    <div id="">
-                                        {{#if (greaterThan user.walletAmount total )}}
-                                        <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2">
-                                            <input type="radio" onclick="orderButton()" name="paymentType" value="WALLET" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
-                                            <a class="pt-4" ><h3> WALLET AMOUNT </h3></a>
-                                         </label>
-                                         {{/if}}
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 
-                                        <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2">
-                                            <input type="radio" onclick="orderButton()" name="paymentType" value="COD" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
-                                            <a class="pt-4" ><h3> CASH ON DELIVERY </h3></a>
-                                         </label>
+          <div class="your-order-payment">
 
-                                        <div class="card margin-15px-bottom border-radius-none">
+            <div class="your-order">
+              <h2 class="order-title mb-3">Your Order</h2>
+              <div class="table-responsive-sm order-table">
+                <table
+                  class="bg-white table table-bordered table-hover text-center"
+                >
+                  <thead>
+                    <tr>
+                      <th class="text-left">Product Name</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each products}}
+                      <tr>
+                        <td class="text-left">{{this.productDetails.name}}</td>
+                        <td>{{this.productDetails.total}}</td>
+                        <td>{{this.quantity}}</td>
+                        <td>{{this.productDetails.subTotal}}</td>
+                      </tr>
+                    {{/each}}
 
-                                            <div class="card-header">
-                                                <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree" class="text-decoration-none"> <h3> ONLINE PAYMENT</h3></a>
-                                            </div>
+                  </tbody>
+                  <tfoot class="font-weight-400">
+                    <tr>
+                      <td colspan="3" class="text-right">Sub Total </td>
+                      <td id="subTotal">{{total}}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="text-right">Discount </td>
+                      <td class="text-danger" id="discount">0</td>
+                    </tr>
+                    <tr>
+                      <td
+                        colspan="3"
+                        class="text-right font-weight-bold h2"
+                      >Grand Total</td>
+                      <input type="tel" name="total" value="{{total}}" hidden />
+                      <input
+                        type="tel"
+                        name="userId"
+                        id="userId"
+                        value="{{user._id}}"
+                        hidden
+                      />
+                      <td><b
+                          id="grand-total"
+                          class="text-success h3"
+                        >{{total}}</b></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
 
-                                            <div id="collapseThree" class="collapse" data-parent="#accordion">
+            <hr />
 
-                                                {{!-- <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2  mb-2 pt-2">
+            <div class="your-payment">
+              <h2 class="payment-title mb-3">payment method</h2>
+              <div class="payment-method">
+                <div class="payment-accordion">
+                  <div id="">
+                    {{#if (greaterThan user.walletAmount total)}}
+                      <label
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2"
+                      >
+                        <input
+                          type="radio"
+                          onclick="orderButton()"
+                          name="paymentType"
+                          value="WALLET"
+                          id="payment-method"
+                          class="float-right pt-3 pr-1"
+                          style="accent-color: black ; width: 15px; height: 15px;"
+                          required
+                        />
+                        <a class="pt-4"><h3> WALLET AMOUNT </h3></a>
+                      </label>
+                    {{/if}}
+
+                    <label
+                      class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border mb-2 pt-2"
+                    >
+                      <input
+                        type="radio"
+                        onclick="orderButton()"
+                        name="paymentType"
+                        value="COD"
+                        id="payment-method"
+                        class="float-right pt-3 pr-1"
+                        style="accent-color: black ; width: 15px; height: 15px;"
+                        required
+                      />
+                      <a class="pt-4"><h3> CASH ON DELIVERY </h3></a>
+                    </label>
+
+                    <div class="card margin-15px-bottom border-radius-none">
+
+                      <div class="card-header">
+                        <a
+                          class="collapsed card-link"
+                          data-toggle="collapse"
+                          href="#collapseThree"
+                          class="text-decoration-none"
+                        > <h3> ONLINE PAYMENT</h3></a>
+                      </div>
+
+                      <div
+                        id="collapseThree"
+                        class="collapse"
+                        data-parent="#accordion"
+                      >
+
+                        {{! <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2  mb-2 pt-2">
                                                   <input type="radio" onclick="orderButton()" name="paymentType" value="PAYPAL" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
                                                   <a class="pt-4" ><h3> PAYPAL</h3></a>
-                                                </label> --}}
+                                                </label> }}
 
-                                                <label class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border-top mb-2 pt-2">
-                                                  <input type="radio" onclick="orderButton()" name="paymentType" value="RAZORPAY" id="payment-method" class=" float-right pt-3 pr-1 " style="accent-color: black ; width: 15px; height: 15px;" required>
-                                                  <a class="pt-4" ><h3>Razorpay </h3></a>
-                                                </label>
+                        <label
+                          class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-2 border-top mb-2 pt-2"
+                        >
+                          <input
+                            type="radio"
+                            onclick="orderButton()"
+                            name="paymentType"
+                            value="RAZORPAY"
+                            id="payment-method"
+                            class="float-right pt-3 pr-1"
+                            style="accent-color: black ; width: 15px; height: 15px;"
+                            required
+                          />
+                          <a class="pt-4"><h3>Razorpay </h3></a>
+                        </label>
 
-                                            </div>
-                                        </div>
-                                        
-
-                                    </div>
-                                </div>
-
-                                <div class="order-button-payment ">
-                                    <button class="btn" onclick="placeOrder()" id="placedButton" value="Place order" type="button" style="display: none;">Place order</button>
-                                </div>
-                            </div>
-                        </div>
+                      </div>
                     </div>
+
+                  </div>
                 </div>
-               
+
+                <div class="order-button-payment">
+                  <button
+                    class="btn"
+                    onclick="placeOrder()"
+                    id="placedButton"
+                    value="Place order"
+                    type="button"
+                    style="display: none;"
+                  >Place order</button>
+                </div>
+              </div>
             </div>
-            </form>
+          </div>
         </div>
-        
-    </div>
 
+      </div>
+    </form>
+  </div>
 
+</div>
 
-
-<div class="modal fade" id="address{{user._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div
+  class="modal fade"
+  id="address{{user._id}}"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content" style="border-radius: 10px; background:rgb(247 247 247) ;">
-      <div class="modal-header ">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div
+      class="modal-content"
+      style="border-radius: 10px; background:rgb(247 247 247) ;"
+    >
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/add-delivery-address/{{user._id}}" method="post" id="addressValidate">
-      <div class="modal-body container">
+      <form
+        action="/add-delivery-address/{{user._id}}"
+        method="post"
+        id="addressValidate"
+      >
+        <div class="modal-body container">
 
+          <fieldset class="p-2">
+            <div class="row">
+              <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Full Name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="row">
 
-            <fieldset class="p-2">
-                <div class="row">
-                    <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
-                        <input id="name" name="name" type="text"  placeholder="Full Name" required>
-                    </div>
-                </div>
-                <div class="row">
-                    
-                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="mobile"  id="mobile" type="tel" placeholder="Mobile" required>
-                    </div>
-                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="city"  id="city" type="text" placeholder="City" required>
-                    </div>
-                </div>
-           
-                <div class="row">
+              <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                <input
+                  name="mobile"
+                  id="mobile"
+                  type="tel"
+                  placeholder="Mobile"
+                  required
+                />
+              </div>
+              <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                <input
+                  name="city"
+                  id="city"
+                  type="text"
+                  placeholder="City"
+                  required
+                />
+              </div>
+            </div>
 
-                    <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
-                        <input name="address" id="address" type="text" placeholder="Address" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <input name="pincode" id="pincode" type="text" placeholder="Pincode">
-                    </div>
-                    <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
-                        <select name="district" id="district" >
-                            <option value=""> --- District --- </option>
-                            <option >Kasarkod</option>
-                            <option >Kannur</option>
-                            <option >Calicut</option>
-                            <option >Vayanad</option>
-                            <option >Malappuaram</option>
-                            <option >Palakkad</option>
-                            <option >Thrissur</option>
-                            <option >Ernamkulam</option>
-                            <option >Idukki</option>
-                            <option >Kottayam</option>
-                            <option >Alappuzha</option>
-                            <option >PathanamThitta</option>
-                            <option >Kollam</option>
-                            <option >Trivandram</option>
+            <div class="row">
 
-                        </select>
-                    </div>
-                </div>   
-            </fieldset>
-      </div>
+              <div class="form-group col-md-12 col-lg-12 col-xl-12 required">
+                <input
+                  name="address"
+                  id="address"
+                  type="text"
+                  placeholder="Address"
+                  required
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                <input
+                  name="pincode"
+                  id="pincode"
+                  type="text"
+                  placeholder="Pincode"
+                />
+              </div>
+              <div class="form-group col-md-6 col-lg-6 col-xl-6 required">
+                <select name="district" id="district">
+                  <option value=""> --- District --- </option>
+                  <option>Kasarkod</option>
+                  <option>Kannur</option>
+                  <option>Calicut</option>
+                  <option>Vayanad</option>
+                  <option>Malappuaram</option>
+                  <option>Palakkad</option>
+                  <option>Thrissur</option>
+                  <option>Ernamkulam</option>
+                  <option>Idukki</option>
+                  <option>Kottayam</option>
+                  <option>Alappuzha</option>
+                  <option>PathanamThitta</option>
+                  <option>Kollam</option>
+                  <option>Trivandram</option>
 
-      <div class="modal-footer">
-        <button type="submit" class=" btn-primary p-2 pl-4 pr-4">Submit</button>
-      </div>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn-primary p-2 pl-4 pr-4"
+          >Submit</button>
+        </div>
       </form>
     </div>
   </div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -244,7 +391,6 @@
 
 async function applyCoupon(total, user){
     const code = document.getElementById("couponCode").value;
-    console.log( code, user, total);
     await axios({
         url: '/apply-coupon',
         method: 'post',
@@ -255,12 +401,10 @@ async function applyCoupon(total, user){
         }
     })
     .then((response) =>{
-        console.log(response);
         if(response.data.status == true){
             discount = Number(response.data.discount);
             document.getElementById("discount").innerHTML = discount;
             let subTotal = Number(total);
-            console.log(discount, subTotal);
             let grand = Number(subTotal-discount);
             document.getElementById("grand-total").innerHTML = subTotal-discount;
              Toast.fire({
@@ -290,12 +434,6 @@ function placeOrder(){
  let addressId = document.querySelector('input[name="addressId"]:checked').value;
  
  let payment = document.querySelector('input[name="paymentType"]:checked').value;
- console.log(payment)
-
- if(payment == null){
-    console.log("heyyyy")
- } 
- console.log("This is offer data---", userId ,subtotal, discount, total, addressId, payment, couponCode);
 
     axios({
         url:'/post-order',
@@ -311,8 +449,6 @@ function placeOrder(){
          },
     })
     .then((response)=>{
-        console.log(response);
-        console.log(response.data.method);
         if(response.data.method == 'COD'){
             // alert("Order PLACED")
             location.href = '/order-success'; 
@@ -324,7 +460,7 @@ function placeOrder(){
 
 function razorPayment(order) {
     var options = {
-        "key": "rzp_test_hdHsLrGkVWcilx", // Enter the Key ID generated from the Dashboard
+        "key": "rzp_test_oAor7cesFNLibO", // Enter the Key ID generated from the Dashboard
         "amount": parseInt(order.amount), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         "currency": "INR",
         "name": "SHOEZI", //your business name
@@ -365,7 +501,6 @@ function varifyPayment(payment, order) {
             order,
         },
         success: (response) =>{
-            console.log(response);
             if(response.status){
                 ///alert("Order PLACED")
                 location.href = '/order-success'; 

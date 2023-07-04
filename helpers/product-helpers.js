@@ -26,7 +26,6 @@ module.exports = {
                 }
 
             ]).toArray();
-            console.log("this is products count  -----", count);
             resolve(count);
         })
     },
@@ -75,7 +74,6 @@ module.exports = {
                     }
                 }
             ]).toArray();
-                console.log(products)
                 resolve(products);
             })
     },
@@ -275,7 +273,6 @@ module.exports = {
     filterProductsSub : (low, high, category) => {
         low = Number(low)
         high = Number(high)
-        console.log("this is console from filter -----", low, high);
         return new Promise(async(resolve, reject) =>{
             let products = await db.get().collection(collection.PRODUCT_COLLECTIONS).aggregate([
                {
@@ -319,13 +316,9 @@ module.exports = {
                   }
                 }
               ]).toArray();
-            console.log("this is search result ------" , Data);
             resolve(Data)
-              
         })
     }
    
-    
-
     
 }

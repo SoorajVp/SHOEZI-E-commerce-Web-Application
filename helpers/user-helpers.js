@@ -25,14 +25,11 @@ module.exports = {
       if(email.length > 0){
         resolve({status: false, message: "This is email is already taken !"})
       }else{
-        console.log("this email is not used ------")
-
         if(mobile.length > 0){
           resolve({status: false, message: "This is Mobile is already registered !"})
         }else{
           userData.password1 = await bcrypt.hash(userData.password1, 10);
           db.get().collection(collection.USER_COLLECTIONS).insertOne(userData).then((data) => {
-            console.log(data.insertedId);
             resolve({status: true, userData});
           });
         }
@@ -138,7 +135,6 @@ module.exports = {
           response.status = true;
           resolve(response);
         }else{
-          console.log("inCorrect Password....");
           resolve({status: false});
         }
       })
@@ -162,7 +158,6 @@ module.exports = {
     return new Promise(async (resolve, reject) =>{
       Mobile = Mobile.replace("+91", "");
       Mobile = Number(Mobile);
-      console.log(Mobile)
       let response = {}
       let user = await db.get().collection(collection.USER_COLLECTIONS).findOne({mobile: Mobile});
       if(user){
@@ -230,7 +225,6 @@ module.exports = {
             })
 
           }else{
-            console.log("out of stock----");
             resolve({status: false})
           }
 
@@ -289,7 +283,6 @@ module.exports = {
         }
       ])
       .toArray();
-      console.log("Cart items------", cartItems)
       resolve(cartItems);
     })
   },
@@ -311,7 +304,6 @@ module.exports = {
       details.count = parseInt(details.count);
       details.quantity = parseInt(details.quantity);
       let product = await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id: new ObjectId(details.product)});
-      console.log("this is products from change products quantity-----", product)
 
       if(details.count == -1 && details.quantity == 1){
           
@@ -323,7 +315,6 @@ module.exports = {
         })
 
       }else{
-        console.log("this cart button -----", details.count)
 
           let cart = await db.get().collection(collection.CART_COLLECTIONS).aggregate([
             {
@@ -340,7 +331,6 @@ module.exports = {
               }
             }
         ]).toArray()
-        console.log("this is count of checking out of stock", cart, details.count);
 
         if((product.quantity - (cart[0].products.quantity + details.count)) >= 0){
 
@@ -350,12 +340,10 @@ module.exports = {
                 $inc:{'products.$.quantity': details.count}
             })
             .then(async()=>{
-              console.log("true");
               resolve({status: true})
             })
           
         }else{
-          console.log("false")
           resolve({status: false});
         }
         
@@ -364,7 +352,6 @@ module.exports = {
   },
 
   removeCart : (details) =>{
-    console.log("this cart remove detailsss   --------------",details)
     try {
       return new Promise((resolve, reject) =>{
         db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:new ObjectId(details.cart),
@@ -417,8 +404,6 @@ module.exports = {
         }
       ]).toArray();
       try{
-        console.log("this is cart details-----")
-        console.log(cartTotal[0].total);
         resolve(cartTotal[0].total);
       }catch(err){
         resolve(err);
@@ -443,20 +428,16 @@ module.exports = {
   },
 
   addWishList : (proId, userId) =>{
-    console.log(proId , userId)
     return new Promise(async(resolve, reject) =>{
       let wishlist = await db.get().collection(collection.WISHLIST_COLLECTIONS).findOne({user: new ObjectId(userId)});
       
       let prodExist = await db.get().collection(collection.WISHLIST_COLLECTIONS).findOne({user: new ObjectId(userId),
         products: { $in: [new ObjectId(proId)]}
       });
-      console.log("11111",wishlist)
-      console.log("22222",prodExist)
          
       if(wishlist){
 
         if(prodExist){
-            console.log("this product is already exists..............")
             db.get().collection(collection.WISHLIST_COLLECTIONS).updateOne({user: new ObjectId(userId)},{
               $pull: {
                 products: new ObjectId(proId) 
@@ -464,7 +445,6 @@ module.exports = {
             })
             resolve({status: false});
         }else{
-          console.log("this product is not exists..............")
           db.get().collection(collection.WISHLIST_COLLECTIONS).updateOne({user: new ObjectId(userId)},{
             $push: {
               products: new ObjectId(proId) 
@@ -474,7 +454,6 @@ module.exports = {
           })
         }
       }else{
-        console.log("this user is not exists..............")
         let wishlistObj = {
           user: new ObjectId(userId),
           products: [new ObjectId(proId)]
@@ -513,7 +492,6 @@ module.exports = {
           }
         ]
     ).toArray();
-    
     resolve(WishlistItems);
     })
   },

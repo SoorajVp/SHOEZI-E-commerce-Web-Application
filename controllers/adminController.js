@@ -183,7 +183,6 @@ module.exports = {
     addcoupons : (req, res) =>{
         try {
             adminHelpers.addCoupons(req.body).then((response) =>{
-                console.log(response)
                 if(response.status){
                     res.redirect('/admin/coupons');
                 }else{
@@ -197,7 +196,6 @@ module.exports = {
     },
 
     editCoupons : (req, res) =>{
-        console.log("this is edited couponnnn ----", req.body);
         try {
             adminHelpers.updateCoupon(req.body, req.params.id)
         } catch (error) {
@@ -209,8 +207,6 @@ module.exports = {
     },
 
     removeCoupons : (req, res) =>{
-        console.log("this is coupon param-----")
-        console.log(req.params.id)
         adminHelpers.deleteCoupon(req.params.id).then((response) =>{
             res.json(response)
         })
@@ -278,11 +274,9 @@ module.exports = {
     },
 
     categoryPost : (req, res) =>{
-        console.log("this is category daata -----", req.body)
         try {
             req.body.url = slugify(req.body.main+" "+req.body.sub, { lower: true });
             adminHelpers.addCatergory(req.body).then((response) =>{
-                console.log(response)
                 if(response.status){
                     res.redirect('/admin/category');
                 }else{
@@ -330,7 +324,6 @@ module.exports = {
 
     OrderStatus : (req, res) =>{
         try {
-            console.log( req.body.userId , req.body.status)
             orderHelpers.changeOrderStatus(req.body.userId, req.body.status).then((response) =>{
                 response.status = true;
                 res.json(response)
@@ -341,10 +334,7 @@ module.exports = {
     },
 
     returnWallet : async(req, res) =>{
-        console.log("this is return data ----------------------", req.body);
         let products = await orderHelpers.getOrderedItems(req.body.orderId);
-        console.log("this is return products ----------------------", products);
-
         products.forEach(function(values) {
             productHelpers.incrementQuantity(values)
           })
@@ -377,7 +367,6 @@ module.exports = {
     salesFilter : async(req, res) =>{
         try {
             let orders = await orderHelpers.filterReport(req.body.startDate, req.body.endDate);
-            console.log(orders);
             orders.forEach(order => {
                 const isoDate = order.createdOn;
                 const date = new Date(isoDate);
@@ -402,12 +391,6 @@ module.exports = {
     }
 
 
-    
-
-
-    
-
-    
 
 
 }

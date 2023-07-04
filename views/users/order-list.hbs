@@ -1,120 +1,152 @@
-
-
 <div class="template-collection belle">
-<div id="pre-loader">
+  <div id="pre-loader">
     <img src="/assets/images/loader.gif" alt="Loading..." />
-</div>
+  </div>
 
-<div class="pageWrapper">
-	<!--Search Form Drawer-->
-	<div class="search">
-        <div class="search__form">
-            <form class="search-bar__form" action="#">
-                <button class="go-btn search__button" type="submit"><i class="icon anm anm-search-l"></i></button>
-                <input class="search__input" type="search" name="q" value="" placeholder="Search entire store..." aria-label="Search" autocomplete="off">
-            </form>
-            <button type="button" class="search-trigger close-btn"><i class="icon anm anm-times-l"></i></button>
-        </div>
+  <div class="pageWrapper">
+    <!--Search Form Drawer-->
+    <div class="search">
+      <div class="search__form">
+        <form class="search-bar__form" action="#">
+          <button class="go-btn search__button" type="submit"><i
+              class="icon anm anm-search-l"
+            ></i></button>
+          <input
+            class="search__input"
+            type="search"
+            name="q"
+            value=""
+            placeholder="Search entire store..."
+            aria-label="Search"
+            autocomplete="off"
+          />
+        </form>
+        <button type="button" class="search-trigger close-btn"><i
+            class="icon anm anm-times-l"
+          ></i></button>
+      </div>
     </div>
 
-<div class="container mt-3 pt-4">
-    <h2 class="text-center">Your Orders</h2>
-    <div class="row " >
+    <div class="container mt-3 pt-4">
+      <h2 class="text-center">Your Orders</h2>
+      <div class="row">
         <div class="container table-responsive text-center">
-        
-                		<table class="table ">
-                            <thead >
-                                <tr>
-                                    <th scope="col">ORDER ID</th>
-                                    <th scope="col">DATE</th>
-                                    <th scope="col">PAYMENT </th>
-                                    <th scope="col">TOTAL PRICE </th>
-                                    <th scope="col">STATUS </th>
-                                    <th scope="col">CHANGE STATUS </th>
-                                    <th scope="col">MORE </th>
-                                    {{!-- <th class="action">&nbsp;</th> --}}
-                                </tr>
-                            </thead>
-                    		<tbody>
-                                {{#each orders}}
 
-                                <tr >
-                                    <td scope="row">{{this._id}}</td>
-                                    <td >{{this.createdOn}}</td>
-                                    <td >{{paymentMethod}}</td>
-                                    <td >{{this.total}}</td>
-                                    
-                                        {{#if (isEqual this.status 'DELIVERED')}}
-                                        <td class=" text-success "> {{this.status}}</td>
-                                        {{else if (isEqual this.status 'RETURNED')}}
-                                        <td class=" text-secondary "> {{this.status}}</td>
-                                        {{else if (isEqual this.status 'RETURN')}}
-                                        <td class=" text-secondary "> REQUESTED</td>
-                                        {{else if (isEqual this.status 'CANCELLED')}}
-                                        <td class=" text-danger "> {{this.status}}</td>
-                                        {{else if (isEqual this.status 'SHIPPED')}}
-                                        <td class=" text-warning "> {{this.status}}</td>
-                                        {{else}}
-                                        <td class=" text-primary "> {{this.status}}</td>
-                                        {{/if}}
-                                    
-                                    <td >
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ORDER ID</th>
+                <th scope="col">DATE</th>
+                <th scope="col">PAYMENT </th>
+                <th scope="col">TOTAL PRICE </th>
+                <th scope="col">STATUS </th>
+                <th scope="col">CHANGE STATUS </th>
+                <th scope="col">MORE </th>
+                {{! <th class="action">&nbsp;</th> }}
+              </tr>
+            </thead>
+            <tbody>
+              {{#each orders}}
 
-                                        {{#if (isEqual this.status 'DELIVERED')}}
+                <tr>
+                  <td scope="row">{{this._id}}</td>
+                  <td>{{this.createdOn}}</td>
+                  <td>{{paymentMethod}}</td>
+                  <td>{{this.total}}</td>
 
-                                        <button onclick="changeMyOrderStatus('{{this._id}}', 'RETURN', 'RETURN')" class=" btn-danger pl-3 pr-3 py-1">RETURN</button>
+                  {{#if (isEqual this.status "DELIVERED")}}
+                    <td class="text-success"> {{this.status}}</td>
+                  {{else if (isEqual this.status "RETURNED")}}
+                    <td class="text-secondary"> {{this.status}}</td>
+                  {{else if (isEqual this.status "RETURN")}}
+                    <td class="text-secondary"> REQUESTED</td>
+                  {{else if (isEqual this.status "CANCELLED")}}
+                    <td class="text-danger"> {{this.status}}</td>
+                  {{else if (isEqual this.status "SHIPPED")}}
+                    <td class="text-warning"> {{this.status}}</td>
+                  {{else}}
+                    <td class="text-primary"> {{this.status}}</td>
+                  {{/if}}
 
-                                        {{else if (isEqual this.status 'RETURN')}}
+                  <td>
 
-                                        <a href=""><button type="button" class="btn-secondary pl-3 pr-3 py-1" disabled>RETURNED</button></a>
+                    {{#if (isEqual this.status "DELIVERED")}}
 
-                                        {{else if (isEqual this.status 'RETURNED')}}
+                      <button
+                        onclick="changeMyOrderStatus('{{this._id}}', 'RETURN', 'RETURN')"
+                        class="btn-danger pl-3 pr-3 py-1"
+                      >RETURN</button>
 
-                                        <a href=""><button type="button" class="btn-secondary pl-3 pr-3 py-1" disabled>RETURNED</button></a>
+                    {{else if (isEqual this.status "RETURN")}}
 
-                                        {{else if (isEqual this.status 'CANCELLED')}}
+                      <a href=""><button
+                          type="button"
+                          class="btn-secondary pl-3 pr-3 py-1"
+                          disabled
+                        >RETURNED</button></a>
 
-                                        <a href=""><button type="button" class="btn-secondary pl-3 pr-3 py-1" disabled>CANCELLED</button></a>
+                    {{else if (isEqual this.status "RETURNED")}}
 
-                                        {{else}}
-                                        
-                                        <button onclick="changeMyOrderStatus('{{this._id}}','CANCELLED', 'CANCEL')" class=" btn-danger pl-3 pr-3 py-1">CANCEL</button>
+                      <a href=""><button
+                          type="button"
+                          class="btn-secondary pl-3 pr-3 py-1"
+                          disabled
+                        >RETURNED</button></a>
 
-                                        {{/if}}
-                                        
-                                    </td>
+                    {{else if (isEqual this.status "CANCELLED")}}
 
-                                    <td >
-                                        <a href="/order-details/{{this._id}}"><button type="button" class="btn-primary pl-3 pr-3 py-1">DETAILS</button></a>
-                                    </td>
-                                   
-                                  </tr>  
-                                  {{/each}}
-                                   
-                            </tbody>
-                    		<tfoot>
-                                <tr>
-                                    <td colspan="3" class="text-left py-3"><a href="/shop" class="btn--link cart-continue"><i class="icon icon-arrow-circle-left"></i> Continue shopping</a></td>
-                                    {{!-- <td colspan="3" class="text-right"><button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button></td> --}}
-                                </tr>
-                            </tfoot>
-                    </table>
-                    
-                    <hr>
-					</div>
-                    
+                      <a href=""><button
+                          type="button"
+                          class="btn-secondary pl-3 pr-3 py-1"
+                          disabled
+                        >CANCELLED</button></a>
+
+                    {{else}}
+
+                      <button
+                        onclick="changeMyOrderStatus('{{this._id}}','CANCELLED', 'CANCEL')"
+                        class="btn-danger pl-3 pr-3 py-1"
+                      >CANCEL</button>
+
+                    {{/if}}
+
+                  </td>
+
+                  <td>
+                    <a href="/order-details/{{this._id}}"><button
+                        type="button"
+                        class="btn-primary pl-3 pr-3 py-1"
+                      >DETAILS</button></a>
+                  </td>
+
+                </tr>
+              {{/each}}
+
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" class="text-left py-3"><a
+                    href="/shop"
+                    class="btn--link cart-continue"
+                  ><i class="icon icon-arrow-circle-left"></i>
+                    Continue shopping</a></td>
+                {{! <td colspan="3" class="text-right"><button type="submit" name="update" class="btn--link cart-update"><i class="fa fa-refresh"></i> Update</button></td> }}
+              </tr>
+            </tfoot>
+          </table>
+
+          <hr />
+        </div>
+
+      </div>
     </div>
-</div>
-</div>
+  </div>
 </div>
 
 
 <script>
 
  function changeMyOrderStatus(userId, status,shortStatus){
-
-  console.log("oobbbbbbbbbbbbbbbbbbbbbbbbbbb");
-  console.log(userId, status);
 
     Swal.fire({
     title: 'Are you sure?',
@@ -141,7 +173,6 @@
              }
            })
           .then((response) => {
-            console.log("LLLLLLLLLLl",response)
             if(response.data.status) {
               //alert("Are you sure");
               setTimeout(() => {
@@ -156,10 +187,5 @@
     }
   })
 
-
-
-    
-  
   }
 </script>
-
