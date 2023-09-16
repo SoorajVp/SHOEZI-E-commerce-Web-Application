@@ -33,7 +33,7 @@ module.exports = {
     if (req.session.loggedin) {
       res.redirect("/");
     } else {
-      res.render("users/user-login", {logErr: req.session.logErr, loginForm: true });
+      res.render("users/user-login", { logErr: req.session.logErr, loginForm: true });
       req.session.logErr = false;
     }
   },

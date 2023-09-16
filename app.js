@@ -11,7 +11,6 @@ const nocache = require('nocache');
 require('dotenv').config();
 
 
-var {MongoClient} = require('mongodb-legacy');
 
 var adminRouter = require('./routes/admin');
 var userRouter = require('./routes/users');
@@ -44,7 +43,6 @@ app.use(session({
 }))
 
 db.connect((err) => {
-  console.log("Mongodb Connecting---")
   if(err) console.log('Connection Failed'+err);
   else console.log('Database Connected');
 })
