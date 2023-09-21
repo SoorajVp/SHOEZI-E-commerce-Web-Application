@@ -1,6 +1,8 @@
 # SHOEZI-E-commerce-Web-Application
 SHOEZI is a fully functional e-commerce website ( based on the Shoes Collections ), 
 
+- Live link : https://www.shoezi.online/
+
 * <h3> Built the website using a range of modern technologies, including: </h3>
 
   * <bold>Node.js and Express.js </bold> for the backend
@@ -20,8 +22,8 @@ USER SIDE :
 * profile management
 * Address Management (CRUD)
 * profile Picture change with image cropping
-* wallet
-* product single page with image zooming 
+* Wallet
+* Product single page with image zooming 
 * Category Managed with sub category, products can be listed as per the category.
 * User can filter the items by the main category and sub category.
 * Filters :
@@ -33,9 +35,9 @@ USER SIDE :
   * search with category 
 * order View where we can cancel and return order. We can return order only after the order is delivered.
 * wishlist
-* cart
+* Cart
 * Stock Management with validation for OUT OF STOCK.
-* checkout
+* Checkout
 * Coupons can be used to get Discounts.
 
 PAYMENT INTEGRATION
